@@ -40,7 +40,7 @@ if (isset($_POST["enviar"])  and $_POST["enviar"] = "si") {
   <meta name="description" content="Premium Quality and Responsive UI for Dashboard.">
   <meta name="author" content="ThemePixels">
 
-  <title>Certificados</title>
+  <title>SISE</title>
 
   <!-- vendor css -->
   <link href="./public/lib/font-awesome/css/font-awesome.css" rel="stylesheet">

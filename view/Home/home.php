@@ -2,8 +2,6 @@
 
 require_once("../../config/conexion.php");
 if(isset($_SESSION["usu_id"])) {
-
-
 ?>
 
   <!DOCTYPE html>
@@ -13,7 +11,7 @@ if(isset($_SESSION["usu_id"])) {
     <?php
     require_once("../Head/MainHead.php");
     ?>
-    <title>Certificados::Home</title>
+    <title>SISE::Grifos</title>
 
 
   </head>
@@ -44,8 +42,15 @@ if(isset($_SESSION["usu_id"])) {
         </nav>
       </div><!-- br-pageheader -->
       <div class="pd-x-20 pd-sm-x-30 pd-t-20 pd-sm-t-30">
-        <strong class="d-block d-sm-inline-block-force text text-primary">PRINCIPAL</strong>
 
+        <section class="card">
+				<header class="card-header">
+				<strong class="d-block d-sm-inline-block-force text text-primary">PRINCIPAL</strong>
+				</header>
+				<div class="card-block">
+					<div id="divgrafico" style="height: 250px;"></div>
+				</div>
+			</section>
      
         <!-- TABLA PARA IMPLEMENTACION CON JS  -->
         <!-- TABLA PARA IMPLEMENTACION CON JS  -->

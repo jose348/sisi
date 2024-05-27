@@ -1,5 +1,5 @@
  <!-- ########## START: LEFT PANEL ########## -->
- <div class="br-logo"><a href="../UsuHome/index.php"><span><img src="../../public/img/muni.png" alt=""></span></a></div>
+ <div class="br-logo"><a href="../Home/home.php"><span><img src="../../public/img/muni.png" alt=""></span></a></div>
  <div class="br-sideleft overflow-y-auto">
    <div>
 
@@ -12,7 +12,7 @@
      <!-- AHORA REALIZAMO UN IF PARA VER SI ES ADMINISTRADOR O USUARIOS DEACUERDO A 
       ELLO SE MOSTRARAN LAS VENTANAS YA SES DE ADMIN O USUARIO -->
 
-     <a href="../UsuHome/index.php" class="br-menu-link">
+     <a href="../Home/home.php" class="br-menu-link">
        <div class="br-menu-item">
          <i class="menu-item-icon fa fa-home tx-20"></i>
          <span class="menu-item-label">Home</span>
