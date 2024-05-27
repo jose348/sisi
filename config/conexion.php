@@ -7,8 +7,8 @@ session_start();
 
     $host="localhost";
     $dbname="prueba";
-    $username="postgresql";
-    $password="postgresql";
+    $username="postgres";
+    $password="postgres";
 
     try{
         $conectar=$this->dbh=new PDO("pgsql:host=$host; dbname=$dbname", $username,$password);
@@ -20,7 +20,7 @@ session_start();
            
         }
 
-        public function set_name(){
+        public function set_names(){
             return $this->dbh->query("SET NAME 'utf8");
         }
 

@@ -1,3 +1,14 @@
+<?php
+
+require_once("config/conexion.php");
+if (isset($_POST["enviar"])  and $_POST["enviar"] = "si") {
+  require_once("models/Usuario.php");
+  $usuario = new Usuario();
+  $usuario->Login();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,6 +46,8 @@
   <link href="./public/lib/font-awesome/css/font-awesome.css" rel="stylesheet">
   <link href="./public/lib/Ionicons/css/ionicons.css" rel="stylesheet">
 
+
+
   <!-- Bracket CSS -->
   <link rel="stylesheet" href="./public/css/bracket.css">
 </head>
@@ -43,7 +56,7 @@
 
   <div class="d-flex align-items-center justify-content-center bg-br-primary ht-100v">
 
-    <form action="" method="POST">
+    <form action="" method="POST" id="login-form">
       <div class="login-wrapper wd-300 wd-xs-350 pd-25 pd-xs-40 bg-white rounded shadow-base">
 
         <!-- Capturando los mensajes de erro del LOGIN -->
@@ -51,54 +64,59 @@
         if (isset($_GET["m"])) {
           switch ($_GET["m"]) {
             case "1";
-        ?>
-              <div class="alert alert-success" role="alert">
+          ?>
+              <div class="alert alert-warning" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                  <span aria-hidden="true">  X</span>
                 </button>
                 <div class="d-flex align-items-center justify-content-start">
                   <i class="icon ion-ios-checkmark alert-icon tx-32 mg-t-5 mg-xs-t-0"></i>
-                  <span><strong>Well done!</strong> Successful alert message.</span>
+                  <span><strong>Error</strong> Usuario y/o contraseña Incorrectos. </span>
                 </div><!-- d-flex -->
-              </div><!-- alert -->
-            <?php
+      </div><!-- alert -->
+      <?php
               break;
             case "2";
-            ?>
-              <div class="alert alert-success" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <div class="d-flex align-items-center justify-content-start">
-                  <i class="icon ion-ios-checkmark alert-icon tx-32 mg-t-5 mg-xs-t-0"></i>
-                  <span><strong>Well done!</strong> Successful alert message.</span>
-                </div><!-- d-flex -->
-              </div><!-- alert -->
-        <?php
+        ?>
+      <div class="alert alert-warning" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">  X</span>
+        </button>
+        <div class="d-flex align-items-center justify-content-start">
+          <i class="icon ion-ios-checkmark alert-icon tx-32 mg-t-5 mg-xs-t-0"></i>
+          <span><strong>Error!</strong> Ingrese Credenciales Correctamente. </span>
+        </div><!-- d-flex -->
+      </div><!-- alert -->
+      <?php
               break;
           }
         }
         ?>
+        
+
+
         <div class="signin-logo tx-center tx-28 tx-bold tx-inverse"><span class="tx-normal"></span> <img src="public/img/muni.png" alt="" width="200"> <span class="tx-normal"></span></div>
         <hr>
-        <div class="tx-center mg-b-30"><h6 class="text text-info">Sistema de Gestor de Grifos</h6></div>
+        <div class="tx-center mg-b-30">
+          <h6 class="text text-info">Sistema de Servicios Integrales (SISE)</h6>
+        </div>
 
 
 
 
         <div class="input-group">
           <span class="input-group-addon"><i class="icon ion-card tx-16 lh-0 op-6"></i></span>
-          <input type="text" class="form-control" placeholder="Ingrese Dni">
+          <input type="number" class="form-control" placeholder="Ingrese Dni" id="dni" name="dni">
         </div>
         <br>
 
 
         <div class="input-group">
           <span class="input-group-addon"><i class="icon ion-more tx-16 lh-0 op-6"></i></span>
-          <input type="password" class="form-control" placeholder="Ingrese Contraseña">
+          <input type="password" class="form-control" placeholder="Ingrese Contraseña" id="pass" name="pass">
         </div>
 
-<br>
+        <br>
         <a href="" class="tx-info tx-12 d-block mg-t-10">Informacion sobre Nosotros</a>
         <br>
         <input type="hidden" name="enviar" class="form-control" value="si">
@@ -110,9 +128,36 @@
 
   </div><!-- d-flex -->
 
-  <script src="../Public/lib/jquery/jquery.js"></script>
-  <script src="../Public/lib/popper.js/popper.js"></script>
-  <script src="../Public//bootstrap/bootstrap.js"></script>
+  <script src="/Public/lib/jquery/jquery.js"></script>
+  <script src="/Public/lib/popper.js/popper.js"></script>
+  <script src="/Public//bootstrap/bootstrap.js"></script>
+
+
+ <!--  alert-IU -->
+  <script src="files/js/lib/jquery/jquery.min.js"></script>
+    <script src="files/js/lib/tether/tether.min.js"></script>
+    <script src="files/js/lib/bootstrap/bootstrap.min.js"></script>
+    <script src="files/js/plugins.js"></script>
+    <script type="text/javascript" src="files/js/lib/match-height/jquery.matchHeight.min.js"></script>
+    <script>
+        $(function() {
+            $('.page-center').matchHeight({
+                target: $('html')
+            });
+
+            $(window).resize(function() {
+                setTimeout(function() {
+                    $('.page-center').matchHeight({
+                        remove: true
+                    });
+                    $('.page-center').matchHeight({
+                        target: $('html')
+                    });
+                }, 100);
+            });
+        });
+    </script>
+    <script src="files/js/app.js"></script>
 
 </body>
 

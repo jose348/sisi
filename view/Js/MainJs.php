@@ -23,3 +23,13 @@
 
 <script src="../../public/lib/select2/js/select2.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+
+<!-- alert -->
+<script src="../../files/js/lib/jquery/jquery.min.js"></script>
+	<script src="../../files/js/lib/tether/tether.min.js"></script>
+	<script src="../../files/js/lib/bootstrap/bootstrap.min.js"></script>
+	<script src="../../files/js/plugins.js"></script>
+    <script src="../../files/js/app.js"></script>
