@@ -80,7 +80,8 @@
         }
         ?>
         <div class="signin-logo tx-center tx-28 tx-bold tx-inverse"><span class="tx-normal"></span> <img src="public/img/muni.png" alt="" width="200"> <span class="tx-normal"></span></div>
-        <div class="tx-center mg-b-30"></div>
+        <hr>
+        <div class="tx-center mg-b-30"><h6 class="text text-info">Sistema de Gestor de Grifos</h6></div>
 
 
 
