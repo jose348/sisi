@@ -128,9 +128,9 @@ if (isset($_POST["enviar"])  and $_POST["enviar"] = "si") {
 
   </div><!-- d-flex -->
 
-  <script src="/Public/lib/jquery/jquery.js"></script>
-  <script src="/Public/lib/popper.js/popper.js"></script>
-  <script src="/Public//bootstrap/bootstrap.js"></script>
+  <script src="/public/lib/jquery/jquery.js"></script>
+  <script src="/public/lib/popper.js/popper.js"></script>
+  <script src="/public//bootstrap/bootstrap.js"></script>
 
 
  <!--  alert-IU -->

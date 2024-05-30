@@ -1,7 +1,7 @@
 <?php
 
 require_once("../../config/conexion.php");
-if(isset($_SESSION["usu_id"])) {
+if (isset($_SESSION["id"])) { 
 ?>
 
   <!DOCTYPE html>
@@ -11,7 +11,7 @@ if(isset($_SESSION["usu_id"])) {
     <?php
     require_once("../Head/MainHead.php");
     ?>
-    <title>SISE::Grifos</title>
+    <title>SISE::MPCH</title>
 
 
   </head>
@@ -19,14 +19,14 @@ if(isset($_SESSION["usu_id"])) {
   <body>
 
     <?php
-    require_once("../Menu/menu.php");
+       require_once("../Header/MainHeader.php");
+   
 
     ?>
     <!-- ########## END: LEFT PANEL ########## -->
 
-    <?php
-    require_once("../Header/MainHeader.php");
-
+    <?php 
+    require_once("../Menu/menu.php");
     ?>
     <!-- ########## END: HEAD PANEL ########## -->
 
@@ -36,24 +36,43 @@ if(isset($_SESSION["usu_id"])) {
     <!-- ########## START: MAIN PANEL ########## -->
     <div class="br-mainpanel">
       <div class="br-pageheader pd-y-15 pd-l-20">
-        <nav class="breadcrumb pd-0 mg-0 tx-12">
-          <a class="breadcrumb-item" href="../UsuHome/index.php">Inicio</a>
-          <span class="breadcrumb-item active">Home</span>
-        </nav>
+
+        <a class="breadcrumb-item" href="../Home/home.php">Inicio</a>
+        <span class="breadcrumb-item active">Home</span>
+
       </div><!-- br-pageheader -->
       <div class="pd-x-20 pd-sm-x-30 pd-t-20 pd-sm-t-30">
 
         <section class="card">
-				<header class="card-header">
-				<strong class="d-block d-sm-inline-block-force text text-primary">PRINCIPAL</strong>
-				</header>
-				<div class="card-block">
-					<div id="divgrafico" style="height: 250px;"></div>
-				</div>
-			</section>
-     
-        <!-- TABLA PARA IMPLEMENTACION CON JS  -->
-        <!-- TABLA PARA IMPLEMENTACION CON JS  -->
+          <header class="card-header">
+            <strong class="d-block d-sm-inline-block-force text text-primary">Bienvenido</strong>
+          </header>
+          <br>
+          <br>
+          <div class="ht-80v   align-items-center justify-content-center">
+            <div class="wd-lg-70p wd-xl-p tx-right pd-x-50">
+              <h1 class="tx-80 tx-xs-50 tx-normal tx-inverse tx-roboto ">Sistema de Servicios Internos.!</h1>
+              <h3 class="tx-xs-25  tx-normal tx-info mg-b-30 lh-5"><?php echo strtoupper($_SESSION["acce_nombre"] . " " . $_SESSION["acce_apellidos"]) ; ?></h3>
+              <p class="tx-20 mg-b-30"><?php   echo $_SESSION["acce_dni"];  ?></p>
+
+              <div class="d-flex justify-content-right">
+
+
+
+
+                  <a href="../Logout/logout.php"><button type="" class="btn btn-outline-danger ">Regresar al Inicio de Session..!</button></a>
+                  <br>
+                  <br>
+                  <!-- input-group-btn -->
+                
+                <!-- input-group -->
+              </div>
+              <br>
+              <!-- d-flex -->
+            </div>
+          </div>
+
+        </section>
 
 
 
@@ -82,8 +101,8 @@ if(isset($_SESSION["usu_id"])) {
   </html>
 <?php
 
-}else{
-  header("Location:".Conectar::ruta()."view/404/404.php");
-}
+} else {
+  header("Location:" . Conectar::ruta() . "view/404/404.php");
+} 
 
 ?>

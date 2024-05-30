@@ -7,23 +7,25 @@ public function Login(){
     if(isset($_POST["enviar"])){
         $dni=$_POST["dni"];
         $pass=$_POST["pass"];
+        $rol=$_POST["acce_rol"];
         if(empty($dni) and empty($pass)  ){
             header("Location:".conectar::ruta()."index.php?m=2");
             exit();
         }else{
-            $sql="SELECT * FROM tm_usuario WHERE usu_dni=? AND usu_pass=? AND usu_estado=1";
+            $sql="SELECT * FROM sc_remuneraciones.acceso WHERE acce_dni=? AND acce_password=? AND acce_estado=1 AND acce_rol=?";
             $stmt = $conectar->prepare($sql);
             $stmt -> bindValue(1,$dni);
             $stmt -> bindValue(2,$pass);
+            $stmt -> bindValue(3,$rol);
             $stmt->execute();
             $resultado = $stmt->fetch();
              
             if(is_array($resultado) and count($resultado) >0){
-                $_SESSION["usu_id"]=$resultado["usu_id"];
-                $_SESSION["usu_nom"]=$resultado["usu_nom"];
-                $_SESSION["usu_apep"]=$resultado["usu_apep"];
-                $_SESSION["usu_apem"]=$resultado["usu_apem"];
-                $_SESSION["usu_rol"]=$resultado["usu_rol"];
+                $_SESSION["id"]=$resultado["id"];
+                $_SESSION["acce_nombre"]=$resultado["acce_nombre"];
+                $_SESSION["acce_apellidos"]=$resultado["acce_apellidos"];
+                $_SESSION["acce_dni"]=$resultado["acce_dni"];
+                $_SESSION["acce_rol"]=$resultado["acce_rol"];
                 
                 header("Location:".Conectar::ruta()."view/Home/home.php");
 

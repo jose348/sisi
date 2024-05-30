@@ -6,7 +6,7 @@ session_start();
         protected function Conexion(){
 
     $host="localhost";
-    $dbname="prueba";
+    $dbname="mpch";
     $username="postgres";
     $password="postgres";
 

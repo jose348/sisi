@@ -10,11 +10,12 @@
            
           <div class="dropdown">
             <a href="" class="nav-link nav-link-profile" data-toggle="dropdown">
-              <span class="logged-name hidden-md-down"></span>
+              <span class="logged-name hidden-md-down"><?php echo strtoupper($_SESSION["acce_nombre"]. " ".$_SESSION["acce_apellidos"]." ".$_SESSION["acce_dni"]); ?></span>
               <img src="http://via.placeholder.com/64x64" class="wd-32 rounded-circle" alt="">
               <span class="square-10 bg-success"></span>
             </a>
-
+                <input type="hidden" id="user_idx" value="<?php echo $_SESSION["id"] ;?>"><!-- ID del Usuario-->
+                <input type="hidden" id="rol_idx" value="<?php echo $_SESSION["acce_rol"] ;?>"><!-- ID del Usuario-->
         
 
             <div class="dropdown-menu dropdown-menu-header wd-200">
