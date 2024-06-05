@@ -12,7 +12,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
         <?php
         require_once("../Head/MainHead.php");
         ?>
-        <title>Gestion::Unidades</title>
+        <title>ADMIN::Unidades</title>
 
 
     </head>
@@ -29,65 +29,68 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
         require_once("../Header/MainHeader.php");
 
         ?>
+        <!-- ########## END: HEAD PANEL ########## -->
 
+
+        <!-- ########## END: RIGHT PANEL ########## --->
+
+        <!-- ########## START: MAIN PANEL ########## -->
         <div class="br-mainpanel">
             <div class="br-pageheader pd-y-15 pd-l-20">
 
                 <a class="breadcrumb-item" href="../Home/home.php">Inicio</a>
-                <span class="breadcrumb-item active">Gestion de Unidades</span>
+                <span class="breadcrumb-item active">Registro</span>
 
             </div><!-- br-pageheader -->
-            <div class="br-pagebody col-12">
 
+            <div class="br-pagebody">
                 <div class="br-section-wrapper">
+
+
+
                     <!-- #region  -->
                     <header class="card-header">
-                        <strong class="d-block d-sm-inline-block-force text text-primary">GESTION DE UNIDADES MOVILES</strong>
+                    <strong class="d-block d-sm-inline-block-force text text-danger">ADMINISTRAR TIPO DE UNIDADES</strong>
                     </header>
                     <br>
-                    
-                    <br>
-
+                    <button class="col-lg-3 btn btn-outline-primary float-right" id="add_button" onclick="nuevoTipo()">
+                        <i class="fa fa-car mg-r-10"></i>Nuevo Tipo
+                    </button>
                     <div class="table-wrapper">
-                        <br>
-                        <table id="gestionunidades_data" class="table-responsive table table-active table-check table table-striped   ">
+                        <table id="tipo_data" class="table-responsive table table-active table-check table table-striped text text-center">
                             <thead>
                                 <tr>
-                                    <th class="wd-1px">CD</th>
-                                    <th class="wd-5p">Area</th>
-                                    <th class="wd-5p">Tipo</th>
-                                    <th class="wd-2p">Marca</th>
-                                    <th class="wd-3p">Modelo</th>
-                                    <th class="wd-3p">Adquisicion</th>
-                                    <th class="wd-1p">Estado</th>
-                                    <th class="wd-1p">Color</th>                                   
-                                    <th class="wd-1p">Combustible</th>
-                                  
+                                    <th class="wd-5p text text-center">Id</th>
+                                    <th class="wd-20p text text-center">Descripcion</th>
+                                    <th class="wd-10p text text-center">estado</th>
+                                    <th class="wd-15p text text-center">Codigo</th>
+                                    <th class="wd-10p text text-center"></th>
+                                    <th class="wd-10p text text-center"></th>
                                 </tr>
                             </thead>
                             <tbody>
 
+
                             </tbody>
                         </table>
-                    </div>
+                    </div><!-- table-wrapper -->
+
                 </div>
             </div>
+
+
+
+
         </div>
 
-
-
-
-
         <?php
-        require_once("modalgestionunidades.php");
-        require_once("../Js/MainJs.php");
 
+        require_once("../Js/MainJs.php");
+        require_once("AdminTipoModal.php");
+       
 
         ?>
-        <script type="text/javascript" src="gestionunidades.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script><!-- script para traer mis excel -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script><!-- script para traer mis excel -->
-
+        <script type="text/javascript" src="adminTipo.js"></script>
     </body>
 
     </html>

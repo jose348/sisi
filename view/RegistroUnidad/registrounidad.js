@@ -27,7 +27,16 @@ $(document).ready(function() {
     $('#mode_id').select2({
         dropdownParent: $('#registroMovil')
     });
-    combo_modelo();
+
+
+
+    $("#marc_id").change(function() {
+        $("#marc_id option:selected").each(function() {
+            marc_id = $(this).val();
+            combo_modelo2(marc_id); 
+        });    
+    });
+    //combo_modelo();
 
 });
 
@@ -55,11 +64,29 @@ function combo_color() {
     });
 }
 
-function combo_modelo() {
-    $.post("../../controller/movil.php?op=modelo_por_id", function(data) {
-        $('#mode_id').html(data);
+
+
+/* 
+TODO LLENANDO COMBO MODELO APARTIR DEL COMBO MARCA */
+
+function combo_modelo2(marc_id) {
+
+    $.ajax({
+        url: "../../controller/movil.php?op=combo_modelo",
+        type: "POST",
+        data: { marc_id: marc_id },
+        dataType: "html",
+        success: function(data) {
+            $('#mode_id').html(data);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error en la solicitud AJAX:", status, error);     
+        }    
     });
 }
+
+
+
 
 
 function tipo() {

@@ -12,7 +12,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
         <?php
         require_once("../Head/MainHead.php");
         ?>
-        <title>Registro::Unidades</title>
+        <title>USER::Unidades</title>
 
 
     </head>
@@ -63,23 +63,21 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                             <div class="row col-12">
 
                                 <label class="form-control-label col-1">Tipo: <span class="tx-danger ">*</span></label>
-                                <div class="col-lg-4">
+                                <div class="col-lg-5">
 
                                     <div class="form-group mg-b-10-force">
 
-                                        <select class="form-control select2" name="tiun_id" id="tiun_id" data-placeholder="Seleccione Marca">
+                                        <select class="form-control select2" name="tiun_id" id="tiun_id" data-placeholder="Seleccione Tipo Movil">
                                             <option label="Seleccione"></option>
                                         </select>
 
                                     </div>
                                 </div><!-- col-4 -->
-                                <div class="col-lg-2">
-                                    <button onclick="tipo()" class="btn btn-outline-info tx-8 tx-uppercase pd-y-10 pd-x-18  tx-medium"><i class="fa fa-plus"></i> Nuevo</button>
+                            
+                                
 
-                                </div>
-
-                                <label class="form-control-label col 2">Codigo: <span class="tx-danger">*</span></label>
-                                <div class="col-lg-4">
+                                <label class="form-control-label col 1">Codigo: <span class="tx-danger">*</span></label>
+                                <div class="col-lg-5">
                                     <div class="form-group">
 
                                         <input class="form-control" type="text" name="" id="" placeholder="Ingrese Codigo">
@@ -92,31 +90,27 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
 
 
-
-
-
                                 <label class="form-control-label col-1">Marca: <span class="tx-danger ">*</span></label>
                                 <br>
-                                <div class="col-lg-4">
+                                <div class="col-lg-5">
 
                                     <div class="form-group mg-b-10-force">
 
-                                        <select class="form-control select2" name="marc_id" id="marc_id" data-placeholder="Seleccione Marca">
+                                        <select class="form-control select2" name="marc_id" id="marc_id" data-placeholder="Seleccione Marca del Movil">
                                             <option label="Seleccione"></option>
                                         </select>
 
                                     </div>
                                 </div><!-- col-4 -->
-                                <div class="col-lg-2">
-                                    <button type="" id="" name="action" value="add" class="btn btn-outline-info tx-8 tx-uppercase pd-y-10 pd-x-18  tx-medium"><i class="fa fa-plus"></i> Nuevo</button>
-                                </div>
+                                
+                                
 
                                 <label class="form-control-label col-1">Modelo: <span class="tx-danger ">*</span></label>
-                                <div class="col-lg-3">
+                                <div class="col-lg-5">
 
                                     <div class="form-group mg-b-10-force">
 
-                                        <select class="form-control select2" name="mode_id" id="mode_id" data-placeholder="Seleccione">
+                                        <select class="form-control select2" name="mode_id" id="mode_id" data-placeholder="Seleccione Modelo del Movil">
                                             <option label="Seleccione"></option>
 
 
@@ -124,10 +118,8 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
                                     </div>
                                 </div><!-- col-4 -->
-                                <div class="col-lg-1">
-                                    <button type="" id="" name="action" value="add" class="btn btn-outline-info tx-8 tx-uppercase pd-y-10 pd-x-18  tx-medium"><i class="fa fa-plus"></i> Nuevo</button>
-                                </div>
-
+                               
+                                
 
 
 
@@ -136,11 +128,11 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
 
                                 <label class="form-control-label col-1">Area: <span class="tx-danger ">*</span></label>
-                                <div class="col-lg-4">
+                                <div class="col-lg-5">
 
                                     <div class="form-group mg-b-10-force">
 
-                                        <select class="form-control select2" name="depe_id" id="depe_id" data-placeholder="Seleccione Area">
+                                        <select class="form-control select2" name="depe_id" id="depe_id" data-placeholder="Seleccione Area de Destino">
 
                                             <option label="Seleccione"></option>
 
@@ -150,15 +142,14 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
                                     </div>
                                 </div><!-- col-4 -->
-                                <div class="col-lg-2">
-                                    <button type="" id="" name="action" value="add" class="btn btn-outline-info tx-8 tx-uppercase pd-y-10 pd-x-18  tx-medium"><i class="fa fa-plus"></i> Nuevo</button>
-                                </div>
+                                
+                                
 
                                 <label class="form-control-label col-1">placa <span class="tx-danger">*</span></label>
-                                <div class="col-lg-4">
+                                <div class="col-lg-5">
                                     <div class="form-group mg-b-10-force">
 
-                                        <input class="form-control" type="number" name="" id="">
+                                        <input class="form-control" type="text" name="" id="" placeholder="Ingrese Placa">
                                     </div>
                                 </div><!-- col-8 -->
 
@@ -168,13 +159,8 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
 
 
-
-
-
-
-
                                 <label class="form-control-label col-1">Color: <span class="tx-danger ">*</span></label>
-                                <div class="col-lg-4">
+                                <div class="col-lg-5">
 
                                     <div class="form-group mg-b-10-force">
 
@@ -185,12 +171,11 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
                                     </div>
                                 </div><!-- col-4 -->
-                                <div class="col-lg-2">
-                                    <button type="" id="" name="action" value="add" class="btn btn-outline-info tx-8 tx-uppercase pd-y-10 pd-x-18  tx-medium"><i class="fa fa-plus"></i> Nuevo</button>
-                                </div>
+                               
+                                
 
                                 <label class="form-control-label col-1">Año : <span class="tx-danger">*</span></label>
-                                <div class="col-lg-4">
+                                <div class="col-lg-5">
                                     <div class="form-group">
 
                                         <input class="form-control" type="date" name="" id="" placeholder="Ingrese Año">
@@ -209,7 +194,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
 
                                 <label class="form-control-label col-1">Combustible:<span class="tx-danger ">*</span></label>
-                                <div class="col-lg-4">
+                                <div class="col-lg-5">
 
                                     <div class="form-group mg-b-10-force">
 
@@ -222,12 +207,11 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
                                     </div>
                                 </div><!-- col-4 -->
-                                <div class="col-lg-2">
-                                    <button type="" id="" name="action" value="add" class="btn btn-outline-info tx-8 tx-uppercase pd-y-10 pd-x-18  tx-medium"><i class="fa fa-plus"></i> Nuevo</button>
-                                </div>
+                                
+                                
 
                                 <label class="form-control-label col-1">Adquisicion:<span class="tx-danger">*</span></label>
-                                <div class="col-lg-4">
+                                <div class="col-lg-5">
                                     <div class="form-group">
 
                                         <input class="form-control" type="date" name="" id="" placeholder="Ingrese Año">
@@ -239,7 +223,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
 
                                 <label class="form-control-label col-1">Motor: <span class="tx-danger">*</span></label>
-                                <div class="col-lg-4">
+                                <div class="col-lg-5">
 
                                     <div class="form-group mg-b-10-force">
 
@@ -281,8 +265,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
             <?php
 
             require_once("../Js/MainJs.php");
-            require_once("modal.php");
-
+            
             ?>
             <script type="text/javascript" src="registrounidad.js"></script>
     </body>

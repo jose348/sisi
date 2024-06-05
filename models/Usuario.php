@@ -7,16 +7,14 @@ public function Login(){
     if(isset($_POST["enviar"])){
         $dni=$_POST["dni"];
         $pass=$_POST["pass"];
-        $rol=$_POST["acce_rol"];
         if(empty($dni) and empty($pass)  ){
             header("Location:".conectar::ruta()."index.php?m=2");
             exit();
         }else{
-            $sql="SELECT * FROM sc_remuneraciones.acceso WHERE acce_dni=? AND acce_password=? AND acce_estado=1 AND acce_rol=?";
+            $sql="SELECT * FROM sc_remuneraciones.acceso WHERE acce_dni=? AND acce_password=? AND acce_estado=1";
             $stmt = $conectar->prepare($sql);
             $stmt -> bindValue(1,$dni);
             $stmt -> bindValue(2,$pass);
-            $stmt -> bindValue(3,$rol);
             $stmt->execute();
             $resultado = $stmt->fetch();
              
