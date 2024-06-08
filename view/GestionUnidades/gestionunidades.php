@@ -53,15 +53,17 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                         <table id="gestionunidades_data" class="table-responsive table table-active table-check table table-striped   ">
                             <thead>
                                 <tr>
-                                    <th class="wd-1px">CD</th>
-                                    <th class="wd-5p">Area</th>
-                                    <th class="wd-5p">Tipo</th>
-                                    <th class="wd-2p">Marca</th>
-                                    <th class="wd-3p">Modelo</th>
-                                    <th class="wd-3p">Adquisicion</th>
+                                    <th class="wd-3p">CD</th>
+                                    <th class="wd-8p">Area</th>
+                                    <th class="wd-2p">Tipo</th>
+                                    <th class="wd-1p">Marca</th>
+                                    <th class="wd-1p">Modelo</th>
+                                    <th class="wd-2p">Adquisicion</th>
                                     <th class="wd-1p">Estado</th>
-                                    <th class="wd-1p">Color</th>                                   
+                                   <!-- S -->                                 
                                     <th class="wd-1p">Combustible</th>
+                                    <th class="wd-1p"></th>
+                                    <th class="wd-1p"></th>
                                   
                                 </tr>
                             </thead>

@@ -40,7 +40,7 @@
 
                     <div class="col-lg-3">
                         <div class="form-group">
-                            <label class="form-control-label">Sigala de Documento del Area: <span class="tx-danger">*</span></label>
+                            <label class="form-control-label">Siglas de Documento del Area: <span class="tx-danger">*</span></label>
                             <input class="form-control tx-uppercase" id="depe_siglasdoc" type="text" name="depe_siglasdoc" style="text-transform:uppercase"  required />
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="form-control-label">Anexo del Area: <span class="tx-danger">*</span></label>
-                            <input class="form-control tx-uppercase" id="depe_anexo" type="number" name="depe_anexo" style="text-transform:uppercase"  required />
+                            <input class="form-control tx-uppercase" id="depe_anexo" type="number" name="depe_anexo" style="text-transform:uppercase"   required/>
                         </div>
                     </div>
 
@@ -92,14 +92,14 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="form-control-label">Area Superior: <span class="tx-danger">*</span></label>
-                            <input class="form-control tx-uppercase" id="depe_superior" type="text" name="depe_superior" style="text-transform:uppercase"  required />
+                            <input class="form-control tx-uppercase" id="depe_superior" type="number" name="depe_superior" style="text-transform:uppercase"  required />
                         </div>
                     </div>
 
                     <div class="col-lg-3">
                     <div class="form-group">
                             <label class="form-control-label has-success text text-danger">Estado : <span class="tx-danger">*</span></label>
-                            <select class="form-control  is-warning" style="width:100%" name="depe_estado" id="depe_estado" data-placeholder="Seleccione">
+                            <select class="form-control  is-warning" style="width:100%" name="depe_estado" id="depe_estado" data-placeholder="Seleccione" disabled>
                                 <option value="A">Activo</option>
                                 <option value="I">Inactivo</option>
 
@@ -110,7 +110,7 @@
                     <div class="col-lg-3">
                     <div class="form-group">
                             <label class="form-control-label has-success text text-danger">Unidad : <span class="tx-danger">*</span></label>
-                            <select class="form-control select2 is-warning" style="width:100%" name="tpde_id" id="tpde_id" data-placeholder="Seleccione">
+                            <select class="form-control select2 is-warning" style="width:100%" name="tpde_id" id="tpde_id" data-placeholder="Seleccione" required>
                                 <option label="Seleccion Organizacion"></option>
                                 
 
@@ -121,7 +121,7 @@
                     <div class="col-lg-6">
                     <div class="form-group">
                             <label class="form-control-label has-success text text-danger">Nivel Organizacional : <span class="tx-danger">*</span></label>
-                            <select class="form-control select2 is-warning" style="width:100%" name="nior_id" id="nior_id" data-placeholder="Seleccione">
+                            <select class="form-control select2 is-warning" style="width:100%" name="nior_id" id="nior_id" data-placeholder="Seleccione" required>
                                 <option label="Seleccion Organizacion"></option>
                                 
 
@@ -132,7 +132,7 @@
                     <div class="col-lg-6">
                     <div class="form-group">
                             <label class="form-control-label has-success text text-danger">Tipo de Organo : <span class="tx-danger">*</span></label>
-                            <select class="form-control select2 is-warning" style="width:100%" name="tpor_id" id="tpor_id" data-placeholder="Seleccione">
+                            <select class="form-control select2 is-warning" style="width:100%" name="tpor_id" id="tpor_id" data-placeholder="Seleccione" required>
                                 <option label="Seleccion Organizacion"></option>
                                 
 
@@ -146,7 +146,7 @@
                     <div class="col-lg-6">
                     <div class="form-group">
                             <label class="form-control-label has-success text text-danger">Local Municipal : <span class="tx-danger">*</span></label>
-                            <select class="form-control select2 is-warning" style="width:100%" name="lomu_id" id="lomu_id" data-placeholder="Seleccione">
+                            <select class="form-control select2 is-warning" style="width:100%" name="lomu_id" id="lomu_id" data-placeholder="Seleccione" required>
                                 <option label="Seleccion Organizacion"></option>
                                 
 

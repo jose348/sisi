@@ -57,7 +57,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                         <strong class="d-block d-sm-inline-block-force text text-danger">ADMINISTRAR MODELOS DE MOVILIDAD</strong>
                     </header>
                     <br>
-                    <button class="col-lg-3 btn btn-outline-primary float-right" id="add_button" onclick="nuevo()">
+                    <button class="col-lg-3 btn btn-outline-primary float-right" id="add_button" onclick="nuevoModelo()">
                         <i class="fa fa-home mg-r-10"></i>Nuevo Modelo
                     </button>
                    
@@ -89,11 +89,12 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
         <?php
 
         require_once("../Js/MainJs.php");
+        require_once("AdminModeloModal.php");
       
 
 
         ?>
-        <script type="text/javascript" src="adminregistrounidad.js"></script>
+        <script type="text/javascript" src="adminModelo.js"></script>
     </body>
 
     </html>

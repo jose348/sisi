@@ -1,24 +1,24 @@
 function init() {
-    $("#color_form_modal").on("submit", function(e) {
-        guardaryeditarColor(e);
+    $("#modelo_form_modal").on("submit", function(e) {
+        guardaryeditarModelo(e);
     });
 }
 
-function guardaryeditarColor(e) {
+function guardaryeditarModelo(e) {
     console.log("test");
     e.preventDefault();
-    var formData = new FormData($("#color_form_modal")[0]);
+    var formData = new FormData($("#modelo_form_modal")[0]);
     console.log(formData);
     $.ajax({
-        url: "../../controller/color.php?op=guardaryeditarColor",
+        url: "../../controller/modelo.php?op=guardaryeditarModelo",
         type: "POST",
         data: formData,
         contentType: false,
         processData: false,
         success: function(data) {
             console.log(data);
-            $('#color_data').DataTable().ajax.reload(); //para recargar mi tabla
-            $('#modalcolor').modal('hide'); //para limpiar mi modal
+            $('#modelo_data').DataTable().ajax.reload(); //para recargar mi tabla
+            $('#modalmodelo').modal('hide'); //para limpiar mi modal
             Swal.fire({
                 title: 'Correcto',
                 text: 'Se Registro Correctamente',
@@ -30,17 +30,26 @@ function guardaryeditarColor(e) {
 }
 $(document).ready(function() {
 
-    /* TODO PARA MI COLOR */
-    /* TODO PARA MI COLOR */
-    /* TODO PARA MI COLOR*/
+    $('#marc_id').select2({
+        dropdownParent: $('#modelo_form_modal')
+    });
 
-    $('#color_data').DataTable({ //llamamos el nombre de la tabla
+    combo_marca();
+
+
+    /* TODO PARA MI TIPO DE MODELO */
+    /* TODO PARA MI TIPO DE MODELO */
+    /* TODO PARA MI TIPO DE MODELO */
+
+    $('#modelo_data').DataTable({ //llamamos el nombre de la tabla
 
         "aProcessing": true,
         "aServerSide": true,
         dom: 'Bfrtip',
         buttons: [
-
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
         ],
         /* LLAMANDO LOS DATOS DE MI Controller / usuario osea mi json -- 
            de este codigo case "listar_cursos": */
@@ -49,7 +58,7 @@ $(document).ready(function() {
         /* LLAMANDO MI JSON */
         /* LLAMANDO MI JSON */
         "ajax": {
-            url: "../../controller/color.php?op=listaColores", //ruta para recibir mi servicio que viene desde mi controller
+            url: "../../controller/modelo.php?op=listaModelo", //ruta para recibir mi servicio que viene desde mi controller
             type: "post" // tipo de envio 
                 // data: { usu_id: usu_id }, //esta linea no porque en listar no tiene datos que enviar
         },
@@ -91,38 +100,47 @@ $(document).ready(function() {
 
     });
 
-    /* TODO PARA MI COLOR */
-    /* TODO PARA MI COLOR */
-    /* TODO PARA MI COLOR */
+    /* TODO PARA MI TIPO DE MODELO */
+    /* TODO PARA MI TIPO DE MODELO */
+    /* TODO PARA MI TIPO DE MODELO */
+
+
+
 });
+
+
 
 
 /* AHORA FUNCION PARA EDITAR */
 /* AHORA FUNCION PARA EDITAR */
 /* AHORA FUNCION PARA EDITAR */
 /* cuando le demos editar nos llama al modal con la informacion cargada */
-function editar(colo_id) {
-    $.post("../../controller/color.php?op=mostrar", { colo_id: colo_id }, function(data) {
+function editar(mode_id) {
+    $.post("../../controller/modelo.php?op=mostrarModelo", { mode_id: mode_id }, function(data) {
         data = JSON.parse(data);
-        $('#colo_id').val(data.colo_id);
-        $('#colo_descripcion').val(data.colo_descripcion);
+        $('#mode_id').val(data.mode_id);
+        $('#mode_descripcion').val(data.mode_descripcion);
+
+        $('#marc_id').val(data.marc_id).trigger('change');
 
 
     });
     $('#lbltitulo').html('Editar Registro'); //este para cambiarle el titulo al modal que clickeo en editar
-    $('#modalcolor').modal('show'); //para traer mi modal
+    $('#modalmodelo').modal('show'); //para traer mi modal
 }
-/* AHORA FUNCION PARA EDITAR */
-/* AHORA FUNCION PARA EDITAR */
-/* AHORA FUNCION PARA EDITAR */
 
 
+function combo_marca() {
+    $.post("../../controller/modelo.php?op=combo_marca", function(data) {
+        $('#marc_id').html(data);
+    });
 
+}
 
 /* AHORA FUNCION PARA ELIMINAR */
 /* AHORA FUNCION PARA ELIMINAR */
 /* AHORA FUNCION PARA ELIMINAR */
-function eliminar(colo_id) { //tener encuenta que el cur_id viene de la sentencia eliminar
+function eliminar(mode_id) { //tener encuenta que el cur_id viene de la sentencia eliminar
     swal.fire({
         title: "Elimianr",
         text: "Deseas Eliminar Registro ?",
@@ -132,8 +150,8 @@ function eliminar(colo_id) { //tener encuenta que el cur_id viene de la sentenci
         cancelButtonText: "No",
     }).then((result) => { // preguntamos si el boton presionado es si
         if (result.value) {
-            $.post("../../controller/color.php?op=eliminar", { colo_id, colo_id }, function(data) { // eliminamos el registro 
-                $('#color_data').DataTable().ajax.reload();
+            $.post("../../controller/modelo.php?op=eliminar", { mode_id, mode_id }, function(data) { // eliminamos el registro 
+                $('#modelo_data').DataTable().ajax.reload();
                 swal.fire({
                     title: 'Correcto',
                     text: 'Se Elimino Correctamente',
@@ -148,12 +166,13 @@ function eliminar(colo_id) { //tener encuenta que el cur_id viene de la sentenci
 /* AHORA FUNCION PARA ELIMINAR */
 /* AHORA FUNCION PARA ELIMINAR */
 
-function nuevoColor() {
-    $('#colo_id').val('');
-    $('#lbltitulo').html('Nuevo Registro'); //esto solo aparecera cuando llame a nuevo registro como titulo
-    $('#color_form_modal')[0].reset(); //limpiando cada uno de los datos
-    $('#modalcolor').modal('show');
+
+function nuevoModelo() {
+
+    $('#mode_id').val('');
+    $('#lbltitulo').html('Nuevo Registro');
+    $('#modelo_form_modal')[0].reset();
+    combo_marca();
+    $('#modalmodelo').modal('show');
 }
-
-
 init();

@@ -1,3 +1,5 @@
+function init() {}
+
 $(document).ready(function() {
     $('#depe_id').select2({
         dropdownParent: $('#registroMovil')
@@ -87,9 +89,37 @@ function combo_modelo2(marc_id) {
 
 
 
-
+/* AHORA FUNCION PARA ELIMINAR */
+/* AHORA FUNCION PARA ELIMINAR */
+/* AHORA FUNCION PARA ELIMINAR */
+function eliminar(unid_id) { //tener encuenta que el cur_id viene de la sentencia eliminar
+    swal.fire({
+        title: "Elimianr",
+        text: "Deseas Eliminar Registro ?",
+        icon: "error",
+        confirmButtonText: "Si",
+        showCancelButton: true,
+        cancelButtonText: "No",
+    }).then((result) => { // preguntamos si el boton presionado es si
+        if (result.value) {
+            $.post("../../controller/modelo.php?op=eliminar", { unid_id, unid_id }, function(data) { // eliminamos el registro 
+                $('#gestionunidades_data').DataTable().ajax.reload();
+                swal.fire({
+                    title: 'Correcto',
+                    text: 'Se Elimino Correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                })
+            });
+        }
+    });
+}
+/* AHORA FUNCION PARA ELIMINAR */
+/* AHORA FUNCION PARA ELIMINAR */
+/* AHORA FUNCION PARA ELIMINAR */
 
 function tipo() {
 
     $('#modaltipo').modal('show');
 }
+init();

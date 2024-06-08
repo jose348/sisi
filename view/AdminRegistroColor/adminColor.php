@@ -57,7 +57,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                         <strong class="d-block d-sm-inline-block-force text text-danger">ADMINISTRAR COLORES</strong>
                     </header>
                     <br>
-                    <button class="col-lg-3 btn btn-outline-primary float-right" id="add_button" onclick="nuevoColor()">
+                    <button class="col-lg-3 btn btn-outline-primary float-left" id="add_button" onclick="nuevoColor()">
                         <i class="fa fa-pencil mg-r-10"></i>Nuevo Color
                     </button>
                    

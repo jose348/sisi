@@ -116,14 +116,18 @@ switch ($_GET["op"]) {
             $sub_array[] = $row["mode_descripcion"];
             $sub_array[] = $row["unid_adquisicion"];
             if ($row["unid_estado"] == "1") {
-                $sub_array[] = '<button  class="btn btn-oblong btn-outline-success ">Activo</button>';
+                $sub_array[] = '<button  class="btn btn-oblong btn-success ">Activo</button>';
             } else {
-                $sub_array[] = '<button  class="btn btn-oblong btn-outline-danger  ">InActivo</button>';
+                $sub_array[] = '<button  class="btn btn-oblong btn-danger  ">InActivo</button>';
             }
 
 
-            $sub_array[] = $row["colo_descripcion"];
+            /* $sub_array[] = $row["colo_descripcion"]; */
             $sub_array[] = $row["comb_descripcion"];
+            $sub_array[] = '<button type="button" onClick="editar(' . $row["unid_id"] . ');"  id="' . $row["unid_id"] . '" class="btn btn-warning btn-icon"><div><i class="fa fa-edit"></i></div></button>';
+            $sub_array[] = '<button type="button" onClick="eliminar(' . $row["unid_id"] . ');"  id="' . $row["unid_id"] . '" class="btn btn-danger btn-icon"><div><i class="fa fa-trash"></i></div></button>';
+          
+                
             $data[] = $sub_array;
         }
         $results = array(
@@ -145,35 +149,10 @@ switch ($_GET["op"]) {
 
 
 
-
-        /* TODO LISTANDO TABLA MODELO */
-        /* TODO LISTANDO TABLA MODELO */
-        /* TODO LISTANDO TABLA MODELO */
-
-        case "listaModelo":
-            $datos = $movil->get_modelotabla();
-    
-            foreach ($datos as $row) {
-                $sub_array = array();
-                $sub_array[] = $row["mode_id"];
-                $sub_array[] = $row["mode_descripcion"];
-                $sub_array[] = $row["mode_estado"];
-                $sub_array[] = $row["marc_descripcion"];
-                $sub_array[] = '<button type="button" onClick="editar(' . $row["mode_id"] . ');"  id="' . $row["mode_id"] . '" class="btn btn-outline-warning btn-icon"><div><i class="fa fa-edit"></i></div></button>';
-                $sub_array[] = '<button type="button" onClick="eliminar(' . $row["mode_id"] . ');"  id="' . $row["mode_id"] . '" class="btn btn-outline-danger btn-icon"><div><i class="fa fa-trash"></i></div></button>';
-                $data[] = $sub_array;
-            }
-            $results = array(
-                "sEcho" => 1,
-                "iTotalRecords" => count($data),
-                "iTotalDisplayRecords" => count($data),
-                "aaData" => $data
-            );
-    echo json_encode($results);
-            break;
-
-
-
+ /* ELIMINAR SEGUN ID */
+ case "eliminarmovil":
+    $movil->delete_unidad($_POST["unid_id"]);
+    break;
 
     }
 

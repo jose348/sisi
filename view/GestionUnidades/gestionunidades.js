@@ -1,5 +1,8 @@
 console.log("si imprime");
 $(document).ready(function() {
+
+
+
     $('#gestionunidades_data').DataTable({ //llamamos el nombre de la tabla
 
         "aProcessing": true,
@@ -60,6 +63,30 @@ $(document).ready(function() {
     });
 
 });
+
+
+function eliminar(unid_id) { //tener encuenta que el cur_id viene de la sentencia eliminar
+    swal.fire({
+        title: "Elimianr",
+        text: "Deseas Eliminar Registro ?",
+        icon: "error",
+        confirmButtonText: "Si",
+        showCancelButton: true,
+        cancelButtonText: "No",
+    }).then((result) => { // preguntamos si el boton presionado es si
+        if (result.value) {
+            $.post("../../controller/movil.php?op=eliminarmovil", { unid_id, unid_id }, function(data) { // eliminamos el registro 
+                $('#gestionunidades_data').DataTable().ajax.reload();
+                swal.fire({
+                    title: 'Correcto',
+                    text: 'Se Elimino Correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                })
+            });
+        }
+    });
+}
 
 function nuevo() {
 

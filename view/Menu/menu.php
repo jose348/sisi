@@ -62,7 +62,7 @@
           <li class="nav-item"><a href="../AdminRegistroArea/adminArea.php" class="nav-link">Adm. Dependencia</a></li>
           <li class="nav-item"><a href="../AdminRegistroTipo/adminTipo.php" class="nav-link">Adm. Tipo de Unidad</a></li>
           <li class="nav-item"><a href="../AdminiRegistroMarca/adminMarca.php" class="nav-link">Adm. Marca de  Unidad</a></li>
-          <li class="nav-item"><a href="../AdminRegistroUnidad/adminModelo.php" class="nav-link">Adm. Modelo de la Unidad</a></li>
+          <li class="nav-item"><a href="../AdminRegistroModelo/adminModelo.php" class="nav-link">Adm. Modelo de la Unidad</a></li>
           <li class="nav-item"><a href="../AdminRegistroColor/adminColor.php" class="nav-link">Adm. Colores de unidad</a></li>
           
   
