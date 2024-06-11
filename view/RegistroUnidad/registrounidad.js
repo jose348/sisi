@@ -1,4 +1,9 @@
-function init() {}
+function init() {
+
+}
+
+
+
 
 $(document).ready(function() {
     $('#depe_id').select2({
@@ -29,7 +34,10 @@ $(document).ready(function() {
     $('#mode_id').select2({
         dropdownParent: $('#registroMovil')
     });
-
+    $('#comb_id').select2({
+        dropdownParent: $('#registroMovil')
+    });
+    combo_combustible();
 
 
     $("#marc_id").change(function() {
@@ -66,6 +74,11 @@ function combo_color() {
     });
 }
 
+function combo_combustible() {
+    $.post("../../controller/movil.php?op=combo_combustible", function(data) {
+        $('#comb_id').html(data);
+    });
+}
 
 
 /* 

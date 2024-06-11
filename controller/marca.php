@@ -8,7 +8,7 @@
 
         case "guardaryeditarMarca":
             if (empty($_POST["marc_id"])) {
-                $marca->insert_marca($_POST["marc_descripcion"]);
+                $marca->insert_marca(strtoupper($_POST["marc_descripcion"]));
             } else {
                 $marca->update_marca($_POST["marc_id"],strtoupper( $_POST["marc_descripcion"]));
             }

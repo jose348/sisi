@@ -9,7 +9,7 @@ switch ($_GET["op"]) {
 
     case "guardaryeditarColor":
         if (empty($_POST["colo_id"])) {
-            $color->insert_color($_POST["colo_descripcion"]);
+            $color->insert_color(strtoupper($_POST["colo_descripcion"]));
         } else {
             $color->update_color($_POST["colo_id"], strtoupper($_POST["colo_descripcion"]));
         }

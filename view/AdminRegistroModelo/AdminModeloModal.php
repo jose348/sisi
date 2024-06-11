@@ -26,7 +26,7 @@
                     <div class="col-lg-6">
                     <div class="form-group">
                             <label class="form-control-label has-success text text-danger">Buscar su Marca : <span class="tx-danger">*</span></label>
-                            <select  class="form-control select2 is-warning" style="width:100%" name="marc_id" id="marc_id" data-placeholder="Seleccione" required>
+                            <select  class="form-control select2 is-warning" style="width:100%" name="marc_id" id="marc_id" data-placeholder="Seleccione" style="text-transform:uppercase" >
                                 <option label="Seleccion Organizacion"></option>
                                 
 

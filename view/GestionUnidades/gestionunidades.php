@@ -47,20 +47,24 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                     <br>
                     
                     <br>
+                    <button class="col-sm-3 btn btn-outline-primary" id="add_button" onclick="nuevo()">
+              <i class="fa fa-plus mg-r-10"></i>Nuevo Registro
+            </button>
 
                     <div class="table-wrapper">
                         <br>
                         <table id="gestionunidades_data" class="table-responsive table table-active table-check table table-striped   ">
                             <thead>
                                 <tr>
+                                    <th class="wd-3p">ID</th>
                                     <th class="wd-3p">CD</th>
                                     <th class="wd-8p">Area</th>
                                     <th class="wd-2p">Tipo</th>
                                     <th class="wd-1p">Marca</th>
                                     <th class="wd-1p">Modelo</th>
                                     <th class="wd-2p">Adquisicion</th>
-                                    <th class="wd-1p">Estado</th>
-                                   <!-- S -->                                 
+                                    <th class="wd-1p">Estado</th>                               
+                                    <th class="wd-1p">Color</th>                               
                                     <th class="wd-1p">Combustible</th>
                                     <th class="wd-1p"></th>
                                     <th class="wd-1p"></th>
@@ -81,9 +85,9 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
 
         <?php
+        
         require_once("modalgestionunidades.php");
         require_once("../Js/MainJs.php");
-
 
         ?>
         <script type="text/javascript" src="gestionunidades.js"></script>
