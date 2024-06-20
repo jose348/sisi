@@ -31,7 +31,10 @@ class Area extends Conectar
         return $resultado = $sql->fetchALL();
     }
 
-    public function update_area($depe_id,$depe_codigo, $depe_denominacion, $depe_abreviatura, $depe_siglasdoc, $depe_representante, $depe_cargo, $depe_direccion, $depe_telefono, $depe_anexo, $depe_codrof, $depe_superior, $nior_id, $tpor_id, $tpde_id, $lomu_id)
+    public function update_area($depe_id,$depe_codigo, $depe_denominacion,
+                                 $depe_abreviatura, $depe_siglasdoc, $depe_representante,
+                                 $depe_cargo, $depe_direccion, $depe_telefono, $depe_anexo, 
+                                 $depe_codrof, $depe_superior, $nior_id, $tpor_id, $tpde_id, $lomu_id)
     {
         $conx = parent::conexion();
 

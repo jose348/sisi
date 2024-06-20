@@ -1,0 +1,35 @@
+h3 {
+    margin: 4px 0;
+    padding: 5px 0;
+    font-family: arial, sans-serif;
+    width: 100%;
+    color: #fff;
+}
+
+a {
+    font-family: arial, sans-serif;
+    color: #00B2EE;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #55d4ff;
+}
+
+#map-canvas {
+    width: auto;
+    height: 500px;
+}
+
+.lngLat {
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.lngLat .one {
+    padding-left: 250px;
+}
+
+.lngLat .two {
+    padding-left: 34px;
+}

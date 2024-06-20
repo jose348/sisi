@@ -2,8 +2,8 @@
 
 require_once("config/conexion.php");
 if (isset($_POST["enviar"])  and $_POST["enviar"] = "si") {
-  require_once("models/Usuario.php");
-  $usuario = new Usuario();
+  require_once("models/Usuario1.php");
+  $usuario = new Usuario1();
   $usuario->Login();
 }
 
@@ -116,8 +116,11 @@ if (isset($_POST["enviar"])  and $_POST["enviar"] = "si") {
           <input type="password" class="form-control" placeholder="Ingrese Contraseña" id="pass" name="pass">
         </div>
 
-        <br>
-        <a href="" class="tx-info tx-12 d-block mg-t-10">Informacion sobre Nosotros</a>
+
+          <a href="http://216.244.171.252/sisSeguridad/view/USURecuperacionContra/index.php?sistema=Asistencia" class="tx-info tx-12 d-block mg-t-10">Olvidó su contraseña?</a>
+    
+        
+
         <br>
         <input type="hidden" name="enviar" class="form-control" value="si">
         <button type="submit" class="btn btn-info btn-block">Ingresar</button>
@@ -125,6 +128,7 @@ if (isset($_POST["enviar"])  and $_POST["enviar"] = "si") {
 
       </div><!-- login-wrapper -->
     </form>
+    
 
   </div><!-- d-flex -->
 
