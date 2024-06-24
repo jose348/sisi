@@ -13,7 +13,7 @@ class Repuesto extends Conectar
         $repu_ultimo_ingreso,
         $unme_id,
         $repu_situacion
-   
+
     ) {
         $conx = parent::conexion();
         parent::set_names();
@@ -31,10 +31,10 @@ class Repuesto extends Conectar
         $sql->bindValue(3, $alma_id);
         $sql->bindValue(4, $repu_stock);
         $sql->bindValue(5, $repu_precio_unitario);
-        $sql->bindValue(6, $repu_descripcion); 
+        $sql->bindValue(6, $repu_descripcion);
         $sql->bindValue(7, $repu_ultimo_ingreso);
         $sql->bindValue(8, $unme_id);
-     
+
         $sql->execute();
         return $resultado = $sql->fetchAll();
     }
@@ -68,10 +68,10 @@ class Repuesto extends Conectar
         $sql = $conx->prepare($sql);
         $sql->bindValue(1, $repu_codigo);
         $sql->bindValue(2, $repu_descripcion);
-        $sql->bindValue(3, $alma_id);       
+        $sql->bindValue(3, $alma_id);
         $sql->bindValue(4, $repu_stock);
         $sql->bindValue(5, $repu_precio_unitario);
-       // $sql->bindValue(7, $repu_stock_total);
+        // $sql->bindValue(7, $repu_stock_total);
         $sql->bindValue(6, $repu_ultimo_ingreso);
         $sql->bindValue(7, $unme_id);
         $sql->bindValue(8, $repu_situacion);
@@ -189,7 +189,7 @@ class Repuesto extends Conectar
     public function insert_unidad_medida(
         $unme_codigo,
         $unme_descripcion
-      
+
     ) {
         $conx = parent::conexion();
         parent::set_names();
@@ -201,7 +201,7 @@ class Repuesto extends Conectar
         $sql = $conx->prepare($sql);
         $sql->bindValue(1, $unme_codigo);
         $sql->bindValue(2, $unme_descripcion);
-       
+
         $sql->execute();
         return $resultado = $sql->fetchAll();
     }
@@ -210,7 +210,7 @@ class Repuesto extends Conectar
         $unme_id,
         $unme_codigo,
         $unme_descripcion
-      
+
     ) {
         $conx = parent::conexion();
         parent::set_names();
@@ -223,7 +223,7 @@ class Repuesto extends Conectar
         $sql = $conx->prepare($sql);
         $sql->bindValue(1, $unme_codigo);
         $sql->bindValue(2, $unme_descripcion);
-  
+
         $sql->bindValue(3, $unme_id);
         $sql->execute();
         return $resultado = $sql->fetchAll();
@@ -251,20 +251,24 @@ class Repuesto extends Conectar
         return $resultado = $sql->fetchAll();
     }
 
-    public function get_repuestostock_x_id($repu_descripcion){
-        $conectar = parent::conexion(); 
+    public function get_repuestostock_x_id($repu_descripcion)
+    {
+        $conectar = parent::conexion();
         parent::set_names();
         $sql = "SELECT  
                         tb_repuesto.repu_id,
                         tb_repuesto.repu_codigo,
 		                tb_repuesto.repu_descripcion,
+		                tb_repuesto.repu_estado,
+		                
 		                tb_repuesto.repu_stock,
+                        tb_repuesto.repu_stock_total,
 		                tb_repuesto.repu_ultimo_ingreso,
 		                tb_repuesto.repu_situacion
 	                                from sc_residuos_solidos.tb_repuesto 
                                     where tb_repuesto.repu_descripcion=? 
                                     and tb_repuesto.repu_estado=1 ";
-          
+
 
         $sql = $conectar->prepare($sql); //preparamos la sentencia
         $sql->bindValue(1, $repu_descripcion);    //obtenemos el parametro 
@@ -273,4 +277,99 @@ class Repuesto extends Conectar
         return $resultado;              //retornamos los resultados
     }
 
+    public function get_total_stock_repuesto($repu_descripcion)
+    {
+        $conx = parent::conexion();
+        parent::set_names();
+        $sql = "SELECT SUM(repu_stock) as repu_stock FROM sc_residuos_solidos.tb_repuesto 
+                where repu_descripcion=? and repu_estado=1";
+        $sql = $conx->prepare($sql); //preparamos la sentencia 
+        $sql->bindValue(1, $repu_descripcion); //los valore del bindValue
+        $sql->execute(); //ejecutamos
+        return $resultado = $sql->fetchAll(); //retornamos todos
+    }
+
+    public function get_estado_repuesto($repu_situacion)
+    {
+
+        $conx = parent::conexion();
+        parent::set_names();
+        $sql = "SELECT * FROM sc_residuos_solidos.tb_repuesto where repu_situacion=? and repu_estado=1 order by repu_id desc";
+        $sql = $conx->prepare($sql); //preparamos la sentencia 
+        $sql->bindValue(1, $repu_situacion); //los valore del bindValue
+        $sql->execute(); //ejecutamos
+        return $resultado = $sql->fetchAll(); //retornamos todos
+    }
+
+
+    public function get_baja()
+    {
+
+        $conx = parent::conexion();
+        parent::set_names();
+        $sql = "SELECT * FROM sc_residuos_solidos.tb_repuesto 
+            ORDER BY repu_id desc ";
+        $sql = $conx->prepare($sql); //preparamos la sentencia 
+
+        $sql->execute(); //ejecutamos
+        return $resultado = $sql->fetchAll(); //retornamos todos
+    }
+
+    public function get_altas_sbajas($repu_estado)
+    {
+        $conx = parent::conexion();
+        parent::set_names();
+        $sql = "SELECT  
+                        tb_repuesto.repu_id,
+                        tb_repuesto.repu_codigo,
+		                tb_repuesto.repu_descripcion,
+		                tb_repuesto.repu_estado,
+		                
+		                tb_repuesto.repu_stock,
+                        tb_repuesto.repu_stock_total,
+		                tb_repuesto.repu_ultimo_ingreso,
+		                tb_repuesto.repu_situacion
+	                                from sc_residuos_solidos.tb_repuesto 
+                                    where tb_repuesto.repu_estado=? ";
+        $sql = $conx->prepare($sql); //preparamos la sentencia 
+        $sql->bindValue(1, $repu_estado); //los valore del bindValue
+        $sql->execute(); //ejecutamos
+        return $resultado = $sql->fetchAll(); //retornamos todos
+    }
+
+    public function combo_altabaja()
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+        $sql = "SELECT * FROM sc_residuos_solidos.tb_repuesto  order by repu_id desc";
+        $sql = $conectar->prepare($sql);
+        $sql->execute();
+        return $resultado = $sql->fetchAll();
+    }
+
+    public function dar_alta($repu_id)
+    {
+        $conx = parent::conexion();
+        parent::set_names();
+        $sql = "UPDATE sc_residuos_solidos.tb_repuesto
+	    SET repu_estado=1
+	    WHERE repu_id=?";
+        $sql=$conx->prepare($sql);
+        $sql->bindValue(1,$repu_id);
+        $sql->execute();
+        return $resultado=$sql->fetchAll();
+    }
+
+    public function dar_baja($repu_id)
+    {
+        $conx = parent::conexion();
+        parent::set_names();
+        $sql = "UPDATE sc_residuos_solidos.tb_repuesto
+	    SET repu_estado=0
+	    WHERE repu_id=?";
+        $sql=$conx->prepare($sql);
+        $sql->bindValue(1,$repu_id);
+        $sql->execute();
+        return $resultado=$sql->fetchAll();
+    }
 }

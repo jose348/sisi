@@ -64,7 +64,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label class="form-control-label">Situacion del Repuesto: <span class="tx-danger">*</span></label>
-                                        <select class="form-control select2" style="width:100%" name="repu_situacion" id="repu_situacion" data-placeholder="Seleccione">
+                                        <select class="form-control select2" style="width:100%" name="repu_situacion" id="repu_situacion"   >
                                             <option label="Seleccione"></option>
                                             <option value="A">ACTIVO</option>
                                             <option value="M">MALOGRADO</option>
@@ -75,23 +75,23 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                             </div>
                             <div class="col-lg-3">
                                 <label class="form-control-label">&nbsp;</label>
-                                <button class="btn btn-outline-primary btn-oblong  form-control" id="add_button" onclick="nuevo()"><i class="fa fa-folder-open mg-r-10"></i> Repuesto</button>
+                                <button class="btn btn-outline-primary btn-oblong  form-control" id="add_button" onclick="nuevo()"><i class="fa fa-file-pdf-o mg-r-5"></i> Repuesto</button>
                             </div>
                         </div>
                     </div>
 
 
                     <div class="table-wrapper"></div>
-                    <table id="detalle_data" class="table display responsive nowrap" width="100%">
+                    <table id="situacion_data" class="table display responsive nowrap" width="100%">
                         <thead>
                             <tr>
                                 <th class="wd-15p">Codigo</th>
                                 <th class="wd-15p">Repuesto</th>
                                 <th class="wd-15p">Stock Total</th>
                                 <th class="wd-20p">Fecha Ingreso</th>
-                                <th class="wd-15p">Instructor</th>
-                                <th class="wd-10p"></th>
-                                <th class="wd-10p"></th>
+                                <th class="wd-15p">Situacion</th>
+                               
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -113,7 +113,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
 
         ?>
-        <script type="text/javascript" src="adminRepuesto.js"></script>
+        <script type="text/javascript" src="estadoRespuesto.js"></script>
     </body>
 
     </html>

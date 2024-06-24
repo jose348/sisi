@@ -83,7 +83,7 @@ switch ($_GET["op"]) {
                 $output["repu_id"] = $row["repu_id"];
                 $output["repu_codigo"] = $row["repu_codigo"];
                 $output["repu_descripcion"] = $row["repu_descripcion"];
-                $output["alma_id"] = $row["alma_id"]; 
+                $output["alma_id"] = $row["alma_id"];
                 $output["repu_stock"] = $row["repu_stock"];
                 $output["repu_precio_unitario"] = $row["repu_precio_unitario"];
                 /*  $output["repu_stock_total"]=$row["repu_stock_total"]; */
@@ -120,10 +120,10 @@ switch ($_GET["op"]) {
         break;
 
 
-        case "eliminarMedida":
-            $repuesto->eliminarMedida($_POST["unme_id"]);
-    
-            break;
+    case "eliminarMedida":
+        $repuesto->eliminarMedida($_POST["unme_id"]);
+
+        break;
 
     case "listaUmedida":
         $datos = $repuesto->listar_UnidadMedidad();
@@ -146,12 +146,12 @@ switch ($_GET["op"]) {
         echo json_encode($results);
         break;
 
-        case "guardaryEditarunidadMedida";
+    case "guardaryEditarunidadMedida";
         if (empty($_POST["unme_id"])) {
             $repuesto->insert_unidad_medida(
                 strtoupper($_POST["unme_codigo"]),
                 strtoupper($_POST["unme_descripcion"])
-                
+
             );
         } else {
             $repuesto->update_unidad_medida(
@@ -163,56 +163,235 @@ switch ($_GET["op"]) {
         }
         break;
 
-        case "mostraUnidadMedida":
-            $datos = $repuesto->mostrar_unidad_medida($_POST["unme_id"]);
-            if (is_array($datos) == true and count($datos) > 0) {
-                foreach ($datos as $row) {
-                    $output["unme_id"] = $row["unme_id"];
-                    $output["unme_codigo"] = $row["unme_codigo"];
-                    $output["unme_descripcion"] = $row["unme_descripcion"];
-                   
-                   
-                }
-                echo json_encode($output);
+    case "mostraUnidadMedida":
+        $datos = $repuesto->mostrar_unidad_medida($_POST["unme_id"]);
+        if (is_array($datos) == true and count($datos) > 0) {
+            foreach ($datos as $row) {
+                $output["unme_id"] = $row["unme_id"];
+                $output["unme_codigo"] = $row["unme_codigo"];
+                $output["unme_descripcion"] = $row["unme_descripcion"];
             }
-            break;
+            echo json_encode($output);
+        }
+        break;
 
-            case "comboStockRespuesto":
-                $datos = $repuesto->combo_stok_repuesto();
-                if (is_array($datos) == true and count($datos) > 0) {
-                    $html = " <option label='Seleccione'></option>";
-                    foreach ($datos as $row) {
-                        $html .= "<option value='" . $row['repu_descripcion'] . "'>" . strtoupper($row['repu_descripcion']) . "</option>";
-                    }
-                    echo $html;
-                }
+    case "comboStockRespuesto":
+        $datos = $repuesto->combo_stok_repuesto();
+        if (is_array($datos) == true and count($datos) > 0) {
+            $html = " <option label='Seleccione'></option>";
+            foreach ($datos as $row) {
+                $html .= "<option value='" . $row['repu_descripcion'] . "'>" . strtoupper($row['repu_descripcion']) . "</option>";
+            }
+            echo $html;
+        }
+
+        break;
+
+
+        /* listar repuesto seleccionado por Combo del adminrepuetostock */
+
+    case "listar_repuestoStock":
+        $datos = $repuesto->get_repuestostock_x_id($_POST["repu_descripcion"]); //guardamos en la variable datos la instancia de Models/Usuario.php y//le pasamos lo que viene por $_POST
+        $data = array();
+        foreach ($datos as $row) {
+            $sub_array = array();
+            $sub_array[] = $row["repu_codigo"];
+            $sub_array[] = $row["repu_descripcion"];
+            $sub_array[] = $row["repu_stock"];
+            $sub_array[] = $row["repu_ultimo_ingreso"];
+            if ($row["repu_estado"] == 1) {
+                $sub_array[] = '<button  class="btn btn-oblong btn-info">Alta</button>';
+            } else {
+                $sub_array[] = '<button  class="btn btn-oblong btn-danger">Baja</button>';
+            }
+
+            $sub_array[] = $row["repu_stock_total"];
+
+            if ($row["repu_situacion"] == 'A') {
+                $sub_array[] = '<button  class="btn btn-oblong btn-success">Activo</button>';
+            } else 
+                            if ($row["repu_situacion"] == 'M') {
+                $sub_array[] = '<button  class="btn btn-oblong btn-danger">Malogrado</button>';
+            } else
+                           if ($row["repu_situacion"] == 'T') {
+                $sub_array[] = '<button  class="btn btn-oblong btn-warning">Taller</button>';
+            } else if (empty($row["repu_situacion"])) {
+                $sub_array[] = '<button  class="btn btn-oblong btn-secondary">verificar</button>';
+            }
+            $data[] = $sub_array;
+        }
+
+        $results = array(
+            "sEcho" => 1,
+            "iTotalRecords" => count($data),
+            "iTotalDisplayRecords" => count($data),
+            "aaData" => $data
+        );
+        echo json_encode($results);
+
+        break;
+
+    case "totalStock":
+        $datos = $repuesto->get_total_stock_repuesto($_POST["repu_descripcion"]); //guardamos en la variable datos la instancia de Models/Usuario.php y//le pasamos lo que viene por $_POST
+        if (is_array($datos) == true and count($datos) <> 0) { //si el dato tiene valores en arrays y es diferente de cero entonces
+            foreach ($datos as $row) { //recorro con un foreach los resultado de lo que viene de $datos y que fue pasado por $_POST["usu_id]
+                $output["repu_stock"] = $row["repu_stock"]; //$output captura el resultado y lo guadar y lo sede al $row
+            }
+            echo json_encode($output); //el resultado que trae output lo imprimos en unjson 
+        }
+        //ahora si es un array o si tiene informacion                                                         
+        break;
+
+
+    case "listar_x_situacion_repuesto":
+        $datos = $repuesto->get_estado_repuesto($_POST["repu_situacion"]); //guardamos en la variable datos la instancia de Models/Usuario.php y//le pasamos lo que viene por $_POST
+        $data = array();
+        foreach ($datos as $row) {
+            $sub_array = array();
+            $sub_array[] = $row["repu_codigo"];
+            $sub_array[] = $row["repu_descripcion"];
+            $sub_array[] = $row["repu_stock"];
+            $sub_array[] = $row["repu_ultimo_ingreso"];
+
+            if ($row["repu_situacion"] == 'A') {
+                $sub_array[] = '<button  class="btn btn-oblong btn-success">Activo</button>';
+            } else 
+                                    if ($row["repu_situacion"] == 'M') {
+                $sub_array[] = '<button  class="btn btn-oblong btn-danger">Malogrado</button>';
+            } else
+                                   if ($row["repu_situacion"] == 'T') {
+                $sub_array[] = '<button  class="btn btn-oblong btn-warning">Taller</button>';
+            }
+
+
+            $data[] = $sub_array;
+        }
+
+        $results = array(
+            "sEcho" => 1,
+            "iTotalRecords" => count($data),
+            "iTotalDisplayRecords" => count($data),
+            "aaData" => $data
+        );
+        echo json_encode($results);
+
+        break;
+
+
+    case "listar_bajas":
+        $datos = $repuesto->get_baja(); //guardamos en la variable datos la instancia de Models/Usuario.php y//le pasamos lo que viene por $_POST
+        $data = array();
+        foreach ($datos as $row) {
+            $sub_array = array();
+
+           
+            $sub_array[] = $row["repu_codigo"];
+            $sub_array[] = $row["repu_descripcion"];
+            $sub_array[] = $row["repu_stock"];
+            $sub_array[] = $row["repu_stock_total"];
+
+            if ($row["repu_estado"] == 1) {
+                $sub_array[] = '<button  class="btn btn-oblong btn-info">Alta</button>';
+            } else {
+                $sub_array[] = '<button  class="btn btn-oblong btn-danger">Baja</button>';
+            }
+
+            $sub_array[] = $row["repu_ultimo_ingreso"];
+
+            if ($row["repu_situacion"] == 'A') {
+                $sub_array[] = '<button  class="btn btn-oblong btn-success">Activo</button>';
+            } else 
+                                        if ($row["repu_situacion"] == 'M') {
+                $sub_array[] = '<button  class="btn btn-oblong btn-danger">Malogrado</button>';
+            } else
+                                       if ($row["repu_situacion"] == 'T') {
+                $sub_array[] = '<button  class="btn btn-oblong btn-warning">Taller</button>';
+            } else if (empty($row["repu_situacion"])) {
+                $sub_array[] = '<button  class="btn btn-oblong btn-secondary">verificar</button>';
+            }
+
+
+
+            $data[] = $sub_array;
+        }
+
+        $results = array(
+            "sEcho" => 1,
+            "iTotalRecords" => count($data),
+            "iTotalDisplayRecords" => count($data),
+            "aaData" => $data
+        );
+        echo json_encode($results);
+
+        break;
+
+
+
+    case "listar_altas_bajas":
+        $datos = $repuesto->get_altas_sbajas($_POST["repu_estado"]); //guardamos en la variable datos la instancia de Models/Usuario.php y//le pasamos lo que viene por $_POST
+        $data = array();
+        foreach ($datos as $row) {
+            $sub_array = array();
+
+           
+            $sub_array[] = $row["repu_codigo"];
+            $sub_array[] = $row["repu_descripcion"];
+            $sub_array[] = $row["repu_stock"];
+            $sub_array[] = $row["repu_stock_total"];
+
+            if ($row["repu_estado"] == 1) {
+                $sub_array[] = '<button  class="btn btn-oblong btn-info">Alta</button>'. "   " .'  <button type="button" onClick="darbaja(' . $row["repu_id"] . ');"  id="' . $row["repu_id"] . '" class="btn btn-outline-danger btn-icon"><div><i class="fa fa-long-arrow-down"></i></div></button>';
+             
+            } else {
+                $sub_array[] = '<button  class="btn btn-oblong btn-danger">Baja</button>'. "  " .'<button type="button" onClick="daralta(' . $row["repu_id"] . ');"  id="' . $row["repu_id"] . '" class="btn btn-outline-success btn-icon"><div><i class="fa fa-long-arrow-up"></i></div></button>';
+             
+            }
+            $sub_array[] = $row["repu_ultimo_ingreso"];
+
+            if ($row["repu_situacion"] == 'A') {
+                $sub_array[] = '<button  class="btn btn-oblong btn-success">Activo</button>';
+            } else 
+                                            if ($row["repu_situacion"] == 'M') {
+                $sub_array[] = '<button  class="btn btn-oblong btn-danger">Malogrado</button>';
+            } else
+                                           if ($row["repu_situacion"] == 'T') {
+                $sub_array[] = '<button  class="btn btn-oblong btn-warning">Taller</button>';
+            } else if (empty($row["repu_situacion"])) {
+                $sub_array[] = '<button  class="btn btn-oblong btn-secondary">verificar</button>';
+            }
+
+            
+
+            $data[] = $sub_array;
+        }
+
+        $results = array(
+            "sEcho" => 1,
+            "iTotalRecords" => count($data),
+            "iTotalDisplayRecords" => count($data),
+            "aaData" => $data
+        );
+        echo json_encode($results);
+
+        break;
+
+    case "comboaltabaja":
+        $datos = $repuesto->combo_altabaja();
+        if (is_array($datos) == true and count($datos) > 0) {
+            $html = " <option label='Seleccione'></option>";
+            foreach ($datos as $row) {
+                $html .= "<option value='" . $row['repu_estado'] . "'>" . strtoupper($row['repu_estado']) . "</option>";
+            }
+            echo $html;
+        }
+
+        break;
+
+        case "daralta":
+            $repuesto->dar_alta($_POST["repu_id"]);
+        break;
+        case "darbaja":
+            $repuesto->dar_baja($_POST["repu_id"]);
+        break;
         
-                break;
-
-                
-                /* listar repuesto seleccionado por Combo del adminrepuetostock */
-
-                case "listar_repuestoStock":
-                    $datos = $repuesto->get_repuestostock_x_id($_POST["repu_descripcion"]); //guardamos en la variable datos la instancia de Models/Usuario.php y//le pasamos lo que viene por $_POST
-                       $data=Array();
-                       foreach ($datos as $row) {
-                         $sub_array= array();
-                         $sub_array[] = $row["repu_codigo"];
-                         $sub_array[] = $row["repu_descripcion"];
-                         $sub_array[] = $row["repu_stock"];
-                         $sub_array[] = $row["repu_ultimo_ingreso"];
-                         $sub_array[] = '<button type="button" onClick="certificado('.$row["repu_id"].');"  id="'.$row["repu_id"].'" class="btn btn-outline-info btn-icon"><div><i class="fa fa-id-card-o"></i></div></button>';
-                         $sub_array[]='<button type="button" onClick="eliminar(' . $row["repu_id"] . ');"  id="' . $row["repu_id"] . '" class="btn btn-danger btn-icon"><div><i class="fa fa-trash"></i></div></button>';
-                         $data[]=$sub_array;
-                       }
-            
-                       $results = array(
-                        "sEcho"=>1,
-                        "iTotalRecords"=>count($data),
-                        "iTotalDisplayRecords"=>count($data),
-                        "aaData"=>$data);
-                    echo json_encode($results);
-            
-                    break;
-
-    }
+}

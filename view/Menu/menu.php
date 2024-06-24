@@ -42,8 +42,22 @@
           </div><!-- menu-item -->
         </a><!-- br-menu-link -->
         <ul class="br-menu-sub nav flex-column">
-          <li class="nav-item"><a href="../AdminRepuesto/registroRepuesto.php" class="nav-link ">Adm. Registrar Repuesto</a></li>
-          <li class="nav-item"><a href="../AdminRepuesto/adminRepuesto.php" class="nav-link ">Adm. Repuesto</a></li>
+          <li class="nav-item"><a href="../AdminRepuesto/registroRepuesto.php" class="nav-link ">Registrar Repuesto</a></li>
+          <li class="nav-item"><a href="../AdminRepuesto/adminRepuesto.php" class="nav-link ">Registro de Repuestos</a></li>
+          <li class="nav-item"><a href="../AdminRespuestoStock/stockRepuesto.php" class="nav-link ">Stock de Repuestos</a></li>
+          <li class="nav-item"><a href="../AdminRepuestoEstado/estadoRepuesto.php" class="nav-link ">Estado de Repuestos</a></li>
+          <li class="nav-item"><a href="../AdminRepuestoAltasBjas/altasbajas.php" class="nav-link ">Bajas-Altas del Repuesto</a></li>
+        </ul>
+
+        <a href="#" class="br-menu-link ">
+          <div class="br-menu-item">
+            <i class="menu-item-icon fa fa-commenting tx-20"></i>
+            <span class="menu-item-label ">GESTION DE SOCLICITUD</span>
+          </div><!-- menu-item -->
+        </a><!-- br-menu-link -->
+        <ul class="br-menu-sub nav flex-column">
+          <li class="nav-item"><a href="../AdminRepuesto/registroRepuesto.php" class="nav-link ">Recepcionar Solicitud</a></li>
+
         </ul>
       <?php break;
       case "9":
@@ -84,10 +98,22 @@
           <li class="nav-item"><a href="../AdminRepuesto/adminRepuesto.php" class="nav-link ">Adm. Registro de Repuestos</a></li>
           <li class="nav-item"><a href="../AdminRespuestoStock/stockRepuesto.php" class="nav-link ">Adm. Stock de Repuestos</a></li>
           <li class="nav-item"><a href="../AdminRepuestoEstado/estadoRepuesto.php" class="nav-link ">Adm. Estado de Repuestos</a></li>
-          <li class="nav-item"><a href="../AdminRepuesto/UnidadMedida.php" class="nav-link ">Adm. Unidad Medidad</a></li>
-     
+          <li class="nav-item"><a href="../AdminRepuestoAltasBjas/altasbajas.php" class="nav-link ">Bajas-Altas del Repuesto</a></li>
+          <li class="nav-item"><a href="../AdminRepuesto/UnidadMedida.php" class="nav-link "> Unidad Medidad-Repuesto</a></li>
+
         </ul>
-  
+
+        <a href="#" class="br-menu-link ">
+          <div class="br-menu-item">
+            <i class="menu-item-icon fa fa-commenting tx-20"></i>
+            <span class="menu-item-label ">GESTION DE SOCLICITUD</span>
+          </div><!-- menu-item -->
+        </a><!-- br-menu-link -->
+        <ul class="br-menu-sub nav flex-column">
+          <li class="nav-item"><a href="../AdminRepuesto/solicitud.php" class="nav-link ">Adm. Recepcionar Solicitud</a></li>
+
+        </ul>
+
 
 
         <a href="#" class="br-menu-link">

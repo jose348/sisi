@@ -54,63 +54,62 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
                     <!-- #region  -->
                     <header class="card-header">
-                        <strong class="d-block d-sm-inline-block-force text text-danger">STOCK DEL REPUESTO</strong>
+                        <strong class="d-block d-sm-inline-block-force text text-danger">BAJAS / ALTAS DEL REPUESTO</strong>
                     </header>
                     <br>
+                    <button class="col-lg-3 btn btn-oblong btn-info float-right" id="add_button" onclick="recargar()">
+                        <i class="fa fa-refresh mg-r-10"></i> Re-Cargar
+                    </button>
 
+                    <!-- TODO TABLA LO TRAEMOS DE MANTENIMIENTO USUARIO PARA MOSTRAR LOS USUARIOS -->
+                    <div class="table-wrapper">
                     <div class="form-layout">
                         <div class="row">
-                            <div class="col-lg-8">
+                            <div class="col-lg-4">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label class="form-control-label has-error">Nombre del Repuesto: <span class="tx-danger"></span></label>
-                                        <select class="form-control select2  " style="width:100%" name="repu_descripcion" id="repu_descripcion" data-placeholder="">
+                                        <label class="form-control-label">ALTAS / BAJAS: <span class="tx-danger"></span></label>
+                                        <select class="form-control select2" style="width:100%" name="repu_estado" id="repu_estado">
                                             <option label="Seleccione"></option>
-                                            
+                                            <option value="1">ALTAS</option>
+                                            <option value="0">BAJAS</option>
+                                           
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div class="col-sm-4 col-xl-3">
-                                <div class="bg-teal rounded overflow-hidden">
-                                    <div class="pd-20 d-flex align-items-left">
-                                        <i class="fa fa-line-chart tx-50 tx-white op-7"></i>
-                                        <div class="mg-l-20">
-                                            <p class="tx-12 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10">Stock Total</p>
-                                            <p class="tx-20 tx-white tx-lato tx-bold mg-b-2 lh-1" id="lbltotalstock"></p>
-                                            <span class="tx-11 tx-roboto tx-white-6"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                           
                         </div>
+                    </div>
+                        <br>
+                        <table id="baja_data" class="table display responsive nowrap">
+                        <thead>
+                            <tr>
+                              
+                                <th class="wd-10p" style="text-align: center;">Codigo</th>
+                                <th class="wd-15p"  style="text-align: center;">Repuesto</th>
+                                <th class="wd-5p"  style="text-align: center;">Stock</th>
+                                <th class="wd-1p"  style="text-align: center;">Stock total</th>
+                               
+                                <th class="wd-13p"  style="text-align: center;">ESTADO</th>
+                              
+                                <th class="wd-5p"  style="text-align: center;">Ultimo Ingreso</th>
+                                <th class="wd-10p"  style="text-align: center;">Situacion</th>
+                            
+                          
+                              
+                                                               
+                            </tr>
+                        </thead>
+                            <tbody style="text-align: center;">
+
+                            </tbody>
+                        </table>
                     </div>
 
 
-                    <div class="table-wrapper"></div>
-                    <br>
-                    <table id="stock_data" class="table display responsive nowrap" width="100%">
-                        <thead>
-                            <tr>
-                                <th class="wd-15p">Codigo</th>
-                                <th class="wd-15p">Repuesto</th>
-                                <th class="wd-15p">Stock</th>
-                                <th class="wd-20p">Fecha de Ingreso</th>
-                                <th class="wd-20p">ESTADO</th>
-                                <th class="wd-20p">Ultimo STOCK</th>
-                                <th class="wd-20p">SITUACION</th>
-                               
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
                 </div>
-
             </div>
-        </div>
 
 
 
@@ -122,7 +121,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
 
         ?>
-        <script type="text/javascript" src="AdminRepuestoStock.js"></script>
+        <script type="text/javascript" src="altasbajas.js"></script>
     </body>
 
     </html>
