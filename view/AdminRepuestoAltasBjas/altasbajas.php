@@ -63,44 +63,44 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
                     <!-- TODO TABLA LO TRAEMOS DE MANTENIMIENTO USUARIO PARA MOSTRAR LOS USUARIOS -->
                     <div class="table-wrapper">
-                    <div class="form-layout">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label class="form-control-label">ALTAS / BAJAS: <span class="tx-danger"></span></label>
-                                        <select class="form-control select2" style="width:100%" name="repu_estado" id="repu_estado">
-                                            <option label="Seleccione"></option>
-                                            <option value="1">ALTAS</option>
-                                            <option value="0">BAJAS</option>
-                                           
-                                        </select>
+                        <div class="form-layout">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="form-control-label">ALTAS / BAJAS: <span class="tx-danger"></span></label>
+                                            <select class="form-control select2" style="width:100%" name="repu_estado" id="repu_estado">
+                                                <option label="Seleccione"></option>
+                                                <option value="1">ALTAS</option>
+                                                <option value="0">BAJAS</option>
+
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
-                           
                         </div>
-                    </div>
                         <br>
                         <table id="baja_data" class="table display responsive nowrap">
-                        <thead>
-                            <tr>
-                              
-                                <th class="wd-10p" style="text-align: center;">Codigo</th>
-                                <th class="wd-15p"  style="text-align: center;">Repuesto</th>
-                                <th class="wd-5p"  style="text-align: center;">Stock</th>
-                                <th class="wd-1p"  style="text-align: center;">Stock total</th>
-                               
-                                <th class="wd-13p"  style="text-align: center;">ESTADO</th>
-                              
-                                <th class="wd-5p"  style="text-align: center;">Ultimo Ingreso</th>
-                                <th class="wd-10p"  style="text-align: center;">Situacion</th>
-                            
-                          
-                              
-                                                               
-                            </tr>
-                        </thead>
+                            <thead>
+                                <tr>
+
+                                    <th class="wd-10p" style="text-align: center;">Codigo</th>
+                                    <th class="wd-15p" style="text-align: center;">Repuesto</th>
+                                    <th class="wd-5p" style="text-align: center;">Stock</th>
+                                    <th class="wd-1p" style="text-align: center;">Stock total</th>
+
+                                    <th class="wd-13p" style="text-align: center;">ESTADO</th>
+
+                                    <th class="wd-5p" style="text-align: center;">Ultimo Ingreso</th>
+                                    <th class="wd-10p" style="text-align: center;">Situacion</th>
+
+
+
+
+                                </tr>
+                            </thead>
                             <tbody style="text-align: center;">
 
                             </tbody>

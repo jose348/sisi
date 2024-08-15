@@ -1,4 +1,4 @@
-<?php
+s<?php
 require_once("../config/conexion.php");
 require_once("../models/Area.php");
 
@@ -145,5 +145,4 @@ switch ($_GET["op"]) {
                 echo json_encode($output);
             }
             break;
-
 }

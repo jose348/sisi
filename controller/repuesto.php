@@ -284,7 +284,7 @@ switch ($_GET["op"]) {
         foreach ($datos as $row) {
             $sub_array = array();
 
-           
+
             $sub_array[] = $row["repu_codigo"];
             $sub_array[] = $row["repu_descripcion"];
             $sub_array[] = $row["repu_stock"];
@@ -333,18 +333,16 @@ switch ($_GET["op"]) {
         foreach ($datos as $row) {
             $sub_array = array();
 
-           
+
             $sub_array[] = $row["repu_codigo"];
             $sub_array[] = $row["repu_descripcion"];
             $sub_array[] = $row["repu_stock"];
             $sub_array[] = $row["repu_stock_total"];
 
             if ($row["repu_estado"] == 1) {
-                $sub_array[] = '<button  class="btn btn-oblong btn-info">Alta</button>'. "   " .'  <button type="button" onClick="darbaja(' . $row["repu_id"] . ');"  id="' . $row["repu_id"] . '" class="btn btn-outline-danger btn-icon"><div><i class="fa fa-long-arrow-down"></i></div></button>';
-             
+                $sub_array[] = '<button  class="btn btn-oblong btn-info">Alta</button>' . "   " . '  <button type="button" onClick="darbaja(' . $row["repu_id"] . ');"  id="' . $row["repu_id"] . '" class="btn btn-outline-danger btn-icon"><div><i class="fa fa-long-arrow-down"></i></div></button>';
             } else {
-                $sub_array[] = '<button  class="btn btn-oblong btn-danger">Baja</button>'. "  " .'<button type="button" onClick="daralta(' . $row["repu_id"] . ');"  id="' . $row["repu_id"] . '" class="btn btn-outline-success btn-icon"><div><i class="fa fa-long-arrow-up"></i></div></button>';
-             
+                $sub_array[] = '<button  class="btn btn-oblong btn-danger">Baja</button>' . "  " . '<button type="button" onClick="daralta(' . $row["repu_id"] . ');"  id="' . $row["repu_id"] . '" class="btn btn-outline-success btn-icon"><div><i class="fa fa-long-arrow-up"></i></div></button>';
             }
             $sub_array[] = $row["repu_ultimo_ingreso"];
 
@@ -360,7 +358,7 @@ switch ($_GET["op"]) {
                 $sub_array[] = '<button  class="btn btn-oblong btn-secondary">verificar</button>';
             }
 
-            
+
 
             $data[] = $sub_array;
         }
@@ -387,11 +385,87 @@ switch ($_GET["op"]) {
 
         break;
 
-        case "daralta":
-            $repuesto->dar_alta($_POST["repu_id"]);
+    case "daralta":
+        $repuesto->dar_alta($_POST["repu_id"]);
         break;
-        case "darbaja":
-            $repuesto->dar_baja($_POST["repu_id"]);
+    case "darbaja":
+        $repuesto->dar_baja($_POST["repu_id"]);
         break;
-        
+
+
+
+    case "mostarDetalleSolicitud":
+        $datos = $repuesto->listar_solicitud();
+
+        foreach ($datos as $row) { ?>
+
+            <div class="col-5 container">
+
+                <div class="row mg-t-50">
+                    <div class="col-12 bd-2000">
+                        <div class="card-header tx-white bg-info container">
+                            <div class="row">
+                                <div class="col-6">
+
+                                    <?php echo "Solicitud N°" . $row["sore_id"]; ?>
+
+                                </div>
+                                <div class="col-6 text-right text-dark">
+
+                                    <h6><?php echo  $row["sore_fecha"]; ?></h6>
+
+                                </div>
+                            </div>
+
+                        </div><!-- card-header -->
+                        <div class="card-body bd bd-t-0 rounded-bottom">
+                            <div style="float:right;">
+                                <?php if ($row["deso_estado"] == 1) { ?>
+                                    <button class="btn btn-oblong btn-success">Abierto</button>
+                                <?php  }else{?>
+                                <button class="btn btn-oblong btn-danger">Cerrado</button>
+                                    <?php } ?>
+                            </div>
+
+                            <div id="proyectos-size">
+                                <ul>
+                                    <li><?php echo $row["sore_titulo"]; ?></li>
+                                    <br>
+                                    <li>CANTIDAD: <?php echo $row["deso_cantidad"]; ?></li>
+                                    <br>
+                                    <li>Fecha : <?php echo $row["sore_fecha"]; ?></li>
+                                    <br>
+                                    <li>REPUESTO: <?php echo $row["repu_descripcion"]; ?> </l>
+                                        <br>
+                                        
+                                        
+                                        
+                                </ul>
+                                <button type="button" onclick="atender(<?php echo $row['deso_id']; ?>)" id="<?php echo $row['deso_id']; ?>" class="btn btn-oblong btn-outline-info btn-block"><i class="fa fa-eye mg-r-10"></i>Atender</button>
+                            </div>
+                        </div><!-- card-body -->
+
+
+
+
+                        <!--  <button  type="button" onclick="rechazar(<?php echo $row['sore_id']; ?>)" id="<?php echo $row['sore_id']; ?>" class="btn btn-outline-danger btn-block"><i class="fa fa-close mg-r-10"></i> Rechazar</button> -->
+
+
+                    </div><!-- col-sm -->
+
+                </div><!-- card -->
+            </div><!-- col -->
+
+<?php
+
+
+        }
+        break;
+
+
+
+    case "rechazar":
+        $repuesto->rechazar($_POST["sore_id"]);
+        break;
 }
+?>

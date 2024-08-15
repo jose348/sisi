@@ -38,7 +38,7 @@ class Usuario1 extends Conectar{
 
                 //comienzo API seguridad
                 $ch = curl_init();
-                $ws_reniec = "http://216.244.171.252/sisSeguridad/ws/ws.php/?op=login&pers_dni=" . $dni . "&pers_contrasena=" . $pass . "&pers_ip=" . $ip . "&sist_inic=SISI";
+                $ws_reniec = "http://192.168.12.77/sisSeguridad/ws/ws.php/?op=login&pers_dni=" . $dni . "&pers_contrasena=" . $pass . "&pers_ip=" . $ip . "&sist_inic=SISI";
 
 
                 curl_setopt($ch, CURLOPT_URL, $ws_reniec);
@@ -79,7 +79,7 @@ class Usuario1 extends Conectar{
                     header("Location:" . Conectar::ruta() . 'index.php?m=8');
                     exit();
                 } elseif ($detalle == "Blanqueamiento de clave") {
-                    header("Location:" . 'http://216.244.171.252/sisSeguridad/USURecuperacionContra/blanqueamiento.php?dni='.$dni.'&sistema=sisi');
+                    header("Location:" . 'http://192.168.12.77/sisSeguridad/USURecuperacionContra/blanqueamiento.php?dni='.$dni.'&sistema=sisi');
                     exit();
                 }
 
@@ -149,7 +149,7 @@ class Usuario1 extends Conectar{
 
         //comienzo API seguridad
         $ch = curl_init();
-        $ws_reniec = "http://216.244.171.252/sisSeguridad/ws/ws.php/?op=logout&hise_id=" . $hise_id;
+        $ws_reniec = "http://192.168.12.77/sisSeguridad/ws/ws.php/?op=logout&hise_id=" . $hise_id;
 
         curl_setopt($ch, CURLOPT_URL, $ws_reniec);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -175,7 +175,7 @@ class Usuario1 extends Conectar{
 
         //comienzo API seguridad
         $ch = curl_init();
-        $ws_reniec = "http://216.244.171.252/sisSeguridad/ws/ws.php/?op=cambiar_contrasena&pers_id=" . $pers_id . "&claveantigua=" . $claveantigua . "&clave=" . $clave . "&clave2=" . $clave2;
+        $ws_reniec = "http://192.168.12.77/sisSeguridad/ws/ws.php/?op=cambiar_contrasena&pers_id=" . $pers_id . "&claveantigua=" . $claveantigua . "&clave=" . $clave . "&clave2=" . $clave2;
 
         curl_setopt($ch, CURLOPT_URL, $ws_reniec);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

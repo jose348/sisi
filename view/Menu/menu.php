@@ -37,7 +37,7 @@
       ?>
         <a href="#" class="br-menu-link ">
           <div class="br-menu-item">
-            <i class="menu-item-icon fa fa-database tx-20"></i>
+            <i class="menu-item-icon fa fa-database tx-5"></i>
             <span class="menu-item-label ">GESTION DE ALMACEN</span>
           </div><!-- menu-item -->
         </a><!-- br-menu-link -->
@@ -56,7 +56,7 @@
           </div><!-- menu-item -->
         </a><!-- br-menu-link -->
         <ul class="br-menu-sub nav flex-column">
-          <li class="nav-item"><a href="../AdminRepuesto/registroRepuesto.php" class="nav-link ">Recepcionar Solicitud</a></li>
+          <li class="nav-item"><a href="../AdminSolicitudes/solicitud.php" class="nav-link ">Recepcionar Solicitud</a></li>
 
         </ul>
       <?php break;
@@ -64,7 +64,7 @@
       ?>
         <a href="../GestionUnidades/gestionunidades.php" class="br-menu-link ">
           <div class="br-menu-item">
-            <i class="menu-item-icon fa fa-list-ol tx-20"></i>
+            <i class="menu-item-icon fa fa-list-ol tx-18"></i>
             <span class="menu-item-label ">GESTION DE UNIDADES (lista)</span>
           </div><!-- menu-item -->
         </a><!-- br-menu-link -->
@@ -73,7 +73,7 @@
 
         <a href="#" class="br-menu-link">
           <div class="br-menu-item">
-            <i class="menu-item-icon icon fa fa-car tx-24"></i>
+            <i class="menu-item-icon icon fa fa-car tx-18"></i>
             <span class="menu-item-label">GESTION DE UNIDADES</span>
             <i class="menu-item-arrow fa fa-angle-down"></i>
           </div><!-- menu-item -->
@@ -88,7 +88,7 @@
 
         <a href="#" class="br-menu-link">
           <div class="br-menu-item">
-            <i class="menu-item-icon icon fa fa-database tx-24"></i>
+            <i class="menu-item-icon icon fa fa-database tx-18"></i>
             <span class="menu-item-label">GESTION DE ALMACEN </span>
             <i class="menu-item-arrow fa fa-angle-down"></i>
           </div><!-- menu-item -->
@@ -105,20 +105,33 @@
 
         <a href="#" class="br-menu-link ">
           <div class="br-menu-item">
-            <i class="menu-item-icon fa fa-commenting tx-20"></i>
+            <i class="menu-item-icon fa fa-commenting tx-18"></i>
             <span class="menu-item-label ">GESTION DE SOCLICITUD</span>
+            <i class="menu-item-arrow fa fa-angle-down"></i>
           </div><!-- menu-item -->
         </a><!-- br-menu-link -->
         <ul class="br-menu-sub nav flex-column">
-          <li class="nav-item"><a href="../AdminRepuesto/solicitud.php" class="nav-link ">Adm. Recepcionar Solicitud</a></li>
+          <li class="nav-item"><a href="../AdminSolicitudes/solicitud.php" class="nav-link ">Adm. Recepcionar Solicitud</a></li>
 
         </ul>
 
 
+        
+        <a href="#" class="br-menu-link">
+          <div class="br-menu-item">
+            <i class="menu-item-icon icon fa fa-users tx-18"></i>
+            <span class="menu-item-label">GESTION DE PERSONAL </span>
+            <i class="menu-item-arrow fa fa-angle-down"></i>
+          </div><!-- menu-item -->
+        </a><!-- br-menu-link -->
+        <ul class="br-menu-sub nav flex-column">
+          <li class="nav-item"><a href="../AdminGestionPersonal/adminPersonal.php" class="nav-link ">Adm. Personal</a></li>
+        </ul>
+
 
         <a href="#" class="br-menu-link">
           <div class="br-menu-item">
-            <i class="menu-item-icon icon fa fa-map-marker tx-24"></i>
+            <i class="menu-item-icon icon fa fa-map-marker tx-18"></i>
             <span class="menu-item-label">GESTION DE RUTAS </span>
             <i class="menu-item-arrow fa fa-angle-down"></i>
           </div><!-- menu-item -->
@@ -126,6 +139,10 @@
         <ul class="br-menu-sub nav flex-column">
           <li class="nav-item"><a href="../PoligonoMaps/poligonoMaps.php" class="nav-link ">Adm. Rutas</a></li>
         </ul>
+
+
+
+
     <?php
         break;
     }

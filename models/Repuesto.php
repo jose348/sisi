@@ -354,10 +354,10 @@ class Repuesto extends Conectar
         $sql = "UPDATE sc_residuos_solidos.tb_repuesto
 	    SET repu_estado=1
 	    WHERE repu_id=?";
-        $sql=$conx->prepare($sql);
-        $sql->bindValue(1,$repu_id);
+        $sql = $conx->prepare($sql);
+        $sql->bindValue(1, $repu_id);
         $sql->execute();
-        return $resultado=$sql->fetchAll();
+        return $resultado = $sql->fetchAll();
     }
 
     public function dar_baja($repu_id)
@@ -367,9 +367,52 @@ class Repuesto extends Conectar
         $sql = "UPDATE sc_residuos_solidos.tb_repuesto
 	    SET repu_estado=0
 	    WHERE repu_id=?";
-        $sql=$conx->prepare($sql);
-        $sql->bindValue(1,$repu_id);
+        $sql = $conx->prepare($sql);
+        $sql->bindValue(1, $repu_id);
         $sql->execute();
-        return $resultado=$sql->fetchAll();
+        return $resultado = $sql->fetchAll();
+    }
+
+    public function listar_solicitud()
+    {
+        $conx = parent::conexion();
+        parent::set_names();
+        $sql = "SELECT      				
+        tb_detalle_solicitud.deso_id,
+        tb_solicitud_repuesto.sore_id,
+        tb_solicitud_repuesto.sore_titulo, 
+        tb_repuesto.repu_id,
+        tb_solicitud_repuesto.sore_estado,
+        tb_repuesto.repu_descripcion,
+        tb_solicitud_repuesto.sore_fecha,  
+        tb_detalle_solicitud.deso_cantidad,
+       tb_detalle_solicitud.deso_estado
+from        sc_residuos_solidos.tb_detalle_solicitud
+inner join  sc_residuos_solidos.tb_repuesto 
+on          sc_residuos_solidos.tb_detalle_solicitud.repu_id=
+        sc_residuos_solidos.tb_repuesto.repu_id
+inner join  sc_residuos_solidos.tb_solicitud_repuesto 
+on          sc_residuos_solidos.tb_detalle_solicitud.sore_id=
+        sc_residuos_solidos.tb_solicitud_repuesto.sore_id
+
+order by    deso_id desc";
+        $sql = $conx->prepare($sql);
+     
+        $sql->execute();
+        return $resultado = $sql->fetchAll();
+    }
+
+
+    public function rechazar($sore_id)
+    {
+        $conx = parent::conexion();
+        parent::set_names();
+        $sql = "UPDATE sc_residuos_solidos.tb_solicitud_repuesto
+	    SET sore_estado=4
+	    WHERE sore_id= ?";
+        $sql = $conx->prepare($sql);
+        $sql->bindValue(1, $sore_id);
+        $sql->execute();
+        return $resultado = $sql->fetchAll();
     }
 }
