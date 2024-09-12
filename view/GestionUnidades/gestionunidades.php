@@ -45,11 +45,11 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                         <strong class="d-block d-sm-inline-block-force text text-primary">GESTION DE UNIDADES MOVILES</strong>
                     </header>
                     <br>
-                    
+
                     <br>
                     <button class="col-sm-3 btn btn-outline-primary" id="add_button" onclick="nuevo()">
-              <i class="fa fa-plus mg-r-10"></i>Nuevo Registro
-            </button>
+                        <i class="fa fa-plus mg-r-10"></i>Nuevo Registro
+                    </button>
 
                     <div class="table-wrapper">
                         <br>
@@ -63,12 +63,12 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                                     <th class="wd-1p">Marca</th>
                                     <th class="wd-1p">Modelo</th>
                                     <th class="wd-2p">Adquisicion</th>
-                                    <th class="wd-1p">Estado</th>                               
-                                    <th class="wd-1p">Color</th>                               
+                                    <th class="wd-1p">Estado</th>
+                                    <th class="wd-1p">Color</th>
                                     <th class="wd-1p">Combustible</th>
                                     <th class="wd-1p"></th>
                                     <th class="wd-1p"></th>
-                                  
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,7 +85,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
 
         <?php
-        
+
         require_once("modalgestionunidades.php");
         require_once("../Js/MainJs.php");
 

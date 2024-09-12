@@ -58,18 +58,18 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                     </header>
                     <br>
 
-                   <!--  <button class="col-lg-3 btn btn-outline-primary float-right" id="add_button" onclick="nuevo()">
+                    <!--  <button class="col-lg-3 btn btn-outline-primary float-right" id="add_button" onclick="nuevo()">
                         Nuevo Repuesto<i class="fa fa-home mg-r-10"></i>
                     </button> -->
 
-<br>
+                    <br>
                     <div class="box-typical box-typical-padding" id="table">
                         <br>
                         <table id="repuesto_data" class="table table-bordered table-striped table-center js-dataTable-full text text-center">
                             <br>
                             <thead>
                                 <tr>
-                                     
+
                                     <th class="text text-center" style="width: 12%; ">Codigo</th>
                                     <th class="text text-center" style="width: 25%; ">Repuesto</th>
                                     <th class="text text-center" style="width: 14%; ">Stock</th>
@@ -82,7 +82,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                             <tbody>
 
                             </tbody>
-                            </tab>
+                        </table>
                     </div>
 
                 </div>

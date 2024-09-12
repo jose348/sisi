@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 require_once("../../config/conexion.php");
 if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url copiado antes que ingrese 

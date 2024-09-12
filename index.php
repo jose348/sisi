@@ -116,11 +116,7 @@ if (isset($_POST["enviar"])  and $_POST["enviar"] = "si") {
           <input type="password" class="form-control" placeholder="Ingrese Contraseña" id="pass" name="pass">
         </div>
 
-
           <a href="http://216.244.171.252/sisSeguridad/view/USURecuperacionContra/index.php?sistema=Asistencia" class="tx-info tx-12 d-block mg-t-10">Olvidó su contraseña?</a>
-    
-        
-
         <br>
         <input type="hidden" name="enviar" class="form-control" value="si">
         <button type="submit" class="btn btn-info btn-block">Ingresar</button>
@@ -143,6 +139,8 @@ if (isset($_POST["enviar"])  and $_POST["enviar"] = "si") {
     <script src="files/js/lib/bootstrap/bootstrap.min.js"></script>
     <script src="files/js/plugins.js"></script>
     <script type="text/javascript" src="files/js/lib/match-height/jquery.matchHeight.min.js"></script>
+    
+    
     <script>
         $(function() {
             $('.page-center').matchHeight({

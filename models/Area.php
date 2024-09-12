@@ -104,10 +104,10 @@ class Area extends Conectar
         $con = parent::conexion();
         parent::set_names();
         $sql = "SELECT * FROM public.tb_dependencia where depe_estado='A'
-        ORDER BY depe_id DESC";
+        ORDER BY depe_id DESC;";
         $sql = $con->prepare($sql);
         $sql->execute();
-        return $resultado = $sql->fetchAll();
+        return  $sql->fetchAll();
     }
 
 

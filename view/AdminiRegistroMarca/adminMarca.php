@@ -61,6 +61,11 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                         <i class="fa fa-home mg-r-10"></i>Nueva Marca
                     </button>
                    
+
+                  
+
+
+
                     <div class="table-wrapper">
                     <br>
                         <table id="marca_data" class="table-responsive table table-active table-check table table-striped text text-center  ">

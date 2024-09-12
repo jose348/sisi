@@ -22,8 +22,31 @@
 <script src = "../../public/datatables/jszip.min.js"></script>
 
 <script src="../../public/lib/select2/js/select2.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script><!-- Incluir CSS de Select2 -->
+ 
 
+<!-- Incluir JS de Select2 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
+ <!--TODO LIBRERIAS DEL  -->
+    <script src="../../public/lib/highlightjs/highlight.pack.js"></script>
+    <script src="../../public/lib/jquery.steps/jquery.steps.js"></script>
+    <script src="../../public/lib/parsleyjs/parsley.js"></script>
+
+
+     <!--TODO LIBRERIAS DEL INTERRUPTOR -->
+    <script src="../lib/jquery-toggles/toggles.min.js"></script>
+    <script src="../lib/jt.timepicker/jquery.timepicker.js"></script>
+    <script src="../lib/spectrum/spectrum.js"></script>
+    <script src="../lib/jquery.maskedinput/jquery.maskedinput.js"></script>
+    <script src="../lib/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+    <script src="../lib/ion.rangeSlider/js/ion.rangeSlider.min.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+     
+ 
 
 <script>
     $(document).ready(function () {

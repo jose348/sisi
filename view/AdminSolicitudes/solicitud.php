@@ -59,7 +59,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
                     </div><!--.activity-line-->
                    
-
+                       
 
 
                 </div><!-- row -->

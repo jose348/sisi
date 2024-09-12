@@ -41,11 +41,22 @@
     <link href="../../public/datatables/buttons.dataTables.min.css" rel="stylesheet">
     <link href="../../public/lib/select2/css/select2.min.css" rel="stylesheet">
 
+    <!-- vendor css -->
+    <link href="../../public/lib/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="../../public/lib/Ionicons/css/ionicons.css" rel="stylesheet">
+    <link href="../../public/lib/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
+    <link href="../../public/lib/jquery-switchbutton/jquery.switchButton.css" rel="stylesheet">
+    <link href="../../public/lib/highlightjs/github.css" rel="stylesheet">
+    <link href="../../public/lib/jquery.steps/jquery.steps.css" rel="stylesheet">
+
 
     <!-- Bracket CSS -->
     <link href="../../public/css/bracket.css" rel="stylesheet" >
-   
- <!-- -->
+   <!-- Incluir CSS de Select2 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
-    
+ 
+
+ 
+ 
  

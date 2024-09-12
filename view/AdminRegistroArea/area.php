@@ -54,24 +54,25 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
                     <!-- #region  -->
                     <header class="card-header ">
-                        <strong class="d-block d-sm-inline-block-force text text-danger">ADMINISTRAR DEPENDENCIAS</strong>
+                        <strong class="d-block d-sm-inline-block-force text text-danger">ADMINISTRAR AREA</strong>
                     </header>
                     <br>
+                    
                     <button class="col-lg-3 btn btn-outline-primary float-right" id="add_button" onclick="nuevoArea()">
                         <i class="fa fa-home mg-r-10"></i>Nueva Area
                     </button>
                    
                     <div class="table-wrapper">
                     <br>
-                        <table id="area_data" class="table-responsive table table-active table-check table table-striped text text-center">
+                        <table id="tbl_data" class="table-responsive table table-active table-check table table-striped   ">
                             <thead>
                                 <tr>
-                                    <th class="wd-5p text text-center">Id</th>
-                                    <th class="wd-5p text text-center">Codigo</th>
-                                    <th class="wd-20p text text-center">Dependencia</th>
-                                    <th class="wd-15p text text-center">Representante</th>
-                                    <th class="wd-10p text text-center"></th>
-                                    <th class="wd-10p text text-center"></th>
+                                    <th class="wd-5p">Id</th>
+                                    <th class="wd-5p">Codigo</th>
+                                    <th class="wd-20p">Dependencia</th>
+                                    <th class="wd-15p">Representante</th>
+                                    <th class="wd-10p"></th>
+                                    <th class="wd-10p"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -84,16 +85,18 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                 </div>
             </div>
 
+
+
+
         </div>
 
         <?php
 
         require_once("../Js/MainJs.php");
         require_once("adminAreaModal.php");
-
+       
 
         ?>
-       
         <script type="text/javascript" src="adminArea.js"></script>
     </body>
 

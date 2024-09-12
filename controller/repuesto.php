@@ -452,9 +452,12 @@ switch ($_GET["op"]) {
 
 
                     </div><!-- col-sm -->
-
+                    <div class="col-1">
+                         <br>
+                    </div>
                 </div><!-- card -->
             </div><!-- col -->
+           
 
 <?php
 

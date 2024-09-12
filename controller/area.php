@@ -43,7 +43,7 @@ switch ($_GET["op"]) {
 
     case "listaArea":
         $datos = $area->get_areaLista();
-
+      
         foreach ($datos as $row) {
             $sub_array = array();
             $sub_array[] = $row["depe_id"];
@@ -61,6 +61,7 @@ switch ($_GET["op"]) {
             "aaData" => $data
         );
         echo json_encode($results);
+        
         break;
 
         /* TODO LLENADO COMBOX */

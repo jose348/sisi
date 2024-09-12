@@ -79,7 +79,7 @@
           </div><!-- menu-item -->
         </a><!-- br-menu-link -->
         <ul class="br-menu-sub nav flex-column">
-          <li class="nav-item"><a href="../AdminRegistroArea/adminArea.php" class="nav-link">Adm. Dependencia</a></li>
+          <li class="nav-item"><a href="../AdminRegistroArea/area.php" class="nav-link">Adm. Dependencia</a></li>
           <li class="nav-item"><a href="../AdminRegistroTipo/adminTipo.php" class="nav-link">Adm. Tipo de Unidad</a></li>
           <li class="nav-item"><a href="../AdminiRegistroMarca/adminMarca.php" class="nav-link">Adm. Marca de Unidad</a></li>
           <li class="nav-item"><a href="../AdminRegistroModelo/adminModelo.php" class="nav-link">Adm. Modelo de la Unidad</a></li>
@@ -137,15 +137,33 @@
           </div><!-- menu-item -->
         </a><!-- br-menu-link -->
         <ul class="br-menu-sub nav flex-column">
-          <li class="nav-item"><a href="../PoligonoMaps/poligonoMaps.php" class="nav-link ">Adm. Rutas</a></li>
+          
+          <li class="nav-item"><a href="../AdminGestionRutas/UnidadDisponible.php" class="nav-link ">Unidades Disponibles</a></li>
+          <li class="nav-item"><a href="../AdminGestionRutas/poligonoMaps.php" class="nav-link ">Rutas Disponibles</a></li>
+          <li class="nav-item"><a href="../AdminGestionRutas/poligonoMaps.php" class="nav-link ">Choferes Disponibles</a></li>
+          <li class="nav-item"><a href="../AdminGestionRutas/poligonoMaps.php" class="nav-link ">Verifica Ruta-Chofer-Unidad</a></li>
+          <li class="nav-item"><a href="../AdminGestionRutas/poligonoMaps.php" class="nav-link ">Asigna Ruta-Chofer-Unidad</a></li>
+          <li class="nav-item"><a href="../AdminGestionRutas/poligonoMaps.php" class="nav-link ">Manteniminto de Unidad</a></li>
         </ul>
 
-
+        <a href="#" class="br-menu-link">
+          <div class="br-menu-item">
+            <i class="menu-item-icon icon fa fa-wrench tx-18"></i>
+            <span class="menu-item-label">INTERNAMIENTO</span>
+            <i class="menu-item-arrow fa fa-angle-down"></i>
+          </div><!-- menu-item -->
+        </a><!-- br-menu-link -->
+        <ul class="br-menu-sub nav flex-column">
+          
+        <li class="nav-item"><a href="../Internado/" class="nav-link ">Movil</a></li>
+        <li class="nav-item"><a href="../Internado/bitacoraInternado.php" class="nav-link ">Bitacora</a></li>
+          
+        </ul>
 
 
     <?php
         break;
-    }
+    } 
 
     ?>
 

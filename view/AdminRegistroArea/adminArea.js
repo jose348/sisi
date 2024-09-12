@@ -19,7 +19,7 @@ function guardaryeditarArea(e) {
         processData: false,
         success: function(data) {
             console.log(data);
-            $('#area_data').DataTable().ajax.reload(); //para recargar mi tabla
+            $('#area').DataTable().ajax.reload(); //para recargar mi tabla
             $('#modalarea').modal('hide'); //para limpiar mi modal
             Swal.fire({
                 title: 'Correcto',
@@ -58,7 +58,7 @@ $(document).ready(function() {
     /* TODO PARA MI AREA */
     /* TODO PARA MI AREA */
     /* TODO PARA MI AREA */
-    $('#area_data').DataTable({ //llamamos el nombre de la tabla
+    $('#tbl_data').DataTable({ //llamamos el nombre de la tabla
 
         "aProcessing": true,
         "aServerSide": true,
@@ -86,7 +86,7 @@ $(document).ready(function() {
         "bDestroy": true,
         "responsive": true,
         "bInfo": true,
-        "iDisplayLength": 5, //filas a mostrar
+        "iDisplayLength": 10, //filas a mostrar
         "order": [
             [0, "desc"]
         ],
@@ -128,7 +128,7 @@ $(document).ready(function() {
 /* AHORA FUNCION PARA ELIMINAR */
 function eliminar(depe_id) { //tener encuenta que el cur_id viene de la sentencia eliminar
     swal.fire({
-        title: "Elimianr",
+        title: "Eliminar",
         text: "Deseas Eliminar Registro ?",
         icon: "error",
         confirmButtonText: "Si",
@@ -137,7 +137,7 @@ function eliminar(depe_id) { //tener encuenta que el cur_id viene de la sentenci
     }).then((result) => { // preguntamos si el boton presionado es si
         if (result.value) {
             $.post("../../controller/area.php?op=eliminarArea", { depe_id, depe_id }, function(data) { // eliminamos el registro 
-                $('#area_data').DataTable().ajax.reload();
+                $('#depe_data').DataTable().ajax.reload();
                 swal.fire({
                     title: 'Correcto',
                     text: 'Se Elimino Correctamente',

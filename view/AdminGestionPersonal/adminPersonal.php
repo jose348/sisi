@@ -35,6 +35,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
         <!-- ########## END: RIGHT PANEL ########## --->
 
         <!-- ########## START: MAIN PANEL ########## -->
+         
         <div class="br-mainpanel">
             <div class="br-pageheader pd-y-15 pd-l-20">
 
@@ -54,7 +55,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
                     <!-- #region  -->
                     <header class="card-header ">
-                        <strong class="d-block d-sm-inline-block-force text text-danger">ADMINISTRAR MARCA DE MOVILIDAD</strong>
+                        <strong class="d-block d-sm-inline-block-force text text-danger">ADMINISTRAR MARCA DE PERSONAL</strong>
                     </header>
                     <br>
                     
@@ -65,15 +66,14 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                             <thead>
                                 <tr>
                                     
-                                    <th class="wd-15p text text-center">Nombre</th>
+                                   <!--  <th class="wd-1p text text-center">ID</th> -->
+                                    <th class="wd-20p text text-center">Nombre</th>
                                     <th class="wd-5p text text-center">Dni</th>
                                     <th class="wd-20p text text-center">Dependencia</th>
-                                    <th class="wd-20p text text-center">Perfil</th>
+                                    
                                     <th class="wd-20p text text-center">Cargo</th>
-                                    <th class="wd-30p text text-center">Sistema</th>
-                                    
-                                    
-                                    
+                                    <th class="wd-20p text text-center">Perfil</th>
+                                    <!-- <th class="wd-30p text text-center">Sistema</th> -->
                                     <th class="wd-5p text text-center"></th>
                                     <th class="wd-5p text text-center"></th>
                                     <th class="wd-5p text text-center"></th>
@@ -94,6 +94,8 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
         <?php
 
         require_once("../Js/MainJs.php");
+        require_once("../AdminGestionPersonal/adminPersonalModal.php");
+        require_once("../AdminGestionPersonal/adminPersonalModalEditar.php");
 
 
         ?>

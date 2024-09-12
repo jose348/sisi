@@ -13,26 +13,26 @@
             </div>
             <div class="modal-body">
                 <form method="post" id="modelo_form_modal" class="form row">
-                    <input type="hidden" name="mode_id" id="mode_id" /> 
+                    <input type="hidden" name="mode_id" id="mode_id" />
 
 
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="form-control-label">Modelo: <span class="tx-danger">*</span></label>
-                            <input class="form-control tx-uppercase" id="mode_descripcion" type="text" name="mode_descripcion" style="text-transform:uppercase"  required />
+                            <input class="form-control tx-uppercase" id="mode_descripcion" type="text" name="mode_descripcion" style="text-transform:uppercase" required />
                         </div>
                     </div>
 
                     <div class="col-lg-6">
-                    <div class="form-group">
+                        <div class="form-group">
                             <label class="form-control-label has-success text text-danger">Buscar su Marca : <span class="tx-danger">*</span></label>
-                            <select  class="form-control select2 is-warning" style="width:100%" name="marc_id" id="marc_id" data-placeholder="Seleccione" style="text-transform:uppercase" >
+                            <select class="form-control select2 is-warning" style="width:100%" name="marc_id" id="marc_id" data-placeholder="Seleccione" style="text-transform:uppercase">
                                 <option label="Seleccion Organizacion"></option>
-                                
+
 
                             </select>
                         </div>
-                        </div>
+                    </div>
 
                     <div class="modal-footer mx-auto">
                         <!-- para guardar en el boton guardar dentro de mi modal, aqui le agregamos el name y un value -->
