@@ -71,7 +71,7 @@
             <div class="form-group">
               <label class="form-control-label has-success ">Especialidad De Mecanica:</label>
               <select class="form-control select2 is-warning" style="width:100%" name="esme_id" id="esme_id" data-placeholder="Seleccione" style="text-transform:uppercase">
-                <option value="" label="Seleccion Especialidad"></option>
+                <option value=""  >Seleccion Especialidad</option>
 
 
               </select>

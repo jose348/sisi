@@ -152,6 +152,11 @@
 
  $(document).ready(function() {
 
+     $('.select2').select2({
+         placeholder: "Seleccione una opción",
+         allowClear: true
+     });
+
      $('#tiun_id').select2({
          dropdownParent: $('#resgitrarmovil')
 
@@ -562,6 +567,10 @@
 
  /*TODO EMPEZAMOS A GUARDAR LA PROGRAMACION DEL MANTENIMIENTO  */
  function guardarDatos() {
+
+
+
+
      // Obtener los datos del formulario del modal
      var diagnosticoInicial = $('#prma_diagnostico_inicial').val();
      var fecha = $('#prma_fecha').val();
@@ -622,6 +631,8 @@
                      confirmButtonText: 'Aceptar'
                  });
 
+
+
                  $('#botonGuardar').prop('disabled', false);
                  $('#botonRegistrarMecanica').prop('disabled', true);
                  $('#modalRegistrarMecanica').modal('hide');
@@ -646,28 +657,18 @@
  }
 
 
-
-
-
-
-
-
- /*TODO GUARDAMOS EL FORMULARIO PRINCIPAL DE miFormulario */
-
  function guardar() {
-     // Obtener los datos del formulario
+     // Obtener los datos del formulario principal
      var fechaIngreso = $('#fechaIngreso').val();
      var horaIngreso = $('#horaIngreso').val();
      var diagnostico = $('#descripcion').val();
      var diagnosticoEspecializado = $('#descripDiagnos').val();
      var fechaDiagnostico = $('#fechaDiagnostico').val();
      var MovilSeleccionadacombo = $('#unid_id').val();
-     MovileSeleccionadoNuevo = MovilSeleccionadacombo.split("/");
-     MovileSeleccionadoNuevo = MovileSeleccionadoNuevo[0].trim();
+     var MovileSeleccionadoNuevo = MovilSeleccionadacombo.split("/")[0].trim();
 
-     // Obtener el estado del vehículo
      var estadoVehiculo = $('input[name="estado"]:checked').val();
-     var estadoValor = (estadoVehiculo === 'Activo') ? 1 : 0; // Convertir el estado a 1 o 0
+     var estadoValor = (estadoVehiculo === 'Activo') ? 1 : 0;
 
      if (!fechaIngreso || !horaIngreso || !diagnostico || !diagnosticoEspecializado || !fechaDiagnostico || !MovileSeleccionadoNuevo) {
          Swal.fire({
@@ -676,10 +677,9 @@
              icon: 'warning',
              confirmButtonText: 'Aceptar'
          });
-         return; // Detener la ejecución si falta algún dato
+         return;
      }
 
-     // Realizar la llamada AJAX para guardar los datos
      $.ajax({
          url: "../../controller/intermovilregistro.php?op=guardar_ing_vehi",
          type: 'POST',
@@ -690,7 +690,7 @@
              unid_id: MovileSeleccionadoNuevo,
              inun_diagnostico_especializado: diagnosticoEspecializado,
              inun_fecha_diagnostico_especializado: fechaDiagnostico,
-             inun_estado: estadoValor // Enviar el valor 1 o 0 dependiendo del estado
+             inun_estado: estadoValor
          },
          success: function(response) {
              var respuesta = JSON.parse(response);
@@ -702,27 +702,18 @@
                      confirmButtonText: 'Aceptar'
                  });
 
-                 // Limpiar el formulario después de guardar
-
-
-
                  $('#descripcion').val('');
                  $('#descripDiagnos').val('');
-                 $('input[type="radio"]').prop('checked', false); // Desmarca todos los radio buttons
-                 $('#unid_id').val(''); // Limpia el campo de Unidad Movil
+                 $('input[type="radio"]').prop('checked', false);
+                 $('#unid_id').val('');
 
-                 // Actualizar la fecha y hora a la actual
                  var currentDate = new Date();
-                 var formattedDate = currentDate.toISOString().slice(0, 10); // YYYY-MM-DD
-                 var formattedTime = currentDate.toTimeString().slice(0, 5); // HH:MM
+                 $('#fechaIngreso').val(currentDate.toISOString().slice(0, 10));
+                 $('#horaIngreso').val(currentDate.toTimeString().slice(0, 5));
 
-                 $('#fechaIngreso').val(formattedDate);
-                 $('#horaIngreso').val(formattedTime);
-
-
-                 // Deshabilitar el botón "Guardar" y habilitar el botón "Registrar Mecánica"
                  $('#botonGuardar').prop('disabled', true);
                  $('#botonRegistrarMecanica').prop('disabled', false);
+
 
 
              } else {
@@ -742,10 +733,7 @@
                  confirmButtonText: 'Aceptar'
              });
          }
-
      });
-
-
  }
 
 
