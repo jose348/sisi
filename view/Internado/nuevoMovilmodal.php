@@ -93,7 +93,7 @@
                             <label class="form-control-label ">Combustible : <span class="tx-danger">*</span></label>
                             <select class="form-control select2 " style="width:100%" name="comb_id" id="comb_id"   style="text-transform:uppercase" required>
                             <option label="Seleccion Combustible"></option>
-
+v
                             </select>
                         </div>
                     </div>

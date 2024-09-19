@@ -55,7 +55,10 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
             <div class="br-pagebody row">
                 <div class="br-section-wrapper container">
-                    <p class="tx-16 tx-uppercase tx-spacing-1 mg-t-1 mg-b-2 tx-gray-600">INTERNAMIENTO DE VEHICULOS - MPCH - BITACORA</p>
+
+                    <p class="tx-16 tx-uppercase tx-spacing-1 mg-t-1 mg-b-2 tx-gray-600 text-center">
+                        INTERNAMIENTO DE VEHICULOS - MPCH - BITACORA
+                    </p>
 
                     <div class="container">
                         <br>

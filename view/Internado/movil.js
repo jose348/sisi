@@ -152,10 +152,6 @@
 
  $(document).ready(function() {
 
-     $('.select2').select2({
-         placeholder: "Seleccione una opción",
-         allowClear: true
-     });
 
      $('#tiun_id').select2({
          dropdownParent: $('#resgitrarmovil')
@@ -735,6 +731,69 @@
          }
      });
  }
+
+
+ document.addEventListener('DOMContentLoaded', function() {
+     // Objeto con los tipos específicos para cada lubricante
+     const lubricantesTipos = {
+         aceite: ["15W40", "20W50", "25W50", "10W30"],
+         hidrolina: ["SAE 10", "SAE 68", "SAE 90"],
+         aceite_transmision: ["80W90", "85W140", "90W"],
+         grasa: ["Grasa de Chasis", "Grasa de Rueda", "Grasa de Engranaje"],
+         liquido_freno: ["DOT 3", "DOT 4", "DOT 5"],
+         refrigerante: ["Refrigerante Verde", "Refrigerante Azul", "Refrigerante Rojo"],
+         urea: ["Grado A", "Grado B"]
+     };
+
+     const unidadMedida = {
+         aceite: "Galones",
+         hidrolina: "Galones",
+         aceite_transmision: "Galones",
+         grasa: "Kilos",
+         liquido_freno: "Mililitros",
+         refrigerante: "Galones",
+         urea: "Galones"
+     };
+
+     // Detectar el cambio en el combo de "Tipo de Lubricante"
+     const lubricanteSelect = document.getElementById('lubricante');
+     const tipoLubricanteSelect = document.getElementById('tipoLubricante');
+     const cantidadInput = document.getElementById('cantidad');
+
+     lubricanteSelect.addEventListener('change', function() {
+         const lubricanteSeleccionado = this.value;
+
+         // Limpiar el combo de "Tipo Específico"
+         tipoLubricanteSelect.innerHTML = '<option value="">Seleccione Tipo Específico</option>';
+
+         // Verificar si hay un lubricante seleccionado y agregar las opciones correspondientes
+         if (lubricantesTipos[lubricanteSeleccionado]) {
+             lubricantesTipos[lubricanteSeleccionado].forEach(function(tipo) {
+                 const option = document.createElement('option');
+                 option.value = tipo;
+                 option.text = tipo;
+                 tipoLubricanteSelect.appendChild(option);
+             });
+
+             // Habilitar el campo de cantidad
+             cantidadInput.disabled = false;
+             cantidadInput.placeholder = `Ingrese Cantidad en ${unidadMedida[lubricanteSeleccionado]}`;
+         } else {
+             // Deshabilitar el campo de cantidad si no hay lubricante seleccionado
+             cantidadInput.disabled = true;
+             cantidadInput.placeholder = "Ingrese Cantidad";
+         }
+     });
+ });
+
+
+ document.addEventListener('DOMContentLoaded', function() {
+     // Al abrir el modal, rellenar el campo de "Unidad" con la unidad seleccionada en el formulario principal
+     $('#ticketModal').on('show.bs.modal', function() {
+         var unidadSeleccionada = document.getElementById('unid_id').value;
+         document.getElementById('modalUnidad').value = unidadSeleccionada;
+     });
+ });
 
 
 

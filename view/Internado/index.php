@@ -52,8 +52,10 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
       <div class="br-pagebody row">
         <div class="br-section-wrapper container">
-          <p class="tx-16 tx-uppercase tx-spacing-1 mg-t-1 mg-b-2 tx-gray-600">INTERNAMIENTO DE VEHICULOS - MPCH</p>
 
+          <p class="tx-16 tx-uppercase tx-spacing-1 mg-t-1 mg-b-2 tx-gray-600 text-center">
+            INTERNAMIENTO DE VEHICULOS - MPCH - MECANICA
+          </p>
           <div id="wizard1" class="mg-t-20">
             <h4>MOVIL / REGISTRO MOVIL</h4>
             <section style="background-color: white;  padding: 20px;">
@@ -141,21 +143,6 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
 
                         <form id="miFormulario">
-
-
-                          <!-- <input type="hidden" name="prma_id" id="prma_id" /> --> <!-- Este debería tener el nuevo prma_id generado -->
-                          <!-- <input type="hidden" name="unid_id" id="unid_id" /> -->
-                          <!-- Turno -->
-                          <div class="form-group text-left">
-                            <div class="form-check form-check-right">
-                              <input class="form-check-input" type="radio" name="turno" id="turnoMañana" value="mañana">
-                              <label class="form-check-label" for="turnoMañana">Mañana</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="turno" id="turnoTarde" value="tarde">
-                              <label class="form-check-label" for="turnoTarde">Tarde</label>
-                            </div>
-                          </div>
 
                           <!-- Fecha y Hora de Ingreso -->
                           <div class="form-group row -largecol-12">
@@ -286,13 +273,13 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
             <section style="background-color: white;  padding: 20px;">
               <style>
                 .form-section-title1 {
-                  background-color: #17a2b8;
+                  background-color: #00B297;
                   color: #fff;
                   padding: 10px;
                   border-radius: 5px;
-                  margin-bottom: 15px;
+                  margin-bottom: 5px;
                   text-transform: uppercase;
-                  font-size: 18px;
+                  font-size: 12px;
                   font-weight: bold;
                 }
 
@@ -319,22 +306,39 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                 }
 
                 /* Estilo para select2 */
-               
               </style>
               </head>
 
               <body>
                 <div class="container mt-5">
                   <div class="form-container">
-                    
+
                     <h5 class="text-center mb-4">Departamento de Servicios Internos</h5>
-                    <form>
+                    <br>
+                    <div class="row col-12 ">
+                      <div class="row">
+                        <div class="col-4  ">
+                          <button type="button" class="btn btn-oblong btn-outline-success tx-11 tx-uppercase   tx-mont tx-medium " data-toggle="modal" data-target="#ticketModal">
+                            <i class="fa fa-ticket"></i> Ticket
+                          </button>
+                        </div>
+
+                        <div class="col-6  ">
+                          <button type="button" class="btn btn-oblong btn-outline-success tx-11 tx-uppercase tx-mont tx-medium ">
+                            <i class="fa fa-wrench"></i> Solicitud de Mecánico
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <br>
+                    <form id="comprepu">
                       <!-- Información General -->
                       <div class="form-section-title1">Información General</div>
                       <div class="row row-spacing1">
                         <div class="col-md-3">
                           <label for="ticketNumber" class="form-label">N° de Ticket</label>
-                          <input type="text" class="form-control" id="ticketNumber" placeholder="Ingrese N° de Ticket">
+                          <input type="text" class="form-control" id="ticketNumber" placeholder="Ingrese N° de Ticket" disabled>
                         </div>
                         <div class="col-md-3">
                           <label for="fecha" class="form-label">Fecha</label>
@@ -342,10 +346,10 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                         </div>
                         <div class="col-md-3">
                           <label for="turno" class="form-label">Turno</label>
-                          <select class="form-control select2" style="width:100%" name="comb_id" id="comb_id">
-                            <option value="">Seleccione Turno</option>
-                            <option value="Mañana">Mañana</option>
-                            <option value="Tarde">Tarde</option>
+                          <select class="form-control is-warning" name="turn_id" id="turn_id" data-placeholder="Seleccione">
+                            <option value="M">Mañana</option>
+                            <option value="T">Tarde</option>
+                            <option value="N">Noche</option>
                           </select>
                         </div>
                         <div class="col-md-3">
@@ -353,51 +357,37 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                           <input type="text" class="form-control" id="vehiculo" placeholder="Ingrese Vehículo Destino">
                         </div>
                       </div>
-<br>
+                      <br>
                       <!-- Detalle de Lubricación -->
                       <div class="form-section-title1">Detalle de Lubricación</div>
                       <div class="row row-spacing1">
                         <div class="col-md-4">
-                          <label for="aceite" class="form-label">Aceite</label>
-                          <select class="form-control select2" id="aceite">
-                            <option value="">Seleccione Tipo de Aceite</option>
-                            <option value="15W40">15W40</option>
-                            <option value="20W50">20W50</option>
-                            <option value="25W50">25W50</option>
+                          <label for="lubricante" class="form-label">Tipo de Lubricante</label>
+                          <select class="form-control is-warning" name="lubricante" id="lubricante" data-placeholder="Seleccione">
+                            <option value="">Seleccione Lubricante</option>
+                            <option value="aceite">Aceite</option>
+                            <option value="hidrolina">Hidrolina</option>
+                            <option value="aceite_transmision">Aceite de Transmisión</option>
+                            <option value="grasa">Grasa</option>
+                            <option value="liquido_freno">Líquido de Freno</option>
+                            <option value="refrigerante">Refrigerante</option>
+                            <option value="urea">Urea</option>
+                          </select>
+                        </div>
+
+                        <div class="col-md-4">
+                          <label for="tipoLubricante" class="form-label">Tipo Específico</label>
+                          <select class="form-control is-warning" name="tipoLubricante" id="tipoLubricante" data-placeholder="Seleccione">
+                            <option value="">Seleccione Tipo Específico</option>
                           </select>
                         </div>
                         <div class="col-md-4">
-                          <label for="hidrolina" class="form-label">Hidrolina</label>
-                          <select class="form-control select2" id="hidrolina">
-                            <option value="">Seleccione Hidrolina</option>
-                            <option value="SAE 10">SAE 10</option>
-                            <option value="SAE 68">SAE 68</option>
-                          </select>
-                        </div>
-                        <div class="col-md-4">
-                          <label for="aceiteTransmision" class="form-label">Aceite de Transmisión</label>
-                          <select class="form-control select2" id="aceiteTransmision">
-                            <option value="">Seleccione Aceite de Transmisión</option>
-                            <option value="80W90">80W90</option>
-                            <option value="85W140">85W140</option>
-                          </select>
+                          <label for="cantidad" class="form-label">Cantidad</label>
+                          <input type="number" class="form-control" id="cantidad" placeholder="Ingrese Cantidad" min="1" step="any" disabled>
                         </div>
                       </div>
 
-                      <div class="row row-spacing1">
-                        <div class="col-md-4">
-                          <label for="grasa" class="form-label">Grasa de Chasis</label>
-                          <input type="text" class="form-control" id="grasa" placeholder="Ingrese Grasa de Chasis">
-                        </div>
-                        <div class="col-md-4">
-                          <label for="liquidoFreno" class="form-label">Líquido de Freno</label>
-                          <input type="text" class="form-control" id="liquidoFreno" placeholder="Ingrese Líquido de Freno">
-                        </div>
-                        <div class="col-md-4">
-                          <label for="refrigerante" class="form-label">Refrigerante</label>
-                          <input type="text" class="form-control" id="refrigerante" placeholder="Ingrese Refrigerante">
-                        </div>
-                      </div>
+
                       <br>
 
                       <!-- Información del Personal -->
@@ -418,10 +408,9 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                       </div>
 
                       <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-primary1">Guardar</button>
+                        <button type="submit" class="btn btn-oblong btn-outline-info tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium">Guardar</button>
                       </div>
                     </form>
-
 
 
                   </div>
@@ -451,6 +440,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
     require_once("../Js/MainJs.php");
     require_once("nuevoMovilmodal.php");
     require_once("progMecanicoModal.php");
+    require_once("ticketModal.php");
 
 
     ?>
