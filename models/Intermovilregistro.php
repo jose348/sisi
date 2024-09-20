@@ -448,4 +448,37 @@ ORDER BY iu.inun_fecha desc";
     // Retornar los resultados para usarlos en el controlador o vista
     return $resultado;
     }
+
+
+
+
+
+
+
+
+        /*TODO =============================================================  EMPEZAMOS CON LLENADO DE MIS COMBOX EN MI 
+        ====================================================================  EN MI FORMULARIO TICKET*/
+
+    public function combo_tipo_componente()
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+        $sql = "SELECT * from sc_residuos_solidos.tb_componente where comp_estado=1 ";
+        $sql = $conectar->prepare($sql);
+
+        $sql->execute();
+        return $resultado = $sql->fetchAll();
+    }
+
+    
+    public function combo_tipo_componente_especifico()
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+        $sql = "SELECT * FROM sc_residuos_solidos.tb_componente_tipos where coti_estado=1";
+        $sql = $conectar->prepare($sql);
+
+        $sql->execute();
+        return $resultado = $sql->fetchAll();
+    }
 }

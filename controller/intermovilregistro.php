@@ -437,7 +437,7 @@ switch ($_GET["op"]) {
         foreach ($datos as $row) {
             $sub_array = array();
 
-          
+
             $dropdown = '<style>
     /* Reducimos el padding y el margin dentro del dropdown */
     .dropdown-menu {
@@ -498,5 +498,34 @@ switch ($_GET["op"]) {
 
         // Devolvemos los resultados en formato JSON
         echo json_encode($results);
+        break;
+
+
+
+
+        /*TODO =============================================================  EMPEZAMOS CON LLENADO DE MIS COMBOX EN MI 
+        ====================================================================  EN MI FORMULARIO TICKET*/
+
+    case "combo_tipo_componente":
+        $datos = $interMovilregistro->combo_tipo_componente();
+        if (is_array($datos) == true and count($datos) > 0) {
+            $html = "<option label='Seleccione Componente'></option>";
+            foreach ($datos as $row) {
+                $html .= "<option value='" . $row['comp_id'] . "'>" . $row['comp_descrip'] . "</option>";
+            }
+            echo $html;
+        }
+        break;
+
+    case "combo_tipo_componente_especifico":
+        $datos = $interMovilregistro->combo_tipo_componente_especifico();
+        if (is_array($datos) == true and count($datos) > 0) {
+            $html = "<option label='Seleccione Componente'></option>";
+            foreach ($datos as $row) {
+                $html .= "<option value='" . $row['coti_id'] . "'>" . $row['coti_descrip'] . "</option>";
+                
+            }
+            echo $html;
+        }
         break;
 }

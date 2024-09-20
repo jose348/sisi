@@ -197,6 +197,12 @@
      });
      combo_espe();
 
+     /*TODO aqui llenamos los combos de mi formulario tickets   */
+
+     combo_tipo_componente();
+     combo_tipo_componente_especifico();
+
+
      'use strict';
 
      /*    $('#wizard6').steps({
@@ -558,14 +564,8 @@
 
 
 
-
-
-
  /*TODO EMPEZAMOS A GUARDAR LA PROGRAMACION DEL MANTENIMIENTO  */
  function guardarDatos() {
-
-
-
 
      // Obtener los datos del formulario del modal
      var diagnosticoInicial = $('#prma_diagnostico_inicial').val();
@@ -733,58 +733,7 @@
  }
 
 
- document.addEventListener('DOMContentLoaded', function() {
-     // Objeto con los tipos específicos para cada lubricante
-     const lubricantesTipos = {
-         aceite: ["15W40", "20W50", "25W50", "10W30"],
-         hidrolina: ["SAE 10", "SAE 68", "SAE 90"],
-         aceite_transmision: ["80W90", "85W140", "90W"],
-         grasa: ["Grasa de Chasis", "Grasa de Rueda", "Grasa de Engranaje"],
-         liquido_freno: ["DOT 3", "DOT 4", "DOT 5"],
-         refrigerante: ["Refrigerante Verde", "Refrigerante Azul", "Refrigerante Rojo"],
-         urea: ["Grado A", "Grado B"]
-     };
 
-     const unidadMedida = {
-         aceite: "Galones",
-         hidrolina: "Galones",
-         aceite_transmision: "Galones",
-         grasa: "Kilos",
-         liquido_freno: "Mililitros",
-         refrigerante: "Galones",
-         urea: "Galones"
-     };
-
-     // Detectar el cambio en el combo de "Tipo de Lubricante"
-     const lubricanteSelect = document.getElementById('lubricante');
-     const tipoLubricanteSelect = document.getElementById('tipoLubricante');
-     const cantidadInput = document.getElementById('cantidad');
-
-     lubricanteSelect.addEventListener('change', function() {
-         const lubricanteSeleccionado = this.value;
-
-         // Limpiar el combo de "Tipo Específico"
-         tipoLubricanteSelect.innerHTML = '<option value="">Seleccione Tipo Específico</option>';
-
-         // Verificar si hay un lubricante seleccionado y agregar las opciones correspondientes
-         if (lubricantesTipos[lubricanteSeleccionado]) {
-             lubricantesTipos[lubricanteSeleccionado].forEach(function(tipo) {
-                 const option = document.createElement('option');
-                 option.value = tipo;
-                 option.text = tipo;
-                 tipoLubricanteSelect.appendChild(option);
-             });
-
-             // Habilitar el campo de cantidad
-             cantidadInput.disabled = false;
-             cantidadInput.placeholder = `Ingrese Cantidad en ${unidadMedida[lubricanteSeleccionado]}`;
-         } else {
-             // Deshabilitar el campo de cantidad si no hay lubricante seleccionado
-             cantidadInput.disabled = true;
-             cantidadInput.placeholder = "Ingrese Cantidad";
-         }
-     });
- });
 
 
  document.addEventListener('DOMContentLoaded', function() {
@@ -797,4 +746,49 @@
 
 
 
+
+
+ /*TODO =========================================================== 
+  =======================================================AREGAMOS LOC COMBOS DE LOS IPO DE COMPONENSTE */
+ function combo_tipo_componente() {
+     $.post("../../controller/intermovilregistro.php?op=combo_tipo_componente", function(data) {
+         $('#componente').html(data); // Rellenar el combo con los datos obtenidos
+     }).fail(function() {
+         alert('Error al cargar los componentes');
+     });
+ }
+
+
+ function combo_tipo_componente_especifico(componente_id) {
+     $.post("../../controller/intermovilregistro.php?op=combo_tipo_componente_especifico", { componente_id: componente_id }, function(data) {
+         $('#Componente_espec').html(data); // Rellenar el combo con los datos obtenidos
+         $('#Componente_espec').prop('disabled', false);
+     }).fail(function() {
+         alert('Error al cargar los componentes');
+     });
+ }
+
+
  init();
+
+ $(document).ready(function() {
+     // Cargar el primer combo cuando se cargue la página
+     combo_tipo_componente();
+
+     // Cuando cambie la selección del primer combo, habilitar el segundo y el input de cantidad
+     $('#componente').on('change', function() {
+         var componente_id = $(this).val();
+
+         if (componente_id !== '') {
+             // Llamar a la función para llenar el combo de componente específico
+             combo_tipo_componente_especifico(componente_id);
+
+             // Habilitar el campo de cantidad
+             $('#cantidad').prop('disabled', false);
+         } else {
+             // Si no hay nada seleccionado, deshabilitar el segundo combo e input de cantidad
+             $('#Componente_espec').prop('disabled', true);
+             $('#cantidad').prop('disabled', true);
+         }
+     });
+ });

@@ -315,16 +315,12 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
                     <h5 class="text-center mb-4">Departamento de Servicios Internos</h5>
                     <br>
-                    <div class="row col-12 ">
+                    <!-- Contenedor del formulario -->
+                    <div class="row col-12">
                       <div class="row">
-                        <div class="col-4  ">
-                          <button type="button" class="btn btn-oblong btn-outline-success tx-11 tx-uppercase   tx-mont tx-medium " data-toggle="modal" data-target="#ticketModal">
-                            <i class="fa fa-ticket"></i> Ticket
-                          </button>
-                        </div>
-
-                        <div class="col-6  ">
-                          <button type="button" class="btn btn-oblong btn-outline-success tx-11 tx-uppercase tx-mont tx-medium ">
+                        <!-- Botón de Solicitud de Mecánico -->
+                        <div class="col-6">
+                          <button type="button" class="btn btn-oblong btn-outline-success tx-11 tx-uppercase tx-mont tx-medium">
                             <i class="fa fa-wrench"></i> Solicitud de Mecánico
                           </button>
                         </div>
@@ -332,55 +328,52 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                     </div>
 
                     <br>
-                    <form id="comprepu">
+
+                    <!-- Formulario -->
+                    <form id="GernerarTicket">
                       <!-- Información General -->
                       <div class="form-section-title1">Información General</div>
+                      <br>
                       <div class="row row-spacing1">
                         <div class="col-md-3">
                           <label for="ticketNumber" class="form-label">N° de Ticket</label>
-                          <input type="text" class="form-control" id="ticketNumber" placeholder="Ingrese N° de Ticket" disabled>
+                          <input type="text" class="form-control" id="ticketNumber" placeholder="" disabled>
                         </div>
                         <div class="col-md-3">
                           <label for="fecha" class="form-label">Fecha</label>
                           <input type="date" class="form-control" id="fecha">
                         </div>
                         <div class="col-md-3">
-                          <label for="turno" class="form-label">Turno</label>
-                          <select class="form-control is-warning" name="turn_id" id="turn_id" data-placeholder="Seleccione">
-                            <option value="M">Mañana</option>
-                            <option value="T">Tarde</option>
-                            <option value="N">Noche</option>
-                          </select>
+                          <label for="horaIngreso">Hora de Ingreso</label>
+                          <input type="time" class="form-control" id="horaIngreso">
                         </div>
                         <div class="col-md-3">
-                          <label for="vehiculo" class="form-label">Vehículo Destino</label>
-                          <input type="text" class="form-control" id="vehiculo" placeholder="Ingrese Vehículo Destino">
+                          <label for="vehiculo" class="form-label">Vehículo</label>
+                          <input type="text" class="form-control" id="vehiculo" placeholder="Vehículo" disabled>
                         </div>
                       </div>
+
                       <br>
+
                       <!-- Detalle de Lubricación -->
-                      <div class="form-section-title1">Detalle de Lubricación</div>
+                      <div class="form-section-title1">Detalle del Componente</div>
+                      <br>
+
                       <div class="row row-spacing1">
                         <div class="col-md-4">
-                          <label for="lubricante" class="form-label">Tipo de Lubricante</label>
-                          <select class="form-control is-warning" name="lubricante" id="lubricante" data-placeholder="Seleccione">
-                            <option value="">Seleccione Lubricante</option>
-                            <option value="aceite">Aceite</option>
-                            <option value="hidrolina">Hidrolina</option>
-                            <option value="aceite_transmision">Aceite de Transmisión</option>
-                            <option value="grasa">Grasa</option>
-                            <option value="liquido_freno">Líquido de Freno</option>
-                            <option value="refrigerante">Refrigerante</option>
-                            <option value="urea">Urea</option>
+                          <label for="componente" class="form-label">Tipo de Componente</label>
+                          <select class="form-control" name="componente" id="componente" data-placeholder="Seleccione">
+                            <option value="">Seleccione Componente</option>
                           </select>
                         </div>
 
                         <div class="col-md-4">
-                          <label for="tipoLubricante" class="form-label">Tipo Específico</label>
-                          <select class="form-control is-warning" name="tipoLubricante" id="tipoLubricante" data-placeholder="Seleccione">
-                            <option value="">Seleccione Tipo Específico</option>
+                          <label for="Componente_espec" class="form-label">Componente Específico</label>
+                          <select class="form-control" name="Componente_espec" id="Componente_espec" data-placeholder="Seleccione" disabled>
+                            <option value="">Seleccione Componente Específico</option>
                           </select>
                         </div>
+
                         <div class="col-md-4">
                           <label for="cantidad" class="form-label">Cantidad</label>
                           <input type="number" class="form-control" id="cantidad" placeholder="Ingrese Cantidad" min="1" step="any" disabled>
@@ -392,18 +385,27 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
                       <!-- Información del Personal -->
                       <div class="form-section-title1">Información del Personal</div>
+                      <br>
                       <div class="row row-spacing1">
                         <div class="col-md-4">
                           <label for="chofer" class="form-label">Chofer</label>
-                          <input type="text" class="form-control" id="chofer" placeholder="Ingrese Nombre del Chofer">
+                          <select class="form-control" id="chofer">
+                            <option value="">Seleccione Chofer</option>
+                            <!-- Opciones de chofer llenadas dinámicamente -->
+                          </select>
                         </div>
+
                         <div class="col-md-4">
-                          <label for="firma" class="form-label">Firma</label>
-                          <input type="text" class="form-control" id="firma" placeholder="Ingrese Firma">
+                          <label for="firma" class="form-label">Responsable (lubricador / mecánico)</label>
+                          <select class="form-control" id="responsble">
+                            <option value="">Seleccione Responsable</option>
+                            <!-- Opciones de responsables llenadas dinámicamente -->
+                          </select>
                         </div>
+
                         <div class="col-md-4">
-                          <label for="lubricador" class="form-label">Lubricador</label>
-                          <input type="text" class="form-control" id="lubricador" placeholder="Ingrese Nombre del Lubricador">
+                          <label for="token" class="form-label">Token</label>
+                          <input type="text" class="form-control" id="token" placeholder="Ingrese Token">
                         </div>
                       </div>
 
@@ -411,6 +413,14 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                         <button type="submit" class="btn btn-oblong btn-outline-info tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium">Guardar</button>
                       </div>
                     </form>
+
+                    <!-- Botón de Ticket oculto inicialmente -->
+                    <div id="ticketButtonContainer" class="text-center mt-4" style="display: none;">
+                      <button type="button" class="btn btn-oblong btn-outline-success tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium" data-toggle="modal" data-target="#ticketModal">
+                        <i class="fa fa-ticket"></i> Ticket
+                      </button>
+                    </div>
+
 
 
                   </div>
