@@ -125,26 +125,42 @@ switch ($_GET["op"]) {
 
         break;
 
-    case "listaUmedida":
-        $datos = $repuesto->listar_UnidadMedidad();
-        foreach ($datos as $row) {
-            $sub_array = array();
-            $sub_array[] = $row["unme_id"];
-            $sub_array[] = $row["unme_codigo"];
-            $sub_array[] = $row["unme_descripcion"];
-            $sub_array[] = '<button type="button" onClick="editar(' . $row["unme_id"] . ');"  id="' . $row["unme_id"] . '" class="btn btn-outline-warning btn-icon"><div><i class="fa fa-edit"></i></div></button>';
-            $sub_array[] = '<button type="button" onClick="eliminar(' . $row["unme_id"] . ');"  id="' . $row["unme_id"] . '" class="btn btn-outline-danger btn-icon"><div><i class="fa fa-trash"></i></div></button>';
 
-            $data[] = $sub_array;
-        }
-        $results = array(
-            "sEcho" => 1,
-            "iTotalRecords" => count($data),
-            "iTotalDisplayRecords" => count($data),
-            "aaData" => $data
-        );
-        echo json_encode($results);
-        break;
+        case "listaUmedida":
+            $datos = $repuesto->listar_UnidadMedidad();
+            
+            $data = array();  // Inicializar el array de datos
+        
+            // Verificar si hay datos devueltos
+            if (is_array($datos) && count($datos) > 0) {
+                foreach ($datos as $row) {
+                    $sub_array = array();
+                    $sub_array[] = $row["unme_id"];
+                    $sub_array[] = $row["unme_codigo"];
+                    $sub_array[] = $row["unme_descripcion"];
+                    $sub_array[] = '<button type="button" onClick="editar(' . $row["unme_id"] . ');" id="' . $row["unme_id"] . '" class="btn btn-outline-warning btn-icon"><div><i class="fa fa-edit"></i></div></button>';
+                    $sub_array[] = '<button type="button" onClick="eliminar(' . $row["unme_id"] . ');" id="' . $row["unme_id"] . '" class="btn btn-outline-danger btn-icon"><div><i class="fa fa-trash"></i></div></button>';
+                    
+                    $data[] = $sub_array;  // Agregar cada sub-array al array $data
+                }
+            }
+        
+            // Validar si el parámetro 'draw' está en la solicitud, y asignar un valor por defecto si no está
+            $draw = isset($_POST['draw']) ? intval($_POST['draw']) : 0;
+        
+            // Generar la respuesta JSON en el formato adecuado
+            $results = array(
+                "draw" => $draw,  // El parámetro 'draw' que viene de DataTables o 0 por defecto
+                "recordsTotal" => count($data),    // Número total de registros
+                "recordsFiltered" => count($data), // Número total de registros después de filtros
+                "data" => $data                    // Los datos reales
+            );
+        
+            // Enviar la respuesta JSON
+            echo json_encode($results);
+            break;
+        
+        
 
     case "guardaryEditarunidadMedida";
         if (empty($_POST["unme_id"])) {

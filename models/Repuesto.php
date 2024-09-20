@@ -35,7 +35,7 @@ class Repuesto extends Conectar
         $sql->bindValue(7, $repu_ultimo_ingreso);
         $sql->bindValue(8, $unme_id);
 
-        $sql->execute();
+        $sql->execute();    
         return $resultado = $sql->fetchAll();
     }
 

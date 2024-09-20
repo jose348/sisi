@@ -6,9 +6,10 @@ session_start();
         protected function Conexion(){
 
     $host="localhost";
-    $dbname="mpch";
+    $host="192.168.12.77";
+    $dbname="dbsimcix";
     $username="postgres";
-    $password="postgres";
+    $password="sgd*2024";
 
     try{
         $conectar=$this->dbh=new PDO("pgsql:host=$host; dbname=$dbname", $username,$password);

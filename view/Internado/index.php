@@ -358,27 +358,27 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                       <!-- Detalle de Lubricación -->
                       <div class="form-section-title1">Detalle del Componente</div>
                       <br>
-
+                                          
                       <div class="row row-spacing1">
-                        <div class="col-md-4">
-                          <label for="componente" class="form-label">Tipo de Componente</label>
-                          <select class="form-control" name="componente" id="componente" data-placeholder="Seleccione">
-                            <option value="">Seleccione Componente</option>
-                          </select>
-                        </div>
+  <div class="col-md-4">
+    <label for="componente" class="form-label">Tipo de Componente</label>
+    <select class="form-control" name="componente" id="componente" data-placeholder="Seleccione">
+      <option value="">Seleccione Componente</option>
+    </select>
+  </div>
 
-                        <div class="col-md-4">
-                          <label for="Componente_espec" class="form-label">Componente Específico</label>
-                          <select class="form-control" name="Componente_espec" id="Componente_espec" data-placeholder="Seleccione" disabled>
-                            <option value="">Seleccione Componente Específico</option>
-                          </select>
-                        </div>
+  <div class="col-md-4">
+    <label for="Componente_espec" class="form-label">Componente Específico</label>
+    <select class="form-control" name="Componente_espec" id="Componente_espec" data-placeholder="Seleccione" disabled>
+      <option value="">Seleccione Componente Específico</option>
+    </select>
+  </div>
 
-                        <div class="col-md-4">
-                          <label for="cantidad" class="form-label">Cantidad</label>
-                          <input type="number" class="form-control" id="cantidad" placeholder="Ingrese Cantidad" min="1" step="any" disabled>
-                        </div>
-                      </div>
+  <div class="col-md-4">
+    <label for="cantidad" class="form-label">Cantidad</label>
+    <input type="number" class="form-control" id="cantidad" placeholder="Ingrese Cantidad" min="1" step="any" disabled>
+  </div>
+</div>
 
 
                       <br>
