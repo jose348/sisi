@@ -22,6 +22,7 @@
   }
 </style>
 
+
 <div id="modalRegistrarMecanica" class="modal fade  " data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content bd-0">

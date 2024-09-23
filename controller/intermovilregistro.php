@@ -320,19 +320,36 @@ switch ($_GET["op"]) {
         $pdf->Output('reporte_UnidadesMovil.pdf', 'I');
         break;
 
+
+
+
+
     case "combo_UNIDADMOVIL":
         $datos = $interMovilregistro->combo_unidadMovil();
 
         if (is_array($datos) && count($datos) > 0) {
             $html = "<option value='' label='Seleccione Unidad Movil'></option>";
             foreach ($datos as $row) {
-                $html .= "<option value='" . htmlspecialchars($row['unid_id'], ENT_QUOTES) . " / " . htmlspecialchars($row['tiun_descripcion'], ENT_QUOTES) . " / " . htmlspecialchars($row['unid_placa'], ENT_QUOTES) . " / " . htmlspecialchars($row['mode_descripcion'], ENT_QUOTES) . "'></option>";
+                // El valor incluye el ID y la descripción completa (tipo de vehículo, placa y modelo)
+                $html .= "<option value='" . htmlspecialchars($row['unid_id'], ENT_QUOTES) . " / " .
+                    htmlspecialchars($row['tiun_descripcion'], ENT_QUOTES) . " / " .
+                    htmlspecialchars($row['unid_placa'], ENT_QUOTES) . " / " .
+                    htmlspecialchars($row['mode_descripcion'], ENT_QUOTES) . "'>" .
+                    htmlspecialchars($row['tiun_descripcion'], ENT_QUOTES) . " / " .
+                    htmlspecialchars($row['unid_placa'], ENT_QUOTES) . " / " .
+                    htmlspecialchars($row['mode_descripcion'], ENT_QUOTES) . "</option>";
             }
             echo trim($html);
         } else {
             echo "<option value='' disabled>No hay unidades disponibles</option>";
         }
         break;
+
+
+
+
+
+
 
     case "combo_esme":
         $datos = $interMovilregistro->combo_espec();
@@ -518,14 +535,55 @@ switch ($_GET["op"]) {
         break;
 
     case "combo_tipo_componente_especifico":
-        $datos = $interMovilregistro->combo_tipo_componente_especifico();
-        if (is_array($datos) == true and count($datos) > 0) {
-            $html = "<option label='Seleccione Componente'></option>";
+        $componente_id = $_POST['componente_id'];  // Recibir el ID del componente seleccionado
+        $datos = $interMovilregistro->combo_tipo_componente_especifico($componente_id);
+        if (is_array($datos) && count($datos) > 0) {
+            $html = "<option label='Seleccione Componente Específico'></option>";
             foreach ($datos as $row) {
                 $html .= "<option value='" . $row['coti_id'] . "'>" . $row['coti_descrip'] . "</option>";
-                
             }
             echo $html;
         }
         break;
+
+    case "combo_lubricador_mecanico":
+        // Llamar a la función del modelo
+        $datos = $interMovilregistro->combo_lubricadormecanico();
+
+        if (is_array($datos) && count($datos) > 0) {
+            $html = "<option value=''>Seleccione Responsable</option>";  // Opción por defecto
+
+            foreach ($datos as $row) {
+
+                $html .= "<option value='" . htmlspecialchars($row['direct_id'], ENT_QUOTES) . "'>" . htmlspecialchars($row['nombres'], ENT_QUOTES) . "</option>";
+            }
+            echo $html;
+        } else {
+            echo "<option value=''>No se encontraron responsables</option>";
+        }
+        break;
+
+
+        /*TODO GENERAMOS EL CODIGO AUTOMATICO PARA TICKETS   */
+    case "generar_codigo_ticket":
+        $codigoTicket = $interMovilregistro->generarCodigoTicket(); // Llamar la función en el modelo
+        echo json_encode(array("codigo" => $codigoTicket)); // Retornar el código en formato JSON
+        break;
+
+
+        case "validar_token":
+            $direct_id = $_POST['direct_id'];
+            $token = $_POST['token'];
+        
+            // Lógica para verificar si el token es correcto para el responsable seleccionado
+            $datos = $interMovilregistro->verificarToken($direct_id, $token);
+        
+            if (is_array($datos) && count($datos) > 0) {
+                echo json_encode(['status' => 'success', 'message' => 'Token válido']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'El token no coincide con el responsable seleccionado']);
+            }
+            break;
+        
+        
 }

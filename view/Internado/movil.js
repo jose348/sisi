@@ -197,10 +197,12 @@
      });
      combo_espe();
 
+
      /*TODO aqui llenamos los combos de mi formulario tickets   */
 
-     combo_tipo_componente();
-     combo_tipo_componente_especifico();
+     combo_lubricador_mecanico();
+
+
 
 
      'use strict';
@@ -313,22 +315,28 @@
      // Vincula la función cancelar al botón con ID "cancelar"
      $('#cancelar').on('click', cancelar);
 
+
+
+
+
+
+
      function combo_UNIDADMOVIL() {
          $.post("../../controller/intermovilregistro.php?op=combo_UNIDADMOVIL", function(data) {
-                 console.log(data); // Verificar los datos devueltos en la consola
-                 $('#unid_options').html(data.trim()); // Cargar los datos en el datalist
-             })
-             .fail(function(xhr, status, error) {
-                 console.error("Error en la solicitud AJAX: ", status, error);
-             });
+             console.log(data); // Verificar los datos devueltos en la consola
+             $('#unid_options').html(data.trim()); // Cargar los datos en el datalist
+         }).fail(function(xhr, status, error) {
+             console.error("Error en la solicitud AJAX: ", status, error);
+         });
      }
 
      // Llamada a la función para cargar los datos al iniciar
      combo_UNIDADMOVIL();
 
+
+
+
  });
-
-
 
 
  function combo_tipo() {
@@ -733,51 +741,32 @@
  }
 
 
+ // Función para llenar el campo "Vehículo" con la descripción completa
+ function updateVehiculoName() {
+     var selectedValue = document.getElementById("unid_id").value;
+
+     // Verificar si la opción seleccionada contiene la descripción completa
+     if (selectedValue.includes(" / ")) {
+         var description = selectedValue.split(" / ").slice(1).join(" / ");
+         document.getElementById("vehiculo").value = description;
+     } else {
+         // Si no contiene la descripción completa, dejamos el campo vacío
+         document.getElementById("vehiculo").value = "";
+     }
+ }
 
 
-
- document.addEventListener('DOMContentLoaded', function() {
-     // Al abrir el modal, rellenar el campo de "Unidad" con la unidad seleccionada en el formulario principal
-     $('#ticketModal').on('show.bs.modal', function() {
-         var unidadSeleccionada = document.getElementById('unid_id').value;
-         document.getElementById('modalUnidad').value = unidadSeleccionada;
-     });
- });
-
-
-
-
-
+ /*TODO AHORA TRABAJAMDS CON EL FORMULARIO TICKETS */
+ /*TODO AHORA TRABAJAMDS CON EL FORMULARIO TICKETS */
  /*TODO =========================================================== 
   =======================================================AREGAMOS LOC COMBOS DE LOS IPO DE COMPONENSTE */
- function combo_tipo_componente() {
-     $.post("../../controller/intermovilregistro.php?op=combo_tipo_componente", function(data) {
-         $('#componente').html(data); // Rellenar el combo con los datos obtenidos
-     }).fail(function() {
-         alert('Error al cargar los componentes');
-     });
- }
-
-
- function combo_tipo_componente_especifico(componente_id) {
-     $.post("../../controller/intermovilregistro.php?op=combo_tipo_componente_especifico", { componente_id: componente_id }, function(data) {
-         $('#Componente_espec').html(data); // Rellenar el combo con los datos obtenidos
-         $('#Componente_espec').prop('disabled', false);
-     }).fail(function() {
-         alert('Error al cargar los componentes');
-     });
- }
-
-
- init();
-
  $(document).ready(function() {
      // Cargar el primer combo cuando se cargue la página
      combo_tipo_componente();
 
-     // Cuando cambie la selección del primer combo, habilitar el segundo y el input de cantidad
+     // Evento para cuando cambie el valor en el combo de 'Tipo de Componente'
      $('#componente').on('change', function() {
-         var componente_id = $(this).val();
+         var componente_id = $(this).val(); // Obtener el valor seleccionado
 
          if (componente_id !== '') {
              // Llamar a la función para llenar el combo de componente específico
@@ -792,3 +781,122 @@
          }
      });
  });
+
+ // Función para llenar el combo de tipo componente
+ function combo_tipo_componente() {
+     $.post("../../controller/intermovilregistro.php?op=combo_tipo_componente", function(data) {
+         $('#componente').html(data); // Rellenar el combo con los datos obtenidos
+     }).fail(function() {
+         alert('Error al cargar los componentes');
+     });
+ }
+
+
+
+ // Función para llenar el combo de componente específico según el componente seleccionado
+ function combo_tipo_componente_especifico(componente_id) {
+     $.post("../../controller/intermovilregistro.php?op=combo_tipo_componente_especifico", { componente_id: componente_id }, function(data) {
+         $('#Componente_espec').html(data); // Rellenar el combo con los datos obtenidos
+         $('#Componente_espec').prop('disabled', false); // Habilitar el combo
+     }).fail(function() {
+         alert('Error al cargar los componentes específicos');
+     });
+ }
+
+ function combo_lubricador_mecanico() {
+     $.post("../../controller/intermovilregistro.php?op=combo_lubricador_mecanico", function(data) {
+         console.log("Respuesta del servidor: ", data); // Verifica la respuesta aquí
+         $('#responsable').html(data); // Llena el <select> con los datos recibidos
+     }).fail(function(jqXHR, textStatus, errorThrown) {
+         console.error("Error al cargar los responsables: " + textStatus);
+     });
+ }
+
+ //Generando el codigo automatico para tickets
+ function obtenerCodigoTicket() {
+     $.ajax({
+         url: "../../controller/intermovilregistro.php?op=generar_codigo_ticket", // Ruta al controlador
+         type: "POST",
+         success: function(response) {
+             var data = JSON.parse(response); // Parsear la respuesta JSON
+             $('#ticketNumber').val(data.codigo); // Mostrar el código en el campo del formulario
+         },
+         error: function() {
+             console.log("Error al generar el código del ticket.");
+         }
+     });
+ }
+ // Llamar la función al cargar la página o en algún evento específico
+ $(document).ready(function() {
+     obtenerCodigoTicket(); // Llamar a la función cuando la página esté lista
+ });
+
+
+
+ /*TODO para validar que el responble y el token coincidad  */
+ // Evento cuando se selecciona un responsable
+ // Evento cuando se selecciona un responsable o cuando se ingresa el token
+ let debounceTimeout;
+
+ function confirmarToken() {
+     // Limpiamos cualquier solicitud previa antes de hacer la nueva
+     clearTimeout(debounceTimeout);
+
+     // Hacer la solicitud AJAX después de un pequeño retraso (debounce)
+     debounceTimeout = setTimeout(function() {
+         // Mostrar el spinner en el botón mientras se valida el token
+         $('#ticketButton').html('<i class="fa fa-spinner fa-spin"></i> Validando...').prop('disabled', true);
+
+         // Obtener el ID del responsable seleccionado
+         var direct_id = $('#responsable').val();
+
+         // Obtener el token ingresado por el usuario
+         var token = $('#token').val();
+
+         // Si ambos campos están llenos
+         if (direct_id && token) {
+             // Hacer una solicitud AJAX para validar el token
+             $.ajax({
+                 url: "../../controller/intermovilregistro.php?op=validar_token", // Actualiza la URL al controlador correcto
+                 type: "POST",
+                 data: {
+                     direct_id: direct_id,
+                     token: token
+                 },
+                 success: function(response) {
+                     var result = JSON.parse(response);
+
+                     if (result.status === 'success') {
+                         // Si el token es válido, habilita el botón del ticket y quita el spinner
+                         $('#ticketButton').html('<i class="fa fa-ticket"></i> Ticket').prop('disabled', false);
+                     } else {
+                         // Si no es válido, mostrar una alerta y deshabilitar el botón
+                         Swal.fire({
+                             icon: 'error',
+                             title: 'Error',
+                             text: result.message
+                         });
+                         $('#ticketButton').html('<i class="fa fa-ticket"></i> Ticket').prop('disabled', true);
+                     }
+                 },
+                 error: function() {
+                     Swal.fire({
+                         icon: 'error',
+                         title: 'Error',
+                         text: 'Ocurrió un error en la validación del token'
+                     });
+                     $('#ticketButton').html('<i class="fa fa-ticket"></i> Ticket').prop('disabled', true);
+                 }
+             });
+         } else {
+             // Si alguno de los campos está vacío, deshabilitar el botón del ticket y quitar el spinner
+             $('#ticketButton').html('<i class="fa fa-ticket"></i> Ticket').prop('disabled', true);
+         }
+     }, 500); // 500 ms de retraso para el debounce
+ }
+
+ // Cuando el token se valida correctamente, cambiamos el color del botón
+ $('#ticketButton').removeClass('btn-outline-info').addClass('btn-info').prop('disabled', false);
+
+
+ init();

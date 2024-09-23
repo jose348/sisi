@@ -436,17 +436,17 @@ class Intermovilregistro  extends Conectar
 				inner join sc_residuos_solidos.tb_programacion_mantenimiento pm on
 				u.unid_id=pm.unid_id
 ORDER BY iu.inun_fecha desc";
-          // Preparar la consulta
-    $sql = $con->prepare($sql);
-    
-    // Ejecutar la consulta
-    $sql->execute();
-    
-    // Obtener los resultados como array asociativo
-    $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
-    
-    // Retornar los resultados para usarlos en el controlador o vista
-    return $resultado;
+        // Preparar la consulta
+        $sql = $con->prepare($sql);
+
+        // Ejecutar la consulta
+        $sql->execute();
+
+        // Obtener los resultados como array asociativo
+        $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        // Retornar los resultados para usarlos en el controlador o vista
+        return $resultado;
     }
 
 
@@ -456,7 +456,7 @@ ORDER BY iu.inun_fecha desc";
 
 
 
-        /*TODO =============================================================  EMPEZAMOS CON LLENADO DE MIS COMBOX EN MI 
+    /*TODO =============================================================  EMPEZAMOS CON LLENADO DE MIS COMBOX EN MI 
         ====================================================================  EN MI FORMULARIO TICKET*/
 
     public function combo_tipo_componente()
@@ -470,15 +470,93 @@ ORDER BY iu.inun_fecha desc";
         return $resultado = $sql->fetchAll();
     }
 
-    
-    public function combo_tipo_componente_especifico()
+
+    public function combo_tipo_componente_especifico($componente_id)
     {
         $conectar = parent::conexion();
         parent::set_names();
-        $sql = "SELECT * FROM sc_residuos_solidos.tb_componente_tipos where coti_estado=1";
+        // Filtrar los componentes específicos basados en el componente_id
+        $sql = "SELECT * FROM sc_residuos_solidos.tb_componente_tipos 
+                WHERE comp_id = ? AND coti_estado = 1";
         $sql = $conectar->prepare($sql);
-
-        $sql->execute();
-        return $resultado = $sql->fetchAll();
+        $sql->execute([$componente_id]);  // Pasar el componente_id para filtrar los resultados
+        return $sql->fetchAll();
     }
+    public function combo_lubricadormecanico()
+    {
+        try {
+            $con = parent::conexion();
+            parent::set_names();
+
+            $sql = "SELECT d.direct_id, 
+                           CONCAT(p.pers_nombre, ' ', p.pers_apelpat, ' ', p.pers_apelmat) AS nombres 
+                    FROM sc_residuos_solidos.tb_directorio d 
+                    INNER JOIN sc_escalafon.tb_persona p ON d.pers_id = p.pers_id
+                    WHERE d.direct_estado = 1";
+
+            $sql = $con->prepare($sql);
+            $sql->execute();
+
+            return $sql->fetchAll();
+        } catch (Exception $e) {
+            error_log("Error al consultar responsables: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    //para generar mi codigo automatico en ticket 
+    public function generarCodigoTicket()
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+
+        // Consulta para obtener el último número de ticket
+        $sql = "SELECT tickdo_numtick FROM sc_residuos_solidos.tb_ticket_dotacion ORDER BY tickdo_id DESC LIMIT 1";
+        $sql = $conectar->prepare($sql);
+        $sql->execute();
+
+        $resultado = $sql->fetch(PDO::FETCH_ASSOC);
+
+        // Si hay un número de ticket anterior, incrementamos, si no, empezamos en 1
+        if ($resultado) {
+            $ultimoNumero = $resultado['tickdo_numtick'];
+        } else {
+            $ultimoNumero = 0; // Si no hay tickets registrados, empezamos en 1
+        }
+
+        // Incrementar el último número
+        $nuevoNumero = $ultimoNumero + 1;
+
+        // Formatear el número con ceros a la izquierda (5 dígitos)
+        $nuevoNumeroFormateado = str_pad($nuevoNumero, 5, '0', STR_PAD_LEFT);
+
+        // Obtener el año actual
+        $anioActual = date('Y');
+
+        // Generar el código en el formato 00001-2024
+        $codigoTicket = $nuevoNumeroFormateado . '-' . $anioActual . 'ASI';
+
+        return $codigoTicket;
+    }
+
+
+    //para validar mi token con mi  responsable
+    public function verificarToken($direct_id, $token) {
+        $con = parent::conexion();
+        parent::set_names();
+    
+        $sql = "SELECT direct_id FROM sc_residuos_solidos.tb_directorio 
+                WHERE direct_id = ? AND direct_token = ?";
+        
+        $stmt = $con->prepare($sql);
+        $stmt->execute([$direct_id, $token]);
+    
+        return $stmt->fetchAll(); // Retorna los resultados si existen
+    }
+    
+        
+    
+    
+
+    
 }
