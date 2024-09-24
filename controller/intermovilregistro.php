@@ -565,25 +565,41 @@ switch ($_GET["op"]) {
 
 
         /*TODO GENERAMOS EL CODIGO AUTOMATICO PARA TICKETS   */
-    case "generar_codigo_ticket":
-        $codigoTicket = $interMovilregistro->generarCodigoTicket(); // Llamar la función en el modelo
-        echo json_encode(array("codigo" => $codigoTicket)); // Retornar el código en formato JSON
-        break;
+        // Controlador para generar el código del ticket
 
-
-        case "validar_token":
-            $direct_id = $_POST['direct_id'];
-            $token = $_POST['token'];
+        // Controlador para generar el código del ticket
+        case "generar_codigo_ticket":
+            // Llama al modelo para obtener el último ticket generado
+            $ultimoTicket = $interMovilregistro->obtenerUltimoTicket();
         
-            // Lógica para verificar si el token es correcto para el responsable seleccionado
-            $datos = $interMovilregistro->verificarToken($direct_id, $token);
+            // Incrementar el último número de ticket en 1
+            $nuevoTicket = str_pad($ultimoTicket + 1, 5, "0", STR_PAD_LEFT);
         
-            if (is_array($datos) && count($datos) > 0) {
-                echo json_encode(['status' => 'success', 'message' => 'Token válido']);
-            } else {
-                echo json_encode(['status' => 'error', 'message' => 'El token no coincide con el responsable seleccionado']);
-            }
+            // Obtener el año actual
+            $anioActual = date("Y");
+        
+            // Formatear el número del ticket como "00001-2024ASI"
+            $codigoTicket = $nuevoTicket . '-' . $anioActual . 'ASI';
+        
+            // Retornar el código generado
+            echo json_encode(['codigo_ticket' => $codigoTicket]);
             break;
         
-        
+
+
+
+
+    case "validar_token":
+        $direct_id = $_POST['direct_id'];
+        $token = $_POST['token'];
+
+        // Lógica para verificar si el token es correcto para el responsable seleccionado
+        $datos = $interMovilregistro->verificarToken($direct_id, $token);
+
+        if (is_array($datos) && count($datos) > 0) {
+            echo json_encode(['status' => 'success', 'message' => 'Token válido']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'El token no coincide con el responsable seleccionado']);
+        }
+        break;
 }

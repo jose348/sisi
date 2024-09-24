@@ -505,58 +505,53 @@ ORDER BY iu.inun_fecha desc";
     }
 
     //para generar mi codigo automatico en ticket 
-    public function generarCodigoTicket()
-    {
-        $conectar = parent::conexion();
+    // Modelo para obtener el último ticket generado
+    // Modelo para obtener el último ticket generado
+    public function obtenerUltimoTicket() {
+        $con = parent::conexion();
         parent::set_names();
-
+        
         // Consulta para obtener el último número de ticket
         $sql = "SELECT tickdo_numtick FROM sc_residuos_solidos.tb_ticket_dotacion ORDER BY tickdo_id DESC LIMIT 1";
-        $sql = $conectar->prepare($sql);
+        $sql = $con->prepare($sql);
         $sql->execute();
-
-        $resultado = $sql->fetch(PDO::FETCH_ASSOC);
-
-        // Si hay un número de ticket anterior, incrementamos, si no, empezamos en 1
-        if ($resultado) {
-            $ultimoNumero = $resultado['tickdo_numtick'];
-        } else {
-            $ultimoNumero = 0; // Si no hay tickets registrados, empezamos en 1
-        }
-
-        // Incrementar el último número
-        $nuevoNumero = $ultimoNumero + 1;
-
-        // Formatear el número con ceros a la izquierda (5 dígitos)
-        $nuevoNumeroFormateado = str_pad($nuevoNumero, 5, '0', STR_PAD_LEFT);
-
-        // Obtener el año actual
-        $anioActual = date('Y');
-
-        // Generar el código en el formato 00001-2024
-        $codigoTicket = $nuevoNumeroFormateado . '-' . $anioActual . 'ASI';
-
-        return $codigoTicket;
+        
+        return $sql->fetch(); // Retorna el último ticket o null si no hay
     }
+    
+
+    public function generarCodigoTicket() {
+        $ultimoTicket = $this->obtenerUltimoTicket();
+        $anioActual = date('Y');
+    
+        // Si no hay ningún ticket, comenzamos en 1, sino incrementamos el último número.
+        if ($ultimoTicket) {
+            $ultimoNumero = intval(substr($ultimoTicket['tickdo_numtick'], 0, 5)); // Extrae el número del ticket actual
+            $nuevoNumero = $ultimoNumero + 1; // Incrementa el último número
+        } else {
+            $nuevoNumero = 1; // Si no hay tickets, comienza desde 1
+        }
+    
+        // Generar el nuevo número de ticket con formato 00001
+        $nuevoCodigoTicket = str_pad($nuevoNumero, 5, '0', STR_PAD_LEFT) . '-' . $anioActual . 'ASI';
+    
+        return $nuevoCodigoTicket;
+    }
+    
 
 
     //para validar mi token con mi  responsable
-    public function verificarToken($direct_id, $token) {
+    public function verificarToken($direct_id, $token)
+    {
         $con = parent::conexion();
         parent::set_names();
-    
+
         $sql = "SELECT direct_id FROM sc_residuos_solidos.tb_directorio 
                 WHERE direct_id = ? AND direct_token = ?";
-        
+
         $stmt = $con->prepare($sql);
         $stmt->execute([$direct_id, $token]);
-    
+
         return $stmt->fetchAll(); // Retorna los resultados si existen
     }
-    
-        
-    
-    
-
-    
 }

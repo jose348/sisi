@@ -308,6 +308,38 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                   margin-bottom: 20px;
                 }
 
+
+                /* Estilo personalizado para el botón con los colores que deseas */
+                .btn-outline-custom {
+                  background-color: transparent;
+                  /* Transparente para mantener el estilo outline */
+                  border: 2px solid #00B297;
+                  /* Borde con el color personalizado */
+                  color: #00B297;
+                  /* Color del texto */
+                }
+
+                .btn-outline-custom:disabled {
+                  background-color: transparent;
+                  /* Transparente cuando está deshabilitado */
+                  border-color: #a8dcd3;
+                  /* Color de borde más claro cuando está deshabilitado */
+                  color: #a8dcd3;
+                  /* Texto más claro cuando está deshabilitado */
+                }
+
+                .btn-outline-custom:hover,
+                .btn-outline-custom:focus {
+                  background-color: #00B297;
+                  /* Fondo del color personalizado cuando se pasa el mouse */
+                  color: white;
+                  /* Texto blanco cuando se pasa el mouse */
+                  border-color: #00B297;
+                  /* Borde del mismo color */
+                }
+
+
+
                 /* Estilo para select2 */
               </style>
               </head>
@@ -323,11 +355,15 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                       <div class="row">
                         <!-- Botón de Solicitud de Mecánico -->
 
+
                         <div id="ticketButtonContainer" class="text-right mt-4">
-                          <button type="button" id="ticketButton" class="btn btn-oblong btn-outline-primary tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium" disabled>
-                            <i class="fa fa-pdf-o"></i> Ticket
+                          <button type="button" onclick="generarPDF()" id="ticketButton" class="btn btn-oblong btn-outline-custom tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium" disabled>
+                            <i class="fa fa-print"></i> Imprimir Ticket
                           </button>
                         </div>
+
+
+
 
                       </div>
                     </div>
@@ -340,10 +376,13 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                       <div class="form-section-title1">Información General</div>
                       <br>
                       <div class="row row-spacing1">
+
+
                         <div class="col-md-3">
                           <label for="ticketNumber" class="form-label">N° de Ticket</label>
-                          <input type="text" class="form-control" id="ticketNumber" name="ticketNumber" readonly>
+                          <input type="text" class="form-control" id="ticketNumber" placeholder="Número de Ticket" disabled>
                         </div>
+
                         <div class="col-md-3">
                           <label for="fecha" class="form-label">Fecha</label>
                           <input type="date" class="form-control" id="fecha">
@@ -415,10 +454,12 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                           <input oninput="confirmarToken()" type="password" class="form-control" id="token" placeholder="Ingrese Token">
                         </div>
                       </div>
-
-                      <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-oblong btn-outline-info tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium">Guardar</button>
+                      <div class="modal-footer mx-auto">
+                        <button id="guardarButton" type="button" onclick="guardarFormulario()" class="btn btn-oblong btn-outline-info tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium" disabled>
+                          <i class="fa fa-save"></i> Guardar
+                        </button>
                       </div>
+
                     </form>
 
                     <!-- Botón de Ticket oculto inicialmente -->

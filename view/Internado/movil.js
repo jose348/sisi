@@ -813,22 +813,47 @@
  }
 
  //Generando el codigo automatico para tickets
- function obtenerCodigoTicket() {
+ function generarCodigoTicket() {
      $.ajax({
-         url: "../../controller/intermovilregistro.php?op=generar_codigo_ticket", // Ruta al controlador
+         url: "../../controller/intermovilregistro.php?op=generar_codigo_ticket", // URL del controlador para generar el ticket
          type: "POST",
          success: function(response) {
-             var data = JSON.parse(response); // Parsear la respuesta JSON
-             $('#ticketNumber').val(data.codigo); // Mostrar el código en el campo del formulario
+             var result = JSON.parse(response);
+
+             if (result.codigo_ticket) {
+                 // Colocar el código del ticket en el campo del formulario
+                 $('#ticketNumber').val(result.codigo_ticket);
+             } else {
+                 Swal.fire({
+                     icon: 'error',
+                     title: 'Error',
+                     text: 'No se pudo generar el código del ticket'
+                 });
+             }
          },
          error: function() {
-             console.log("Error al generar el código del ticket.");
+             Swal.fire({
+                 icon: 'error',
+                 title: 'Error',
+                 text: 'Ocurrió un error al generar el código del ticket'
+             });
          }
      });
  }
- // Llamar la función al cargar la página o en algún evento específico
+
+ // Llamada a la función para generar el código del ticket al iniciar
  $(document).ready(function() {
-     obtenerCodigoTicket(); // Llamar a la función cuando la página esté lista
+     generarCodigoTicket();
+ });
+
+
+ $.ajax({
+     url: "../../controller/intermovilregistro.php?op=generar_codigo_ticket",
+     method: "GET",
+     success: function(response) {
+         var data = JSON.parse(response);
+         $('#ticketNumber').val(data.codigo_ticket); // Asignar el número de ticket al input
+     }
  });
 
 
@@ -836,67 +861,92 @@
  /*TODO para validar que el responble y el token coincidad  */
  // Evento cuando se selecciona un responsable
  // Evento cuando se selecciona un responsable o cuando se ingresa el token
- let debounceTimeout;
+ // Variable para controlar si ya se mostró la alerta de error
+ // Variable para controlar si ya se mostró la alerta de error
+ var errorAlertShown = false;
+ var debounceTimer;
 
  function confirmarToken() {
-     // Limpiamos cualquier solicitud previa antes de hacer la nueva
-     clearTimeout(debounceTimeout);
+     clearTimeout(debounceTimer);
 
-     // Hacer la solicitud AJAX después de un pequeño retraso (debounce)
-     debounceTimeout = setTimeout(function() {
-         // Mostrar el spinner en el botón mientras se valida el token
-         $('#ticketButton').html('<i class="fa fa-spinner fa-spin"></i> Validando...').prop('disabled', true);
-
-         // Obtener el ID del responsable seleccionado
+     debounceTimer = setTimeout(function() {
          var direct_id = $('#responsable').val();
-
-         // Obtener el token ingresado por el usuario
          var token = $('#token').val();
 
-         // Si ambos campos están llenos
-         if (direct_id && token) {
-             // Hacer una solicitud AJAX para validar el token
+         if (direct_id && token.length > 0) {
              $.ajax({
-                 url: "../../controller/intermovilregistro.php?op=validar_token", // Actualiza la URL al controlador correcto
+                 url: "../../controller/intermovilregistro.php?op=validar_token",
                  type: "POST",
                  data: {
                      direct_id: direct_id,
                      token: token
                  },
+                 beforeSend: function() {
+                     $('#ticketButton').html('<i class="fa fa-spinner fa-spin"></i> Validando...');
+                     $('#guardarButton').prop('disabled', true);
+                     $('#ticketButton').prop('disabled', true);
+                     errorAlertShown = false;
+                 },
                  success: function(response) {
                      var result = JSON.parse(response);
 
                      if (result.status === 'success') {
-                         // Si el token es válido, habilita el botón del ticket y quita el spinner
-                         $('#ticketButton').html('<i class="fa fa-ticket"></i> Ticket').prop('disabled', false);
+                         // Habilitar el botón Guardar
+                         $('#guardarButton').prop('disabled', false);
+                         $('#ticketButton').html('<i class="fa fa-ticket"></i> Ticket');
+                         errorAlertShown = false;
                      } else {
-                         // Si no es válido, mostrar una alerta y deshabilitar el botón
-                         Swal.fire({
-                             icon: 'error',
-                             title: 'Error',
-                             text: result.message
-                         });
-                         $('#ticketButton').html('<i class="fa fa-ticket"></i> Ticket').prop('disabled', true);
+                         if (!errorAlertShown) {
+                             Swal.fire({
+                                 icon: 'error',
+                                 title: 'Error',
+                                 text: result.message
+                             });
+                             errorAlertShown = true;
+                         }
+                         $('#guardarButton').prop('disabled', true);
+                         $('#ticketButton').html('<i class="fa fa-ticket"></i> Ticket');
                      }
                  },
                  error: function() {
-                     Swal.fire({
-                         icon: 'error',
-                         title: 'Error',
-                         text: 'Ocurrió un error en la validación del token'
-                     });
-                     $('#ticketButton').html('<i class="fa fa-ticket"></i> Ticket').prop('disabled', true);
+                     if (!errorAlertShown) {
+                         Swal.fire({
+                             icon: 'error',
+                             title: 'Error',
+                             text: 'Ocurrió un error en la validación del token'
+                         });
+                         errorAlertShown = true;
+                     }
+                     $('#guardarButton').prop('disabled', true);
+                     $('#ticketButton').html('<i class="fa fa-ticket"></i> Ticket');
                  }
              });
          } else {
-             // Si alguno de los campos está vacío, deshabilitar el botón del ticket y quitar el spinner
-             $('#ticketButton').html('<i class="fa fa-ticket"></i> Ticket').prop('disabled', true);
+             $('#guardarButton').prop('disabled', true);
+             $('#ticketButton').html('<i class="fa fa-ticket"></i> Ticket');
          }
-     }, 500); // 500 ms de retraso para el debounce
+     }, 500);
  }
 
- // Cuando el token se valida correctamente, cambiamos el color del botón
- $('#ticketButton').removeClass('btn-outline-info').addClass('btn-info').prop('disabled', false);
+
+ function guardarFormulario() {
+     // Aquí iría la lógica para guardar el formulario
+     // Simulando el guardado con un tiempo de espera
+
+     // Habilitar el botón "Ticket" después de guardar
+     setTimeout(function() {
+         Swal.fire({
+             icon: 'success',
+             title: 'Guardado exitoso',
+             text: 'Formulario guardado correctamente.'
+         }).then(() => {
+             // Una vez guardado, habilitar el botón "Ticket"
+             $('#ticketButton').prop('disabled', false);
+         });
+     }, 1000); // Simulación de 1 segundo de tiempo de guardado
+ }
+
+
 
 
  init();
