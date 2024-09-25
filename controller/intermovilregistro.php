@@ -392,6 +392,7 @@ switch ($_GET["op"]) {
         /* TODO  aqui llamamos al modelo Guardar Registro Ingreso DE Vehiculo models/GuardarRegistroVehiculo y realizamos nuestro case:*/
     case "guardar_ing_vehi":
         if (empty($_POST["inun_id"])) {
+            // Llamar a la función GuardarRegistroVehiculo en el modelo
             $nuevoID = $interMovilregistro->GuardarRegistroVehiculo(
                 strtoupper($_POST["inun_fecha"]),
                 strtoupper($_POST["inun_hora"]),
@@ -399,16 +400,25 @@ switch ($_GET["op"]) {
                 strtoupper($_POST["unid_id"]),
                 strtoupper($_POST["inun_diagnostico_especializado"]),
                 strtoupper($_POST["inun_fecha_diagnostico_especializado"]),
-                $_POST["inun_estado"] // Aquí se guarda el estado
+                $_POST["inun_estado"] // Guardar el estado
             );
 
+            // Si se guarda correctamente, devolver el nuevo ID en el JSON
             if ($nuevoID) {
-                echo json_encode(['success' => true, 'id' => $nuevoID]);
+                echo json_encode([
+                    'success' => true,
+                    'inun_id' => $nuevoID // Cambiar 'id' por 'inun_id' para mantener consistencia
+                ]);
             } else {
-                echo json_encode(['success' => false, 'message' => 'Error al guardar los datos.']);
+                // En caso de error, enviar un mensaje de error en el JSON
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Error al guardar los datos.'
+                ]);
             }
         }
         break;
+
 
     case "combo_tipo_unidad_busquedad":
         $datos = $interMovilregistro->combo_tipo_busquedad();
@@ -564,28 +574,6 @@ switch ($_GET["op"]) {
         break;
 
 
-        /*TODO GENERAMOS EL CODIGO AUTOMATICO PARA TICKETS   */
-        // Controlador para generar el código del ticket
-
-        // Controlador para generar el código del ticket
-        case "generar_codigo_ticket":
-            // Llama al modelo para obtener el último ticket generado
-            $ultimoTicket = $interMovilregistro->obtenerUltimoTicket();
-        
-            // Incrementar el último número de ticket en 1
-            $nuevoTicket = str_pad($ultimoTicket + 1, 5, "0", STR_PAD_LEFT);
-        
-            // Obtener el año actual
-            $anioActual = date("Y");
-        
-            // Formatear el número del ticket como "00001-2024ASI"
-            $codigoTicket = $nuevoTicket . '-' . $anioActual . 'ASI';
-        
-            // Retornar el código generado
-            echo json_encode(['codigo_ticket' => $codigoTicket]);
-            break;
-        
-
 
 
 
@@ -602,4 +590,49 @@ switch ($_GET["op"]) {
             echo json_encode(['status' => 'error', 'message' => 'El token no coincide con el responsable seleccionado']);
         }
         break;
+
+        /*TODO generando el codigo del ticket */
+    case "generar_codigo_ticket":
+        // Llamar a la función del modelo para generar el siguiente número de ticket
+        $codigo_ticket = $interMovilregistro->generarCodigoTicket();
+        echo json_encode(["codigo_ticket" => $codigo_ticket]);
+        break;
+
+
+
+
+    case "buscar_chofer_por_dni":
+        if (isset($_POST['dni'])) {
+            $dni = $_POST['dni'];  // Recoger el DNI desde la solicitud POST
+
+            // Llamar al modelo para buscar el chofer
+            $datos = $interMovilregistro->buscarChoferPorDNI($dni);
+
+            // Verificar si hay resultados y devolverlos como JSON
+            if (is_array($datos) && count($datos) > 0) {
+                echo json_encode($datos);  // Devolver los datos del chofer
+            } else {
+                echo json_encode([]);  // No se encontró el chofer
+            }
+        } else {
+            echo "DNI no proporcionado";  // Si no se envía el DNI
+        }
+        break;
+
+
+        /*TODO obteniendo el ultimo ID */
+    case "obtener_ultimo_inun_id":
+        // Llamar al modelo para obtener el último inun_id
+        $ultimoIngresoUnidad = $interMovilregistro->obtenerUltimoIngresoUnidad();
+
+        if ($ultimoIngresoUnidad !== false) {
+            echo json_encode(['success' => true, 'ultimo_inun_id' => $ultimoIngresoUnidad]);
+        } else {
+            echo json_encode(['success' => false]);
+        }
+        break;
+
+
+
+        /*TODO AHORA GUARDAMOS EL TICKETE */
 }

@@ -30,19 +30,13 @@
         <hr>
 
         <!-- Sección para recuperar contraseña -->
-        <h6 class="text-center">Recuperar Contraseña</h6>
-        <form id="recoverPasswordForm">
-          <div class="form-group">
-            <label for="email">Correo Electrónico</label>
-            <input type="email" class="form-control" id="email" placeholder="Ingrese su correo electrónico" required>
-          </div>
-        </form>
+        
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer row block">
       <input type="hidden" id="direct_id" name="direct_id">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="submit" class="btn btn-primary" onclick="cambiarToken()">Cambiar Contraseña</button>
-        <button type="submit" class="btn btn-info" onclick="handlePasswordRecovery()">Recuperar Contraseña</button>
+        <button type="button" class="col-12 btn btn-secondary btn-block" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="col-12 btn btn-primary btn-block" onclick="cambiarToken()">Cambiar Contraseña</button>
+        
       </div>
     </div>
   </div>

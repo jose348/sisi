@@ -38,91 +38,9 @@
 
  }
 
- function guardar() {
 
+ /*TODO aqui va todo */
 
-     event.preventDefault(); // Evita el envío del formulario para realizar validación primero
-
-     // Obtener los valores de los campos
-
-     var fechaIngreso = document.getElementById('fechaIngreso').value;
-     var horaIngreso = document.getElementById('horaIngreso').value;
-     var descripcion = document.getElementById('descripcion').value;
-     var estado = document.querySelector('input[name="estado"]:checked');
-     var unidad = document.getElementById('unid_id').value;
-     var descripDiagnos = document.getElementById('descripDiagnos').value;
-     var fechaDiagnostico = document.getElementById('fechaDiagnostico').value;
-
-     // Validaciones
-
-     if (fechaIngreso === '') {
-         alert("Por favor, ingrese la fecha de ingreso.");
-         return false;
-     }
-
-
-
-     if (horaIngreso === '') {
-         alert("Por favor, ingrese la hora de ingreso.");
-         return false;
-     }
-
-     if (descripcion.trim() === '') {
-         swal.fire({
-             title: 'Advertencia',
-             text: 'Ingrese Descripcion',
-             icon: 'warning',
-             confirmButtonText: 'Aceptar'
-         })
-         return false;
-     }
-
-     if (!estado) {
-         swal.fire({
-             title: 'Advertencia',
-             text: 'Seleccione Estado',
-             icon: 'warning',
-             confirmButtonText: 'Aceptar'
-         })
-         return false;
-     }
-
-     if (unidad === '') {
-         swal.fire({
-             title: 'Advertencia',
-             text: 'Seleccione Unidad Movil',
-             icon: 'warning',
-             confirmButtonText: 'Aceptar'
-         })
-         return false;
-     }
-     if (descripDiagnos.trim() === '') {
-         swal.fire({
-             title: 'Advertencia',
-             text: 'Ingrese El Diagnostico',
-             icon: 'warning',
-             confirmButtonText: 'Aceptar'
-         })
-         return false;
-     }
-
-     if (fechaDiagnostico === '') {
-         swal.fire({
-             title: 'Advertencia',
-             text: 'Ingrese Fecha de Diagnostico',
-             icon: 'warning',
-             confirmButtonText: 'Aceptar'
-         })
-         return false;
-
-     }
-     // Si todas las validaciones pasan, muestra el segundo botón
-
-
-     // Puedes proceder con el guardado o envío del formulario aquí si es necesario
-     alert("Formulario validado y guardado correctamente.");
-
- }
 
 
  function guardaryeditar(e) {
@@ -661,20 +579,112 @@
  }
 
 
+ /*  function guardar() {
+      // Obtener los datos del formulario principal
+      var fechaIngreso = $('#fechaIngreso').val();
+      var horaIngreso = $('#horaIngreso').val();
+      var diagnostico = $('#descripcion').val();
+      var diagnosticoEspecializado = $('#descripDiagnos').val();
+      var fechaDiagnostico = $('#fechaDiagnostico').val();
+      var MovilSeleccionadacombo = $('#unid_id').val();
+      var MovileSeleccionadoNuevo = MovilSeleccionadacombo.split("/")[0].trim();
+      var estadoVehiculo = $('input[name="estado"]:checked').val();
+      var estadoValor = (estadoVehiculo === 'Activo') ? 1 : 0;
+
+      // Verificar si los campos requeridos están completos
+      if (!fechaIngreso || !horaIngreso || !diagnostico || !diagnosticoEspecializado || !fechaDiagnostico || !MovileSeleccionadoNuevo) {
+          Swal.fire({
+              title: '<i class="fa fa-exclamation-circle"></i> Error',
+              html: '<strong>Faltan datos requeridos. Por favor completa todos los campos.</strong>',
+              icon: 'warning',
+              confirmButtonText: 'Aceptar'
+          });
+          return;
+      }
+
+      // Enviar la solicitud para guardar el ingreso de vehículo
+      $.ajax({
+          url: "../../controller/intermovilregistro.php?op=guardar_ing_vehi",
+          type: 'POST',
+          data: {
+              inun_fecha: fechaIngreso,
+              inun_hora: horaIngreso,
+              inun_diagnostico: diagnostico,
+              unid_id: MovileSeleccionadoNuevo,
+              inun_diagnostico_especializado: diagnosticoEspecializado,
+              inun_fecha_diagnostico_especializado: fechaDiagnostico,
+              inun_estado: estadoValor
+          },
+          success: function(response) {
+              var respuesta = JSON.parse(response);
+
+              if (respuesta.success) {
+                  // Obtener el `inun_id` desde la respuesta
+                  var inun_id = respuesta.inun_id;
+
+                  // Establecer el valor del campo oculto en el formulario de ticket
+                  $('#inun_id_ticket').val(inun_id);
+
+                  // Mostrar mensaje de éxito
+                  Swal.fire({
+                      title: '<i class="fa fa-check-circle"></i> Guardado',
+                      html: '<strong>Los datos han sido guardados exitosamente.</strong>',
+                      icon: 'success',
+                      confirmButtonText: 'Aceptar'
+                  });
+
+                  // Limpiar los campos del formulario
+                  $('#descripcion').val('');
+                  $('#descripDiagnos').val('');
+                  $('input[type="radio"]').prop('checked', false);
+                  $('#unid_id').val('');
+
+                  // Restablecer la fecha y hora actuales en los campos de ingreso
+                  var currentDate = new Date();
+                  $('#fechaIngreso').val(currentDate.toISOString().slice(0, 10));
+                  $('#horaIngreso').val(currentDate.toTimeString().slice(0, 5));
+
+                  // Deshabilitar el botón Guardar y habilitar el botón de registrar mecánica
+                  $('#botonGuardar').prop('disabled', true);
+                  $('#botonRegistrarMecanica').prop('disabled', false);
+
+                  // Habilitar el botón para guardar ticket
+                  $('#guardarButton').prop('disabled', false); // Habilitar el botón de guardar ticket
+
+              } else {
+                  // Mostrar mensaje de error
+                  Swal.fire({
+                      title: '<i class="fa fa-times-circle"></i> Error',
+                      html: '<strong>Hubo un error al guardar los datos. Inténtelo de nuevo.</strong>',
+                      icon: 'error',
+                      confirmButtonText: 'Aceptar'
+                  });
+              }
+          },
+          error: function(error) {
+              Swal.fire({
+                  title: '<i class="fa fa-times-circle"></i> Error',
+                  html: '<strong>Hubo un error al guardar los datos. Inténtelo de nuevo.</strong>',
+                  icon: 'error',
+                  confirmButtonText: 'Aceptar'
+              });
+          }
+      });
+  } */
+
  function guardar() {
-     // Obtener los datos del formulario principal
+     // Obtener los datos del formulario
      var fechaIngreso = $('#fechaIngreso').val();
      var horaIngreso = $('#horaIngreso').val();
      var diagnostico = $('#descripcion').val();
      var diagnosticoEspecializado = $('#descripDiagnos').val();
      var fechaDiagnostico = $('#fechaDiagnostico').val();
-     var MovilSeleccionadacombo = $('#unid_id').val();
-     var MovileSeleccionadoNuevo = MovilSeleccionadacombo.split("/")[0].trim();
-
+     var MovilSeleccionado = $('#unid_id').val();
      var estadoVehiculo = $('input[name="estado"]:checked').val();
      var estadoValor = (estadoVehiculo === 'Activo') ? 1 : 0;
 
-     if (!fechaIngreso || !horaIngreso || !diagnostico || !diagnosticoEspecializado || !fechaDiagnostico || !MovileSeleccionadoNuevo) {
+     // Validar que los campos requeridos estén completos
+     if (!fechaIngreso || !horaIngreso || !diagnostico || !MovilSeleccionado) {
          Swal.fire({
              title: '<i class="fa fa-exclamation-circle"></i> Error',
              html: '<strong>Faltan datos requeridos. Por favor completa todos los campos.</strong>',
@@ -684,41 +694,47 @@
          return;
      }
 
+     // Enviar el formulario mediante AJAX
      $.ajax({
-         url: "../../controller/intermovilregistro.php?op=guardar_ing_vehi",
+         url: '../../controller/intermovilregistro.php?op=guardar_ing_vehi', // Reemplaza con la URL adecuada
          type: 'POST',
          data: {
              inun_fecha: fechaIngreso,
              inun_hora: horaIngreso,
              inun_diagnostico: diagnostico,
-             unid_id: MovileSeleccionadoNuevo,
+             unid_id: MovilSeleccionado,
              inun_diagnostico_especializado: diagnosticoEspecializado,
              inun_fecha_diagnostico_especializado: fechaDiagnostico,
              inun_estado: estadoValor
          },
          success: function(response) {
              var respuesta = JSON.parse(response);
+
              if (respuesta.success) {
+                 // Mostrar mensaje de éxito con SweetAlert
                  Swal.fire({
                      title: '<i class="fa fa-check-circle"></i> Guardado',
-                     html: '<strong>Los datos han sido guardados exitosamente.</strong>',
+                     html: '<strong>Los datos se han guardado correctamente.</strong>',
                      icon: 'success',
                      confirmButtonText: 'Aceptar'
                  });
-
+                 // Limpiar los campos del formulario
                  $('#descripcion').val('');
                  $('#descripDiagnos').val('');
                  $('input[type="radio"]').prop('checked', false);
                  $('#unid_id').val('');
 
+                 // Restablecer la fecha y hora actuales en los campos de ingreso
                  var currentDate = new Date();
                  $('#fechaIngreso').val(currentDate.toISOString().slice(0, 10));
                  $('#horaIngreso').val(currentDate.toTimeString().slice(0, 5));
 
+                 // Deshabilitar el botón Guardar y habilitar el botón de registrar mecánica
                  $('#botonGuardar').prop('disabled', true);
                  $('#botonRegistrarMecanica').prop('disabled', false);
 
-
+                 // Obtener el último inun_id tras el guardado y mostrarlo en el input de id_unidad
+                 obtenerUltimoIngresoUnidad();
 
              } else {
                  Swal.fire({
@@ -729,7 +745,7 @@
                  });
              }
          },
-         error: function(error) {
+         error: function() {
              Swal.fire({
                  title: '<i class="fa fa-times-circle"></i> Error',
                  html: '<strong>Hubo un error al guardar los datos. Inténtelo de nuevo.</strong>',
@@ -739,6 +755,10 @@
          }
      });
  }
+
+
+
+
 
 
  // Función para llenar el campo "Vehículo" con la descripción completa
@@ -812,49 +832,7 @@
      });
  }
 
- //Generando el codigo automatico para tickets
- function generarCodigoTicket() {
-     $.ajax({
-         url: "../../controller/intermovilregistro.php?op=generar_codigo_ticket", // URL del controlador para generar el ticket
-         type: "POST",
-         success: function(response) {
-             var result = JSON.parse(response);
 
-             if (result.codigo_ticket) {
-                 // Colocar el código del ticket en el campo del formulario
-                 $('#ticketNumber').val(result.codigo_ticket);
-             } else {
-                 Swal.fire({
-                     icon: 'error',
-                     title: 'Error',
-                     text: 'No se pudo generar el código del ticket'
-                 });
-             }
-         },
-         error: function() {
-             Swal.fire({
-                 icon: 'error',
-                 title: 'Error',
-                 text: 'Ocurrió un error al generar el código del ticket'
-             });
-         }
-     });
- }
-
- // Llamada a la función para generar el código del ticket al iniciar
- $(document).ready(function() {
-     generarCodigoTicket();
- });
-
-
- $.ajax({
-     url: "../../controller/intermovilregistro.php?op=generar_codigo_ticket",
-     method: "GET",
-     success: function(response) {
-         var data = JSON.parse(response);
-         $('#ticketNumber').val(data.codigo_ticket); // Asignar el número de ticket al input
-     }
- });
 
 
 
@@ -929,22 +907,103 @@
  }
 
 
- function guardarFormulario() {
-     // Aquí iría la lógica para guardar el formulario
-     // Simulando el guardado con un tiempo de espera
 
-     // Habilitar el botón "Ticket" después de guardar
-     setTimeout(function() {
-         Swal.fire({
-             icon: 'success',
-             title: 'Guardado exitoso',
-             text: 'Formulario guardado correctamente.'
-         }).then(() => {
-             // Una vez guardado, habilitar el botón "Ticket"
-             $('#ticketButton').prop('disabled', false);
-         });
-     }, 1000); // Simulación de 1 segundo de tiempo de guardado
+
+ /*TODO generara el codigo del ticket */
+ function cargarCodigoTicket() {
+     // Hacer una solicitud AJAX para obtener el nuevo número de ticket
+     $.ajax({
+         url: "../../controller/intermovilregistro.php?op=generar_codigo_ticket",
+         type: "POST",
+         success: function(response) {
+             var result = JSON.parse(response);
+             if (result.codigo_ticket) {
+                 // Mostrar el número de ticket en el campo correspondiente
+                 $('#ticketNumber').val(result.codigo_ticket);
+             }
+         },
+         error: function() {
+             console.error('Error al generar el código del ticket');
+         }
+     });
  }
+
+ // Llamar a esta función cuando se cargue el formulario
+ $(document).ready(function() {
+     cargarCodigoTicket();
+ });
+
+
+
+ /*TODO buscamos el dni del chofer */
+ // Función para buscar chofer por DNI
+ // Iniciar Select2 para el combo de chofer con búsqueda dinámica por AJAX
+ function buscarChoferPorDNI() {
+     var dniChofer = $('#dniChoferInput').val();
+
+     // Verificar si el DNI tiene al menos 3 caracteres y como máximo 8 caracteres
+     if (dniChofer.length >= 3 && dniChofer.length <= 8) {
+         $.ajax({
+             url: "../../controller/intermovilregistro.php?op=buscar_chofer_por_dni", // Ruta del controlador PHP
+             type: "POST",
+             data: { dni: dniChofer },
+             success: function(response) {
+                 // Procesar la respuesta del servidor
+                 var choferData = JSON.parse(response);
+
+                 // Verificar si el chofer fue encontrado
+                 if (choferData.length > 0) {
+                     $('#nombreChofer').val(choferData[0].nombre_completo); // Mostrar el nombre en el input
+                 } else {
+                     $('#nombreChofer').val('No se encontró el chofer'); // Si no hay resultados
+                 }
+             },
+             error: function(error) {
+                 console.error("Error al buscar el chofer:", error);
+             }
+         });
+     } else {
+         $('#nombreChofer').val(''); // Limpiar el campo si el DNI tiene menos de 3 caracteres
+     }
+ }
+
+ /*TODO OBTENIENDO EL ULTIMO  ID unid_id */
+
+ function obtenerUltimoIngresoUnidad() {
+     $.ajax({
+         url: '../../controller/intermovilregistro.php?op=obtener_ultimo_inun_id', // URL del backend que obtiene el último inun_id
+         type: 'GET',
+         success: function(response) {
+             var respuesta = JSON.parse(response);
+
+             if (respuesta.success) {
+                 // Mostrar el último inun_id en el campo correspondiente
+                 $('#id_unidad').val(respuesta.ultimo_inun_id);
+             } else {
+                 Swal.fire({
+                     title: '<i class="fa fa-times-circle"></i> Error',
+                     html: '<strong>No se pudo obtener el último inun_id.</strong>',
+                     icon: 'error',
+                     confirmButtonText: 'Aceptar'
+                 });
+             }
+         },
+         error: function() {
+             Swal.fire({
+                 title: '<i class="fa fa-times-circle"></i> Error',
+                 html: '<strong>Error en la solicitud para obtener el último inun_id.</strong>',
+                 icon: 'error',
+                 confirmButtonText: 'Aceptar'
+             });
+         }
+     });
+ }
+
+
+
+ /*TODO GUARDANDOE EL TICKETE */
+
+
 
 
 

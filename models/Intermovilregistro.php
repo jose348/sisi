@@ -504,40 +504,7 @@ ORDER BY iu.inun_fecha desc";
         }
     }
 
-    //para generar mi codigo automatico en ticket 
-    // Modelo para obtener el último ticket generado
-    // Modelo para obtener el último ticket generado
-    public function obtenerUltimoTicket() {
-        $con = parent::conexion();
-        parent::set_names();
-        
-        // Consulta para obtener el último número de ticket
-        $sql = "SELECT tickdo_numtick FROM sc_residuos_solidos.tb_ticket_dotacion ORDER BY tickdo_id DESC LIMIT 1";
-        $sql = $con->prepare($sql);
-        $sql->execute();
-        
-        return $sql->fetch(); // Retorna el último ticket o null si no hay
-    }
-    
 
-    public function generarCodigoTicket() {
-        $ultimoTicket = $this->obtenerUltimoTicket();
-        $anioActual = date('Y');
-    
-        // Si no hay ningún ticket, comenzamos en 1, sino incrementamos el último número.
-        if ($ultimoTicket) {
-            $ultimoNumero = intval(substr($ultimoTicket['tickdo_numtick'], 0, 5)); // Extrae el número del ticket actual
-            $nuevoNumero = $ultimoNumero + 1; // Incrementa el último número
-        } else {
-            $nuevoNumero = 1; // Si no hay tickets, comienza desde 1
-        }
-    
-        // Generar el nuevo número de ticket con formato 00001
-        $nuevoCodigoTicket = str_pad($nuevoNumero, 5, '0', STR_PAD_LEFT) . '-' . $anioActual . 'ASI';
-    
-        return $nuevoCodigoTicket;
-    }
-    
 
 
     //para validar mi token con mi  responsable
@@ -554,4 +521,130 @@ ORDER BY iu.inun_fecha desc";
 
         return $stmt->fetchAll(); // Retorna los resultados si existen
     }
+
+
+    /*TODO generando el codigo del ticket */
+    public function generarCodigoTicket()
+    {
+        $con = parent::conexion();
+        parent::set_names();
+
+        // Obtener el último número de ticket registrado
+        $sql = "SELECT tickdo_numtick FROM sc_residuos_solidos.tb_ticket_dotacion ORDER BY tickdo_id DESC LIMIT 1";
+        $sql = $con->prepare($sql);
+        $sql->execute();
+
+        $ultimoTicket = $sql->fetch(PDO::FETCH_ASSOC);
+        $anioActual = date('Y'); // Obtener el año actual
+
+        // Generar el nuevo número de ticket
+        if ($ultimoTicket) {
+            $ultimoNumero = intval(substr($ultimoTicket['tickdo_numtick'], 0, 5)); // Extraer el número
+            $nuevoNumero = $ultimoNumero + 1; // Incrementar el número
+        } else {
+            $nuevoNumero = 1; // Si no hay tickets previos, empezar en 1
+        }
+
+        // Formatear el nuevo número a 5 dígitos y añadir el año y sufijo 'ASI'
+        $nuevoCodigoTicket = str_pad($nuevoNumero, 5, '0', STR_PAD_LEFT) . '-' . $anioActual . 'ASI';
+
+        return $nuevoCodigoTicket;
+    }
+
+    /*TODO buscar a la persona con ese dni */
+    public function buscarChoferPorDNI($dni)
+    {
+        $con = parent::conexion();
+        parent::set_names();
+
+        $sql = "SELECT pers_id, CONCAT(pers_nombre, ' ', pers_apelpat, ' ', pers_apelmat) AS nombre_completo 
+                FROM sc_escalafon.tb_persona 
+                WHERE pers_dni = ?";
+
+        $sql = $con->prepare($sql);
+        $sql->bindValue(1, $dni);
+        $sql->execute();
+
+        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    /*TODO guardamoe el formulario de tickets  */
+    // Función para validar el token del responsable
+    public function validarToken($direct_id, $token)
+    {
+        $con = parent::conexion();
+        parent::set_names();
+
+        $sql = "SELECT * FROM sc_residuos_solidos.tb_directorio WHERE direct_id = ? AND direct_token = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->bindValue(1, $direct_id);
+        $stmt->bindValue(2, $token);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC) ? true : false;
+    }
+
+    // Función para obtener el último número de ticket
+    public function obtenerUltimoTicket()
+    {
+        $con = parent::conexion();
+        parent::set_names();
+
+        $sql = "SELECT MAX(tickdo_numtick) AS ultimo_ticket FROM sc_residuos_solidos.tb_ticket_dotacion";
+        $stmt = $con->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $resultado['ultimo_ticket'] ? intval(explode('-', $resultado['ultimo_ticket'])[0]) : 0;
+    }
+
+    /*TODO obteniendo el ultimo ID de mi inun_id */
+    public function obtenerUltimoIngresoUnidad()
+    {
+        $con = parent::conexion();
+        parent::set_names();
+        
+        // Obtener el último inun_id
+        $sql = "SELECT MAX(inun_id) as ultimo_id FROM sc_residuos_solidos.tb_ingreso_unidad";
+        $stmt = $con->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        // Retornar el último inun_id o false si no hay registros
+        return $resultado ? $resultado['ultimo_id'] : false;
+    }
+    
+    
+/*TODO GUARDAR TICKETE */
+public function guardarTicketDotacion($ticketNumber, $fecha, $hora, $coti_id, $cantidad, $pers_id, $direct_id, $inun_id) {
+    $con = parent::conexion();
+    parent::set_names();
+
+    // Insertar el ticket en la tabla tb_ticket_dotacion
+    $sql = "INSERT INTO sc_residuos_solidos.tb_ticket_dotacion
+            (tickdo_numtick, tickdo_fecha, tickdo_hora, coti_id, tickdo_cantidad, pers_id, direct_id, inun_id, tickdo_estado)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'A')";  // Estado activo 'A'
+
+    $stmt = $con->prepare($sql);
+    $stmt->bindValue(1, $ticketNumber);
+    $stmt->bindValue(2, $fecha);
+    $stmt->bindValue(3, $hora);
+    $stmt->bindValue(4, $coti_id); // El componente específico
+    $stmt->bindValue(5, $cantidad);
+    $stmt->bindValue(6, $pers_id); // Chofer
+    $stmt->bindValue(7, $direct_id); // Responsable
+    $stmt->bindValue(8, $inun_id);  // ID de unidad (inun_id)
+
+    // Ejecutar la consulta e insertar el ticket
+    if ($stmt->execute()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+     
+    
 }
