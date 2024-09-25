@@ -346,141 +346,142 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
               </style>
               </head>
 
-              <body>
-                <div class="container mt-5">
-                  <div class="form-container">
 
-                    <h5 class="text-center mb-4">Departamento de Servicios Internos</h5>
+              <div class="container mt-5">
+                <div class="form-container">
+
+                  <h5 class="text-center mb-4 form-title">Departamento de Servicios Internos</h5>
+                  <br>
+                  <!-- Contenedor del formulario -->
+                  <div class="row col-12">
+                    <div class="row">
+                      <!-- Botón de Solicitud de Mecánico -->
+
+
+                      <button id="imprimirTicketButton" type="button" onclick="imprimirTicket()" class="btn btn-oblong btn-outline-info tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium" disabled>
+                        <i class="fa fa-print"></i> Imprimir Ticket
+                      </button>
+
+
+                    </div>
+                  </div>
+
+                  <br>
+
+
+                  <form id="GernerarTicket">
+
+
+                    <input type="hidden" id="id_unidad" name="id_unidad" disabled>
+
+
+                    <div class="form-section-title1">Información General</div>
                     <br>
-                    <!-- Contenedor del formulario -->
-                    <div class="row col-12">
-                      <div class="row">
-                        <!-- Botón de Solicitud de Mecánico -->
+                    <div class="row row-spacing1">
 
+                      <div class="col-md-3">
+                        <label for="ticketNumber" class="form-label">N° de Ticket</label>
+                        <input type="text" id="ticketNumber" name="ticketNumber" class="form-control" placeholder="Número de Ticket" disabled>
+                      </div>
 
-                        <div id="ticketButtonContainer" class="text-right mt-4">
-                          <button type="button" onclick="generarPDF()" id="ticketButton" class="btn btn-oblong btn-outline-custom tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium" disabled>
-                            <i class="fa fa-print"></i> Imprimir Ticket
-                          </button>
-                        </div>
+                      <div class="col-md-3">
+                        <label for="fecha" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="fecha" name="fecha">
+                      </div>
 
+                      <div class="col-md-3">
+                        <label for="horaIngreso" class="form-label">Hora de Ingreso</label>
+                        <input type="time" class="form-control" id="horaIngreso" name="horaIngreso">
+                      </div>
 
-
-
+                      <div class="col-md-3">
+                        <label for="vehiculo" class="form-label">Vehículo</label>
+                        <input type="text" class="form-control" id="vehiculo" name="vehiculo" placeholder="Vehículo" disabled>
                       </div>
                     </div>
 
                     <br>
 
 
-                    <form id="GernerarTicket">
+                    <div class="form-section-title1">Detalle del Componente</div>
+                    <br>
+                    <div class="row row-spacing1">
+                      <div class="col-md-4">
+                        <label for="componente" class="form-label">Tipo de Componente</label>
+                        <select class="form-control" name="componente" id="componente" data-placeholder="Seleccione">
+                          <option value="">Seleccione Componente</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="Componente_espec" class="form-label">Componente Específico</label>
+                        <select class="form-control" name="Componente_espec" id="Componente_espec" data-placeholder="Seleccione" disabled>
+                          <option value="">Seleccione Componente Específico</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="cantidad" class="form-label">Cantidad</label>
+                        <input type="number" class="form-control" id="cantidad" name="cantidad" placeholder="Ingrese Cantidad" min="1" step="any">
+                      </div>
+                    </div>
+
+                    <br>
 
 
-                      <input type="text" id="id_unidad" name="id_unidad" disabled>
+                    <div class="form-section-title1">Información del Personal</div>
+                    <br>
+                    <div class="row row-spacing1">
 
 
-                      <div class="form-section-title1">Información General</div>
-                      <br>
-                      <div class="row row-spacing1">
+                      <!-- Campo oculto para guardar el pers_id del chofer -->
+                      <input type="hidden" id="pers_id" name="pers_id">
 
-                        <div class="col-md-3">
-                          <label for="ticketNumber" class="form-label">N° de Ticket</label>
-                          <input type="text" id="ticketNumber" name="ticketNumber" class="form-control" placeholder="Número de Ticket" disabled>
-                        </div>
 
-                        <div class="col-md-3">
-                          <label for="fecha" class="form-label">Fecha</label>
-                          <input type="date" class="form-control" id="fecha" name="fecha">
-                        </div>
 
-                        <div class="col-md-3">
-                          <label for="horaIngreso" class="form-label">Hora de Ingreso</label>
-                          <input type="time" class="form-control" id="horaIngreso" name="horaIngreso">
-                        </div>
-
-                        <div class="col-md-3">
-                          <label for="vehiculo" class="form-label">Vehículo</label>
-                          <input type="text" class="form-control" id="vehiculo" name="vehiculo" placeholder="Vehículo" disabled>
-                        </div>
+                      <div class="col-md-4">
+                        <label for="dniChoferInput" class="form-label">Buscar Chofer por DNI</label>
+                        <input oninput="buscarChoferPorDNI()" type="text" class="form-control" id="dniChoferInput" name="dniChoferInput" placeholder="Ingrese DNI del Chofer" maxlength="8">
                       </div>
 
                       <br>
 
 
-                      <div class="form-section-title1">Detalle del Componente</div>
-                      <br>
-                      <div class="row row-spacing1">
-                        <div class="col-md-4">
-                          <label for="componente" class="form-label">Tipo de Componente</label>
-                          <select class="form-control" name="componente" id="componente" data-placeholder="Seleccione">
-                            <option value="">Seleccione Componente</option>
-                          </select>
-                        </div>
+                      <div class="col-md-4">
+                        <label for="nombreChofer" class="form-label">Chofer</label>
+                        <input type="text" class="form-control" id="nombreChofer" name="nombreChofer" placeholder="Nombre del Chofer" disabled>
+                      </div>
 
-                        <div class="col-md-4">
-                          <label for="Componente_espec" class="form-label">Componente Específico</label>
-                          <select class="form-control" name="Componente_espec" id="Componente_espec" data-placeholder="Seleccione" disabled>
-                            <option value="">Seleccione Componente Específico</option>
-                          </select>
-                        </div>
+                      <div class="col-md-4">
+                        <label for="responsable" class="form-label">Responsable (lubricador / mecánico)</label>
+                        <select class="form-control" id="responsable" name="responsable">
+                          <option value="">Seleccione Responsable</option>
 
-                        <div class="col-md-4">
-                          <label for="cantidad" class="form-label">Cantidad</label>
-                          <input type="number" class="form-control" id="cantidad" name="cantidad" placeholder="Ingrese Cantidad" min="1" step="any">
-                        </div>
+                        </select>
                       </div>
 
                       <br>
 
 
-                      <div class="form-section-title1">Información del Personal</div>
-                      <br>
-                      <div class="row row-spacing1">
-
-
-
-                        <div class="col-md-4">
-                          <label for="dniChoferInput" class="form-label">Buscar Chofer por DNI</label>
-                          <input oninput="buscarChoferPorDNI()" type="text" class="form-control" id="dniChoferInput" name="dniChoferInput" placeholder="Ingrese DNI del Chofer" maxlength="8">
-                        </div>
-
-                        <br>
-
-
-                        <div class="col-md-4">
-                          <label for="nombreChofer" class="form-label">Chofer</label>
-                          <input type="text" class="form-control" id="nombreChofer" name="nombreChofer" placeholder="Nombre del Chofer" disabled>
-                        </div>
-
-                        <div class="col-md-4">
-                          <label for="responsable" class="form-label">Responsable (lubricador / mecánico)</label>
-                          <select class="form-control" id="responsable" name="responsable">
-                            <option value="">Seleccione Responsable</option>
-
-                          </select>
-                        </div>
-
-                        <br>
-
-
-                        <div class="col-md-4">
-                          <label for="token" class="form-label">Token</label>
-                          <input oninput="confirmarToken()" type="password" class="form-control" id="token" name="token" placeholder="Ingrese Token">
-                        </div>
+                      <div class="col-md-4">
+                        <label for="token" class="form-label">Token</label>
+                        <input oninput="confirmarToken()" type="password" class="form-control" id="token" name="token" placeholder="Ingrese Token">
                       </div>
+                    </div>
 
-                      <br>
+                    <br>
 
 
-                      <div class="mx-auto">
-                        <button id="guardarButton" type="button" onclick="guardarFormulario()" class="btn btn-oblong btn-outline-info tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium" disabled>
-                          <i class="fa fa-save"></i> Guardar
-                        </button>
-                      </div>
+                    <div class="mx-auto">
+                      <button id="guardarButton" type="button" onclick="guardarFormulario()" class="btn btn-oblong btn-outline-info tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium" disabled>
+                        <i class="fa fa-save"></i> Guardar
+                      </button>
+                    </div>
 
-                    </form>
-                  </div>
+                  </form>
+                  
                 </div>
+              </div>
             </section>
 
 
@@ -489,88 +490,160 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
 
 
 
-            <h4>Payment Details</h4>
-            <section>
-              <p>The next and previous buttons help you to navigate through your content.</p>
+            <h4>Vehiculo En Taller</h4>
+            <section style="background-color: white;  padding: 20px;">
+
               <div class="container mt-5">
-                <h2>Formulario de Mantenimiento</h2>
-                <form>
-                  <!-- Campo para el ID de Mantenimiento -->
-                  <div class="mb-3">
-                    <label for="mantId" class="form-label">ID de Mantenimiento</label>
-                    <input type="number" class="form-control" id="mantId" placeholder="Ingrese ID de mantenimiento">
-                  </div>
 
-                  <!-- Campo para la Fecha de Mantenimiento -->
-                  <div class="mb-3">
-                    <label for="mantFecha" class="form-label">Fecha de Mantenimiento</label>
-                    <input type="date" class="form-control" id="mantFecha">
-                  </div>
+                <style>
+                  .form-section-title1 {
+                    background-color: #00B297;
+                    color: #fff;
+                    padding: 10px;
+                    border-radius: 5px;
+                    margin-bottom: 5px;
+                    text-transform: uppercase;
+                    font-size: 12px;
+                    font-weight: bold;
+                  }
 
-                  <!-- Campo para la Hora -->
-                  <div class="mb-3">
-                    <label for="mantHora" class="form-label">Hora</label>
-                    <input type="time" class="form-control" id="mantHora">
-                  </div>
+                  .form-label {
+                    font-weight: bold;
+                    color: #495057;
+                  }
 
-                  <!-- Campo para Diagnóstico Especializado -->
-                  <div class="mb-3">
-                    <label for="diagnostico" class="form-label">Diagnóstico Especializado</label>
-                    <textarea class="form-control" id="diagnostico" rows="3"></textarea>
-                  </div>
+                  .btn-primary1 {
+                    background-color: #007bff;
+                    border-color: #007bff;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    border-radius: 5px;
+                  }
 
-                  <!-- Campo para la Acción Realizada -->
-                  <div class="mb-3">
-                    <label for="accionRealizada" class="form-label">Acción Realizada</label>
-                    <textarea class="form-control" id="accionRealizada" rows="3"></textarea>
-                  </div>
+                  .btn-primary1:hover {
+                    background-color: #0056b3;
+                    border-color: #0056b3;
+                  }
 
-                  <!-- Campo para Tipo de Acción -->
-                  <div class="mb-3">
-                    <label for="tipoAccion" class="form-label">Tipo de Acción</label>
-                    <input type="number" class="form-control" id="tipoAccion" placeholder="Ingrese el tipo de acción">
-                  </div>
+                  .row-spacing1 {
+                    margin-bottom: 20px;
+                  }
 
-                  <!-- Campo para Mecánico Especialista -->
-                  <div class="mb-3">
-                    <label for="mecanicoEspecialista" class="form-label">ID Mecánico Especialista</label>
-                    <input type="number" class="form-control" id="mecanicoEspecialista" placeholder="ID del mecánico especialista">
-                  </div>
 
-                  <!-- Campo para Empresa Tercerizada -->
-                  <div class="mb-3">
-                    <label for="empresaTercerizada" class="form-label">Empresa Tercerizada</label>
-                    <input type="text" class="form-control" id="empresaTercerizada" placeholder="Nombre de la empresa tercerizada">
-                  </div>
+                  /* Estilo personalizado para el botón con los colores que deseas */
+                  .btn-outline-custom {
+                    background-color: transparent;
+                    /* Transparente para mantener el estilo outline */
+                    border: 2px solid #00B297;
+                    /* Borde con el color personalizado */
+                    color: #00B297;
+                    /* Color del texto */
+                  }
 
-                  <!-- Campo para Informe Tercerizado -->
-                  <div class="mb-3">
-                    <label for="informeTercerizado" class="form-label">Informe Tercerizado</label>
-                    <textarea class="form-control" id="informeTercerizado" rows="3"></textarea>
-                  </div>
+                  .btn-outline-custom:disabled {
+                    background-color: transparent;
+                    /* Transparente cuando está deshabilitado */
+                    border-color: #a8dcd3;
+                    /* Color de borde más claro cuando está deshabilitado */
+                    color: #a8dcd3;
+                    /* Texto más claro cuando está deshabilitado */
+                  }
 
-                  <!-- Campo para Estado de Mantenimiento -->
-                  <div class="mb-3">
-                    <label for="estadoMantenimiento" class="form-label">Estado de Mantenimiento</label>
-                    <input type="number" class="form-control" id="estadoMantenimiento" placeholder="Ingrese el estado de mantenimiento">
-                  </div>
+                  .btn-outline-custom:hover,
+                  .btn-outline-custom:focus {
+                    background-color: #00B297;
+                    /* Fondo del color personalizado cuando se pasa el mouse */
+                    color: white;
+                    /* Texto blanco cuando se pasa el mouse */
+                    border-color: #00B297;
+                    /* Borde del mismo color */
+                  }
+                </style>
+                </head>
 
-                  <!-- Campo para Foto al Ingreso -->
-                  <div class="mb-3">
-                    <label for="fotoIngreso" class="form-label">Foto del Ingreso de la Unidad</label>
-                    <input type="file" class="form-control" id="fotoIngreso" accept="image/*">
-                  </div>
+                <body>
 
-                  <!-- Campo para Foto a la Salida -->
-                  <div class="mb-3">
-                    <label for="fotoSalida" class="form-label">Foto de la Salida de la Unidad</label>
-                    <input type="file" class="form-control" id="fotoSalida" accept="image/*">
-                  </div>
+                  <div class="container mt-5">
+                    <div class="form-container">
+                      <h2 class="form-title">Formulario de Mantenimiento</h2>
+                      <form>
+                        <!-- ID de Mantenimiento -->
+                        <div class="mb-3">
+                          <label for="mantId" class="form-label">ID de Mantenimiento</label>
+                          <input type="number" class="form-control" id="mantId" placeholder="Ingrese ID de mantenimiento">
+                        </div>
 
-                  <!-- Botón para enviar -->
-                  <button type="submit" class="btn btn-primary">Enviar</button>
-                </form>
-              </div>
+                        <!-- Fecha y Hora de Mantenimiento -->
+                        <div class="row">
+                          <div class="col-md-6 mb-3">
+                            <label for="mantFecha" class="form-label">Fecha de Mantenimiento</label>
+                            <input type="date" class="form-control" id="mantFecha">
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="mantHora" class="form-label">Hora</label>
+                            <input type="time" class="form-control" id="mantHora">
+                          </div>
+                        </div>
+
+                        <!-- Diagnóstico Especializado -->
+                        <div class="mb-3">
+                          <label for="diagnostico" class="form-label">Diagnóstico Especializado</label>
+                          <textarea class="form-control" id="diagnostico" rows="3" placeholder="Describa el diagnóstico especializado"></textarea>
+                        </div>
+
+                        <!-- Acción Realizada -->
+                        <div class="mb-3">
+                          <label for="accionRealizada" class="form-label">Acción Realizada</label>
+                          <textarea class="form-control" id="accionRealizada" rows="3" placeholder="Describa las acciones realizadas"></textarea>
+                        </div>
+
+                        <!-- Tipo de Acción y Mecánico Especialista -->
+                        <div class="row">
+                          <div class="col-md-6 mb-3">
+                            <label for="tipoAccion" class="form-label">Tipo de Acción</label>
+                            <input type="number" class="form-control" id="tipoAccion" placeholder="Tipo de acción">
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="mecanicoEspecialista" class="form-label">ID Mecánico Especialista</label>
+                            <input type="number" class="form-control" id="mecanicoEspecialista" placeholder="ID del mecánico especialista">
+                          </div>
+                        </div>
+
+                        <!-- Empresa Tercerizada -->
+                        <div class="mb-3">
+                          <label for="empresaTercerizada" class="form-label">Empresa Tercerizada</label>
+                          <input type="text" class="form-control" id="empresaTercerizada" placeholder="Nombre de la empresa tercerizada">
+                        </div>
+
+                        <!-- Informe Tercerizado -->
+                        <div class="mb-3">
+                          <label for="informeTercerizado" class="form-label">Informe Tercerizado</label>
+                          <textarea class="form-control" id="informeTercerizado" rows="3" placeholder="Informe tercerizado"></textarea>
+                        </div>
+
+                        <!-- Estado de Mantenimiento -->
+                        <div class="mb-3">
+                          <label for="estadoMantenimiento" class="form-label">Estado de Mantenimiento</label>
+                          <input type="number" class="form-control" id="estadoMantenimiento" placeholder="Ingrese el estado de mantenimiento">
+                        </div>
+
+                        <!-- Foto de Ingreso y Salida de Unidad -->
+                        <div class="row">
+                          <div class="col-md-6 mb-3">
+                            <label for="fotoIngreso" class="form-label">Foto del Ingreso de la Unidad</label>
+                            <input type="file" class="form-control" id="fotoIngreso" accept="image/*">
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="fotoSalida" class="form-label">Foto de la Salida de la Unidad</label>
+                            <input type="file" class="form-control" id="fotoSalida" accept="image/*">
+                          </div>
+                        </div>
+
+                        <!-- Botón de Enviar -->
+                        <button type="submit" class="btn btn-primary mt-4">Enviar</button>
+                      </form>
+                    </div>
+                  </div>
             </section>
           </div>
         </div>

@@ -937,35 +937,46 @@
 
  /*TODO buscamos el dni del chofer */
  // Función para buscar chofer por DNI
- // Iniciar Select2 para el combo de chofer con búsqueda dinámica por AJAX
  function buscarChoferPorDNI() {
-     var dniChofer = $('#dniChoferInput').val();
+     var dni = $('#dniChoferInput').val();
 
-     // Verificar si el DNI tiene al menos 3 caracteres y como máximo 8 caracteres
-     if (dniChofer.length >= 3 && dniChofer.length <= 8) {
+     if (dni.length === 8) {
+         // Hacer la solicitud AJAX para obtener el `pers_id`
          $.ajax({
-             url: "../../controller/intermovilregistro.php?op=buscar_chofer_por_dni", // Ruta del controlador PHP
-             type: "POST",
-             data: { dni: dniChofer },
+             url: '../../controller/intermovilregistro.php?op=buscar_chofer_por_dni', // Cambiar por la URL adecuada
+             type: 'POST',
+             data: { dni: dni },
              success: function(response) {
-                 // Procesar la respuesta del servidor
-                 var choferData = JSON.parse(response);
-
-                 // Verificar si el chofer fue encontrado
-                 if (choferData.length > 0) {
-                     $('#nombreChofer').val(choferData[0].nombre_completo); // Mostrar el nombre en el input
+                 var respuesta = JSON.parse(response);
+                 if (respuesta.length > 0) {
+                     // Llenar los campos con el nombre del chofer y el `pers_id`
+                     $('#nombreChofer').val(respuesta[0].nombre_completo);
+                     $('#pers_id').val(respuesta[0].pers_id); // Aquí se guarda el ID del chofer en el campo oculto
                  } else {
-                     $('#nombreChofer').val('No se encontró el chofer'); // Si no hay resultados
+                     Swal.fire({
+                         title: 'Chofer no encontrado',
+                         text: 'No se encontró un chofer con ese DNI.',
+                         icon: 'warning',
+                         confirmButtonText: 'Aceptar'
+                     });
                  }
              },
-             error: function(error) {
-                 console.error("Error al buscar el chofer:", error);
+             error: function() {
+                 Swal.fire({
+                     title: 'Error',
+                     text: 'Ocurrió un error al buscar el chofer.',
+                     icon: 'error',
+                     confirmButtonText: 'Aceptar'
+                 });
              }
          });
-     } else {
-         $('#nombreChofer').val(''); // Limpiar el campo si el DNI tiene menos de 3 caracteres
      }
  }
+
+
+
+
+
 
  /*TODO OBTENIENDO EL ULTIMO  ID unid_id */
 
@@ -1003,8 +1014,130 @@
 
  /*TODO GUARDANDOE EL TICKETE */
 
+ function guardarFormulario() {
+     // Obtener los datos del formulario
+     var idUnidad = $('#id_unidad').val();
+     var ticketNumber = $('#ticketNumber').val();
+     var fecha = $('#fecha').val();
+     var horaIngreso = $('#horaIngreso').val();
+     var componenteEspecifico = $('#Componente_espec').val(); // coti_id
+     var cantidad = $('#cantidad').val();
+     var pers_id = $('#pers_id').val(); // Usar el pers_id del campo oculto, no el DNI
+     var responsable = $('#responsable').val(); // direct_id
+
+     // Validar que todos los campos requeridos estén completos
+     if (!fecha || !horaIngreso || !componenteEspecifico || !cantidad || !pers_id || !responsable || !idUnidad) {
+         Swal.fire({
+             title: '<i class="fa fa-exclamation-circle"></i> Error',
+             html: '<strong>Faltan datos requeridos. Por favor completa todos los campos.</strong>',
+             icon: 'warning',
+             confirmButtonText: 'Aceptar'
+         });
+         return;
+     }
+
+     // Enviar los datos mediante AJAX
+     $.ajax({
+         url: '../../controller/intermovilregistro.php?op=guardar_ticket', // Cambiar por la URL adecuada
+         type: 'POST',
+         data: {
+             ticketNumber: ticketNumber,
+             fecha: fecha,
+             horaIngreso: horaIngreso,
+             coti_id: componenteEspecifico, // Guardamos el coti_id que asocia al componente
+             cantidad: cantidad,
+             pers_id: pers_id, // Aquí usamos el pers_id del chofer
+             direct_id: responsable, // Se pasa el direct_id asociado al responsable
+             inun_id: idUnidad // Se pasa el inun_id, que es el último ID del ingreso de unidad
+         },
+         success: function(response) {
+             var respuesta = JSON.parse(response);
+
+             if (respuesta.success) {
+                 // Mostrar mensaje de éxito
+                 Swal.fire({
+                     title: '<i class="fa fa-check-circle"></i> Guardado',
+                     html: '<strong>El ticket se ha guardado correctamente.</strong>',
+                     icon: 'success',
+                     confirmButtonText: 'Aceptar'
+                 });
+
+                 // Deshabilitar los campos y botones
+                 $('#guardarButton').prop('disabled', true); // Deshabilitar el botón de guardar
+                 $('#imprimirTicketButton').prop('disabled', false); // Habilitar el botón de imprimir
+
+                 // Deshabilitar los campos del formulario
+                 $('#fecha').prop('disabled', true);
+                 $('#horaIngreso').prop('disabled', true);
+                 $('#componente').prop('disabled', true);
+                 $('#Componente_espec').prop('disabled', true);
+                 $('#cantidad').prop('disabled', true);
+                 $('#dniChoferInput').prop('disabled', true);
+                 $('#nombreChofer').prop('disabled', true);
+                 $('#responsable').prop('disabled', true);
+                 $('#token').prop('disabled', true);
+             } else {
+                 Swal.fire({
+                     title: '<i class="fa fa-times-circle"></i> Error',
+                     html: '<strong>No se pudo guardar el ticket. Inténtelo de nuevo.</strong>',
+                     icon: 'error',
+                     confirmButtonText: 'Aceptar'
+                 });
+             }
+         },
+         error: function() {
+             Swal.fire({
+                 title: '<i class="fa fa-times-circle"></i> Error',
+                 html: '<strong>Error al intentar guardar los datos. Inténtelo de nuevo.</strong>',
+                 icon: 'error',
+                 confirmButtonText: 'Aceptar'
+             });
+         }
+     });
+ }
 
 
+
+
+ /*TODO a generamos el ticket en pdf */
+
+ // JS para imprimir el ticket en formato PDF
+ function imprimirTicket() {
+     var ticketNumber = $('#ticketNumber').val();
+
+     // Redirigir a la página que genera el PDF con los datos pasados en la URL
+     window.open('../../controller/intermovilregistro.php?op=generar_ticket_pdf&ticketNumber=' + ticketNumber, '_blank');
+     limpiarCamposFormulario();
+ }
+
+
+ function limpiarCamposFormulario() {
+     // Limpiar los campos del formulario
+     $('#fecha').val('');
+     $('#horaIngreso').val('');
+     $('#componente').val('');
+     $('#Componente_espec').val('');
+     $('#cantidad').val('');
+     $('#dniChoferInput').val('');
+     $('#nombreChofer').val('');
+     $('#responsable').val('');
+     $('#token').val('');
+
+     // Habilitar los campos del formulario para un nuevo ingreso
+     $('#fecha').prop('disabled', false);
+     $('#horaIngreso').prop('disabled', false);
+     $('#componente').prop('disabled', false);
+     $('#Componente_espec').prop('disabled', false);
+     $('#cantidad').prop('disabled', false);
+     $('#dniChoferInput').prop('disabled', false);
+     $('#nombreChofer').prop('disabled', false);
+     $('#responsable').prop('disabled', false);
+     $('#token').prop('disabled', false);
+
+     // Volver a habilitar el botón de guardar y deshabilitar el botón de imprimir
+     $('#guardarButton').prop('disabled', false);
+     $('#imprimirTicketButton').prop('disabled', true);
+ }
 
 
 

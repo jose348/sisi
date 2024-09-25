@@ -3,6 +3,9 @@
 require_once("../config/conexion.php");
 require_once("../models/Intermovilregistro.php");
 require_once('../vendor/tecnickcom/tcpdf/tcpdf.php'); //TODO para generea mi PDF
+require_once ('../vendor/autoload.php'); // Incluye la librería TCPDF
+ 
+
 
 $interMovilregistro = new Intermovilregistro();
 
@@ -635,4 +638,127 @@ switch ($_GET["op"]) {
 
 
         /*TODO AHORA GUARDAMOS EL TICKETE */
+        case "guardar_ticket":
+            // Obtener los datos enviados por el formulario
+            $ticketNumber = $_POST['ticketNumber'];
+            $fecha = $_POST['fecha'];
+            $horaIngreso = $_POST['horaIngreso'];
+            $coti_id = $_POST['coti_id']; // Componente Específico (Cotización ID)
+            $cantidad = $_POST['cantidad'];
+            $pers_id = $_POST['pers_id']; // Aquí debería venir el `pers_id` (ID de la persona), no el DNI
+            $direct_id = $_POST['direct_id']; // Responsable (Director ID)
+            $inun_id = $_POST['inun_id']; // ID del Ingreso Unidad
+        
+            // Validar los campos obligatorios
+            if (empty($fecha) || empty($horaIngreso) || empty($coti_id) || empty($cantidad) || empty($pers_id) || empty($direct_id) || empty($inun_id)) {
+                echo json_encode(['success' => false, 'message' => 'Faltan datos para completar la solicitud.']);
+                exit; // Detener ejecución si falta algún dato
+            }
+        
+            // Llamar al modelo para guardar el ticket
+            $nuevoTicket = $interMovilregistro->guardarTicket($ticketNumber, $fecha, $horaIngreso, $coti_id, $cantidad, $pers_id, $direct_id, $inun_id);
+        
+            if ($nuevoTicket) {
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'No se pudo guardar el ticket.']);
+            }
+            break;
+        
+
+
+        /*TODO generamos el pdf */
+        case "generar_ticket_pdf":
+            if (!isset($_GET['ticketNumber'])) {
+                echo "Error: No se proporcionó el número de ticket.";
+                exit;
+            }
+        
+            $ticketNumber = $_GET['ticketNumber'];
+        
+            // Obtener los datos del ticket
+            $ticketData = $interMovilregistro->getTicketByNumber($ticketNumber);
+        
+            if (!$ticketData) {
+                echo "Error: No se encontró el ticket con el número proporcionado.";
+                exit;
+            }
+        
+            // Obtener los datos del componente
+            $componenteData = $interMovilregistro->getComponenteById($ticketData['coti_id']);
+        
+            if (!$componenteData) {
+                echo "Error: No se encontró información del componente.";
+                exit;
+            }
+        
+            // Crear el PDF con TCPDF
+            require_once('../vendor/tecnickcom/tcpdf/tcpdf.php');
+            $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
+        
+            $pdf->SetCreator(PDF_CREATOR);
+            $pdf->SetTitle('Ticket de Dotación');
+            $pdf->SetHeaderData('', '', 'MUNICIPALIDAD PROVINCIAL DE CHICLAYO', 'Servicios Internos');
+        
+            // Configuración de fuentes y márgenes
+            $pdf->setHeaderFont([PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN]);
+            $pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
+            $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+            $pdf->SetMargins(15, 27, 15);
+            $pdf->SetHeaderMargin(5);
+            $pdf->SetFooterMargin(10);
+            $pdf->SetAutoPageBreak(TRUE, 25);
+            $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        
+            // Añadir una página
+            $pdf->AddPage();
+        
+            // Contenido del PDF
+            $html = '<h2 style="text-align:center">TICKET DE DOTACIÓN</h2>';
+            $html .= '<table border="1" cellpadding="5">
+                        <tr>
+                            <th>Nº de Ticket</th>
+                            <td>' . $ticketData['tickdo_numtick'] . '</td>
+                        </tr>
+                        <tr>
+                            <th>Fecha</th>
+                            <td>' . $ticketData['tickdo_fecha'] . '</td>
+                        </tr>
+                        <tr>
+                            <th>Hora de Ingreso</th>
+                            <td>' . $ticketData['tickdo_hora'] . '</td>
+                        </tr>
+                        <tr>
+                            <th>Componente Específico</th>
+                            <td>' . $componenteData['coti_descrip'] . '</td>
+                        </tr>
+                        <tr>
+                            <th>Tipo de Componente</th>
+                            <td>' . $componenteData['comp_descr'] . '</td>
+                        </tr>
+                        <tr>
+                            <th>Cantidad</th>
+                            <td>' . $ticketData['tickdo_cantidad'] . '</td>
+                        </tr>
+                        <tr>
+                            <th>Chofer</th>
+                            <td>' . $ticketData['nombre_chofer'] . '</td>
+                        </tr>
+                        <tr>
+                            <th>Responsable</th>
+                            <td>' . $ticketData['nombre_responsable'] . '</td>
+                        </tr>
+                        <tr>
+                            <th>Unidad ID</th>
+                            <td>' . $ticketData['inun_id'] . '</td>
+                        </tr>
+                    </table>';
+        
+            $pdf->writeHTML($html, true, false, true, false, '');
+        
+            // Salida del PDF
+            $pdf->Output('ticket_dotacion.pdf', 'I');
+            break;
+        
+        
 }

@@ -618,32 +618,92 @@ ORDER BY iu.inun_fecha desc";
     
     
 /*TODO GUARDAR TICKETE */
-public function guardarTicketDotacion($ticketNumber, $fecha, $hora, $coti_id, $cantidad, $pers_id, $direct_id, $inun_id) {
+public function guardarTicket($ticketNumber, $fecha, $horaIngreso, $coti_id, $cantidad, $pers_id, $direct_id, $inun_id) {
     $con = parent::conexion();
     parent::set_names();
 
-    // Insertar el ticket en la tabla tb_ticket_dotacion
-    $sql = "INSERT INTO sc_residuos_solidos.tb_ticket_dotacion
-            (tickdo_numtick, tickdo_fecha, tickdo_hora, coti_id, tickdo_cantidad, pers_id, direct_id, inun_id, tickdo_estado)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'A')";  // Estado activo 'A'
-
+    // Consulta SQL para insertar el nuevo ticket
+    $sql = "INSERT INTO sc_residuos_solidos.tb_ticket_dotacion 
+            (tickdo_numtick, tickdo_fecha, tickdo_hora, coti_id, tickdo_cantidad, pers_id, direct_id, inun_id, tickdo_estado) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'A')"; // 'A' representa el estado Activo
     $stmt = $con->prepare($sql);
     $stmt->bindValue(1, $ticketNumber);
     $stmt->bindValue(2, $fecha);
-    $stmt->bindValue(3, $hora);
-    $stmt->bindValue(4, $coti_id); // El componente específico
+    $stmt->bindValue(3, $horaIngreso);
+    $stmt->bindValue(4, $coti_id);
     $stmt->bindValue(5, $cantidad);
-    $stmt->bindValue(6, $pers_id); // Chofer
-    $stmt->bindValue(7, $direct_id); // Responsable
-    $stmt->bindValue(8, $inun_id);  // ID de unidad (inun_id)
+    $stmt->bindValue(6, $pers_id); // Aquí se guarda el `pers_id` (ID de la persona, no el DNI)
+    $stmt->bindValue(7, $direct_id);
+    $stmt->bindValue(8, $inun_id);
 
-    // Ejecutar la consulta e insertar el ticket
     if ($stmt->execute()) {
         return true;
     } else {
         return false;
     }
 }
+
+/* TODO taremos el componente y tipo en  PDF  */
+  // Obtener el ticket por número 
+  public function getTicketByNumber($ticketNumber) {
+    $con = parent::conexion();
+    parent::set_names();
+
+    $sql = "SELECT 
+                t.tickdo_numtick,
+                t.tickdo_fecha,
+                t.tickdo_hora,
+                t.coti_id,
+                t.tickdo_cantidad,
+                p.pers_id,
+                CONCAT(p.pers_nombre, ' ', p.pers_apelpat, ' ', p.pers_apelmat) AS nombre_chofer,
+                d.direct_id,
+                CONCAT(d.direct_nombre, ' ', d.direct_apelpat, ' ', d.direct_apelmat) AS nombre_responsable,
+                t.inun_id,
+                c.coti_descrip AS componente_especifico,
+                comp.comp_descrip AS tipo_componente
+            FROM 
+                sc_residuos_solidos.tb_ticket_dotacion t
+            JOIN 
+                sc_escalafon.tb_persona p ON t.pers_id = p.pers_id
+            JOIN 
+                sc_residuos_solidos.tb_directorio d ON t.direct_id = d.direct_id
+            JOIN 
+                sc_residuos_solidos.tb_componente_tipos c ON t.coti_id = c.coti_id
+            JOIN 
+                sc_residuos_solidos.tb_componente comp ON c.comp_id = comp.comp_id
+            WHERE 
+                t.tickdo_numtick = ?";
+    
+    $stmt = $con->prepare($sql);
+    $stmt->bindValue(1, $ticketNumber);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
+
+
+
+// Obtener la descripción del componente y tipo de componente
+public function getComponenteById($coti_id) {
+    $con = parent::conexion();
+    parent::set_names();
+
+    // Consulta que une las tablas `tb_componente` y `tb_componente_tipos`
+    $sql = "SELECT coti.coti_descrip, comp.comp_descr
+            FROM sc_residuos_solidos.tb_componente_tipos AS coti
+            JOIN sc_residuos_solidos.tb_componente AS comp ON coti.comp_id = comp.comp_id
+            WHERE coti.coti_id = ?";
+
+    $stmt = $con->prepare($sql);
+    $stmt->bindValue(1, $coti_id);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 
      
     
