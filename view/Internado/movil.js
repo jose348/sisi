@@ -149,14 +149,14 @@
          cssClass: 'wizard wizard-style-2',
          onStepChanging: function(event, currentIndex, newIndex) {
              // Aquí puedes cambiar los íconos según el índice del paso
-             var iconSteps = ['fa-car', 'fa-credit-card', 'fa-check-circle', 'fa-car']; // Añade tus íconos aquí
+             var iconSteps = ['fa-car', 'fa-credit-card', 'fa-check-circle']; // Añade tus íconos aquí
              $('#wizard1 .steps ul li').each(function(index) {
                  $(this).find('.icon i').attr('class', 'fa ' + iconSteps[index]);
              });
              return true;
          },
          onInit: function(event, currentIndex) {
-             var iconSteps = ['fa-car', 'fa-credit-card', 'fa-check-circle', 'fa-car']; // Añade tus íconos aquí
+             var iconSteps = ['fa-car', 'fa-credit-card', 'fa-check-circle']; // Añade tus íconos aquí
              $('#wizard1 .steps ul li').each(function(index) {
                  $(this).find('.icon i').attr('class', 'fa ' + iconSteps[index]);
              });

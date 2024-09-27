@@ -154,8 +154,9 @@
           </div><!-- menu-item -->
         </a><!-- br-menu-link -->
         <ul class="br-menu-sub nav flex-column">
+          <li class="nav-item"><a href="../Internado/" class="nav-link ">Movil</a></li>
+          <li class="nav-item"><a href="../Internado/mecanico.php" class="nav-link ">Mecanico/Mantenimiento</a></li>
         <li class="nav-item"><a href="../Internado/Directorio.php" class="nav-link ">Directorio</a></li>
-        <li class="nav-item"><a href="../Internado/" class="nav-link ">Movil</a></li>
         <li class="nav-item"><a href="../Internado/bitacoraInternado.php" class="nav-link ">Bitacora</a></li>
           
         </ul>

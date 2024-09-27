@@ -58,7 +58,7 @@ if (isset($_SESSION["id"])) {
                 <span class="breadcrumb-item active">Registro</span>
             </div><!-- br-pageheader -->
 
-            <div class="br-pagebody row">
+            <div class=" row">
                 <div class="br-section-wrapper container">
                     <p class="tx-16 tx-uppercase tx-spacing-1 mg-t-1 mg-b-2 tx-gray-600 text-center">
                         INTERNAMIENTO DE VEHICULOS - MPCH - DIRECTORIO

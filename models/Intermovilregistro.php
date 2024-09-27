@@ -625,7 +625,7 @@ public function guardarTicket($ticketNumber, $fecha, $horaIngreso, $coti_id, $ca
     // Consulta SQL para insertar el nuevo ticket
     $sql = "INSERT INTO sc_residuos_solidos.tb_ticket_dotacion 
             (tickdo_numtick, tickdo_fecha, tickdo_hora, coti_id, tickdo_cantidad, pers_id, direct_id, inun_id, tickdo_estado) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'A')"; // 'A' representa el estado Activo
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'P')"; // 'A' representa el estado Activo
     $stmt = $con->prepare($sql);
     $stmt->bindValue(1, $ticketNumber);
     $stmt->bindValue(2, $fecha);
@@ -649,39 +649,34 @@ public function guardarTicket($ticketNumber, $fecha, $horaIngreso, $coti_id, $ca
     $con = parent::conexion();
     parent::set_names();
 
-    $sql = "SELECT 
-                t.tickdo_numtick,
-                t.tickdo_fecha,
-                t.tickdo_hora,
-                t.coti_id,
-                t.tickdo_cantidad,
-                p.pers_id,
-                CONCAT(p.pers_nombre, ' ', p.pers_apelpat, ' ', p.pers_apelmat) AS nombre_chofer,
-                d.direct_id,
-                CONCAT(d.direct_nombre, ' ', d.direct_apelpat, ' ', d.direct_apelmat) AS nombre_responsable,
-                t.inun_id,
-                c.coti_descrip AS componente_especifico,
-                comp.comp_descrip AS tipo_componente
-            FROM 
-                sc_residuos_solidos.tb_ticket_dotacion t
-            JOIN 
-                sc_escalafon.tb_persona p ON t.pers_id = p.pers_id
-            JOIN 
-                sc_residuos_solidos.tb_directorio d ON t.direct_id = d.direct_id
-            JOIN 
-                sc_residuos_solidos.tb_componente_tipos c ON t.coti_id = c.coti_id
-            JOIN 
-                sc_residuos_solidos.tb_componente comp ON c.comp_id = comp.comp_id
-            WHERE 
-                t.tickdo_numtick = ?";
-    
+    // Consulta mejorada para obtener los datos del ticket, incluyendo la información de la unidad
+    $sql = "SELECT td.tickdo_numtick,
+                   td.tickdo_fecha,
+                   td.tickdo_hora,
+                   td.tickdo_cantidad,
+                   tu.tiun_descripcion || ' - ' || mo.mode_descripcion || ' - ' || n.unid_placa || ' - ' || n.unid_motor AS movilidad, 
+                   p.pers_nombre || ' ' || p.pers_apelpat || ' ' || p.pers_apelmat AS nombre_chofer, 
+                   resp.pers_nombre || ' ' || resp.pers_apelpat || ' ' || resp.pers_apelmat AS nombre_responsable, 
+                   ct.coti_descrip AS componente_especifico,
+                   comp.comp_descrip AS tipo_componente
+            FROM sc_residuos_solidos.tb_ticket_dotacion td
+            JOIN sc_escalafon.tb_persona p ON td.pers_id = p.pers_id
+            JOIN sc_residuos_solidos.tb_directorio d ON td.direct_id = d.direct_id
+            JOIN sc_escalafon.tb_persona resp ON d.pers_id = resp.pers_id
+            JOIN sc_residuos_solidos.tb_componente_tipos ct ON td.coti_id = ct.coti_id
+            JOIN sc_residuos_solidos.tb_componente comp ON ct.comp_id = comp.comp_id
+            JOIN sc_residuos_solidos.tb_ingreso_unidad iu ON td.inun_id = iu.inun_id
+            JOIN sc_residuos_solidos.tb_unidad n ON iu.unid_id = n.unid_id
+            JOIN sc_residuos_solidos.tb_tipo_unidad tu ON n.tiun_id = tu.tiun_id
+            JOIN sc_residuos_solidos.tb_modelo mo ON n.mode_id = mo.mode_id
+            WHERE td.tickdo_numtick = ?";
+
     $stmt = $con->prepare($sql);
     $stmt->bindValue(1, $ticketNumber);
     $stmt->execute();
 
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-
 
 
 
