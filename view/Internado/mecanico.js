@@ -1,3 +1,5 @@
+function init() {}
+
 $(document).ready(function() {
     // Inicializar funciones
     combo_motivo_de_mantenimiento();
@@ -242,3 +244,57 @@ document.getElementById('foto-salida-vehiculo').addEventListener('change', funct
         }
     }
 });
+
+
+
+/*TODO VALIDEMOS el formulario */
+function validarFormulario() {
+    // Validar campos obligatorios
+    let fecha = document.getElementById("fecha").value;
+    let hora = document.getElementById("hora").value;
+    let mecanico_id = document.getElementById("mecanico_id").value;
+    let diagnostico = document.getElementById("diagnostico").value;
+    let accion = document.getElementById("accion").value;
+    let tercerizarSi = document.getElementById("tercerizar-si").checked;
+    let empresa = document.getElementById("empresa").value;
+    let informe = document.getElementById("informe").value;
+
+    // Campos de imagenes
+    let fotoVehiculo = document.getElementById("foto-vehiculo").value;
+    let imagenSalida = document.getElementById("imagen-salida").value;
+
+    // Validaciones básicas
+    if (fecha === "" || hora === "" || mecanico_id === "" || diagnostico === "" || accion === "") {
+        alert("Por favor, completa todos los campos obligatorios.");
+        return;
+    }
+
+    // Si el usuario selecciona "Sí" en tercerización, validar los campos relacionados
+    if (tercerizarSi && (empresa === "" || informe === "")) {
+        alert("Por favor, completa los campos de tercerización.");
+        return;
+    }
+
+    // Validar tipos de archivo de imágenes (solo JPG, PNG, JPEG)
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (fotoVehiculo && !validImageTypes.includes(document.getElementById("foto-vehiculo").files[0].type)) {
+        alert("Solo se permiten imágenes en formato JPG, PNG o JPEG.");
+        return;
+    }
+
+    if (imagenSalida && !validImageTypes.includes(document.getElementById("imagen-salida").files[0].type)) {
+        alert("Solo se permiten imágenes en formato JPG, PNG o JPEG.");
+        return;
+    }
+
+    // Si todo está validado, enviar el formulario
+    guardarFormulario();
+}
+
+
+
+
+
+
+
+init();

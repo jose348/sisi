@@ -383,6 +383,13 @@ class Intermovilregistro  extends Conectar
         }
     }
 
+
+
+
+
+
+
+
     public function combo_tipo_busquedad()
     {
         $con = parent::conexion();
@@ -416,38 +423,10 @@ class Intermovilregistro  extends Conectar
         return $resultado = $sql->fetchAll();
     }
 
+    
 
-    public function listar_bitacora()
-    {
-        $con = parent::conexion();
-        parent::set_names();
-        $sql = "SELECT u.unid_placa, tu.tiun_descripcion, mo.mode_descripcion, ma.marc_descripcion,
-	   iu.inun_fecha,iu.inun_diagnostico,iu.inun_fecha_diagnostico_especializado,
-		pm.prma_fecha
-	FROM sc_residuos_solidos.tb_unidad u
-				inner join sc_residuos_solidos.tb_tipo_unidad tu on 
-				u.tiun_id = tu.tiun_id
-				inner join sc_residuos_solidos.tb_modelo mo on
-				u.mode_id=mo.mode_id
-				inner join sc_residuos_solidos.tb_marca ma on
-				mo.marc_id=ma.marc_id
-				inner join sc_residuos_solidos.tb_ingreso_unidad iu on
-				u.unid_id=iu.unid_id
-				inner join sc_residuos_solidos.tb_programacion_mantenimiento pm on
-				u.unid_id=pm.unid_id
-ORDER BY iu.inun_fecha desc";
-        // Preparar la consulta
-        $sql = $con->prepare($sql);
-
-        // Ejecutar la consulta
-        $sql->execute();
-
-        // Obtener los resultados como array asociativo
-        $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-        // Retornar los resultados para usarlos en el controlador o vista
-        return $resultado;
-    }
+   
+    
 
 
 

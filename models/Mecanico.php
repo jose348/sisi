@@ -14,7 +14,6 @@ class Mecanico  extends Conectar
         return $resultado = $sql->fetchAll();
     }
 
-
     // Función para buscar ticketclass Mecanico extends Conectar {
     // Función para buscar ticket
     public function buscar_ticket($ticketNumber)
@@ -56,8 +55,6 @@ class Mecanico  extends Conectar
         return $stmt->execute();
     }
 
-
-
     // Función para obtener los mecánicos
     public function combo_mecanicos()
     {
@@ -74,4 +71,11 @@ class Mecanico  extends Conectar
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /*TODO GUARDAMOS FORMULARIO  */
+     
+
+  
+    
+    
 }

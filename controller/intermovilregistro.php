@@ -456,80 +456,13 @@ switch ($_GET["op"]) {
         }
         break;
 
+       
+      
 
-    case "listar_bitacora":
-        // Llamamos a la función listar_bitacora del modelo
-        $datos = $interMovilregistro->listar_bitacora();
-
-        $data = array();
-
-        // Recorremos los resultados y los formateamos en un array asociativo
-        foreach ($datos as $row) {
-            $sub_array = array();
+      
 
 
-            $dropdown = '<style>
-    /* Reducimos el padding y el margin dentro del dropdown */
-    .dropdown-menu {
-          padding: 10px;
-        margin: 5px;
-        min-width: 53px; /* Evita que el dropdown tenga un ancho mínimo */
-    }
-
-    /* Ajustamos los botones dentro del dropdown para que no agreguen espacio innecesario */
-    .dropdown-item button {
-         
-        width: 50%; /* Asegura que el botón ocupe todo el ancho disponible */
-        padding: 50px; /* Reduce el padding para que no se vea tan grande */
-    }
-</style>
-
-                <div class="dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton_' . $row['unid_placa'] . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-cogs"></i>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_' . $row['unid_placa'] . '">
-                        <a class=" " href="#" onclick="verVehiculo(\'' . $row['unid_placa'] . '\')">
-                            <button class="btn btn-outline-info btn-sm">
-                                <i class="fa fa-eye"></i>
-                            </button>
-                        </a>
-                        <a class="" href="#" onclick="pdfVehiculo(\'' . $row['unid_placa'] . '\')">
-                            <button class="btn btn-outline-danger btn-sm">
-                                <i class="fa fa-file-pdf-o"></i>
-                            </button>
-                        </a>
-                        
-                    </div>
-                </div>';
-            // Agregamos el dropdown a la primera columna
-            $sub_array[] = $dropdown; // Dropdown con acciones
-
-            $sub_array[] = $row["unid_placa"]; // Placa del vehículo
-            $sub_array[] = $row["tiun_descripcion"]; // Tipo de Unidad
-            $sub_array[] = $row["mode_descripcion"]; // Modelo
-            $sub_array[] = $row["marc_descripcion"]; // Marca
-            $sub_array[] = $row["inun_fecha"]; // Fecha de Ingreso
-            $sub_array[] = $row["inun_diagnostico"]; // Diagnóstico
-            $sub_array[] = $row["inun_fecha_diagnostico_especializado"]; // Fecha del Diagnóstico Especializado
-            $sub_array[] = $row["prma_fecha"]; // Fecha del Diagnóstico Especializado
-
-            // Agregamos este conjunto de datos al array de resultados
-            $data[] = $sub_array;
-        }
-
-        // Formato de salida para DataTables
-        $results = array(
-            "sEcho" => 1, // Información para DataTables
-            "iTotalRecords" => count($data), // Total de registros
-            "iTotalDisplayRecords" => count($data), // Total de registros a mostrar
-            "aaData" => $data // Datos formateados para mostrar
-        );
-
-        // Devolvemos los resultados en formato JSON
-        echo json_encode($results);
-        break;
-
+ 
 
 
 

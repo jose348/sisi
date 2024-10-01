@@ -33,7 +33,6 @@ switch ($_GET["op"]) {
         }
         break;
 
-
     case "actualizar_estado_ticket":
         $ticketNumber = $_POST['ticketNumber'];
         $response = $mecanico->actualizar_estado_ticket($ticketNumber, 'R'); // Cambiar estado a 'R' (Recibido)
@@ -44,7 +43,6 @@ switch ($_GET["op"]) {
             echo 'error';
         }
         break;
-
 
 
         // Combo para cargar los mecánicos
@@ -58,4 +56,9 @@ switch ($_GET["op"]) {
             echo $html;
         }
         break;
+
+
+        /*TODO GUARDAR FORMULARIO */
+ 
+        
 }

@@ -262,13 +262,13 @@ if (isset($_SESSION["id"])) {
                                     <div class="row">
                                         <!-- Contenedor para la vista previa de la imagen -->
                                         <div class="col-md-12 mb-3">
-                                        <label for="foto-vehiculo" class="form-label">Foto de cómo ingresa el vehículo:</label>
+                                            <label for="foto-vehiculo" class="form-label">Foto de cómo ingresa el vehículo:</label>
 
                                             <div class="col-md-3 mb-3">
-                                               
+
 
                                                 <!-- Botón personalizado para cargar imagen -->
-                                                <button type="button" class="btn btn-primary" onclick="document.getElementById('foto-vehiculo').click();">Cargar Imagen</button>
+                                                <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('foto-vehiculo').click();">Cargar Imagen</button>
 
                                                 <!-- Input de archivo oculto -->
                                                 <input type="file" id="foto-vehiculo" name="foto-vehiculo" class="form-control d-none" accept="image/*">
@@ -288,7 +288,7 @@ if (isset($_SESSION["id"])) {
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalLabel">Vista Ampliada</h5>
+                                                        <h5 class="modal-title" id="modalLabel">Vista Ampliada de Ingreso del Vehiculo</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -364,10 +364,7 @@ if (isset($_SESSION["id"])) {
 
 
                                             </div>
-                                            <!-- Botón cargar para empresa tercerizada -->
-                                            <div class="col-md-12 text-center">
-                                                <button type="submit" class="btn btn-primary">Cargar</button>
-                                            </div>
+
                                         </div>
 
 
@@ -375,29 +372,45 @@ if (isset($_SESSION["id"])) {
 
                                         <!-- Contenedor para la vista previa de la imagen -->
                                         <div class="col-md-12 mb-3">
-                                            <label for="imagen-salida" class="form-label">Foto de cómo sale el vehículo:</label>
+                                            <div class="col-md-3 mb-3">
+                                                <label for="imagen-salida" class="form-label">Foto de cómo sale el vehículo:</label>
 
-                                            <!-- Botón personalizado para cargar imagen -->
-                                            <button type="button" class="btn btn-primary" onclick="document.getElementById('imagen-salida').click();">Cargar Imagen</button>
+                                                <!-- Botón personalizado para cargar imagen -->
+                                                <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('imagen-salida').click();">Cargar Imagen</button>
 
-                                            <!-- Input de archivo oculto -->
-                                            <input type="file" id="imagen-salida" name="imagen-salida" class="form-control d-none" accept="image/*">
+                                                <!-- Input de archivo oculto -->
+                                                <input type="file" id="imagen-salida" name="imagen-salida" class="form-control d-none" accept="image/*">
 
-                                            <!-- Mostrar el nombre de la imagen seleccionada -->
-                                            <span id="imagen-salida-nombre" class="mt-2 d-block"></span>
+                                                <!-- Mostrar el nombre de la imagen seleccionada -->
+                                                <span id="imagen-salida-nombre" class="mt-2 d-block"></span>
 
-                                            <!-- Contenedor para la vista previa de la imagen -->
-                                            <div class="mt-3">
-                                                <img id="preview-imagen-salida" src="" alt="Vista previa" style="display: none; max-width: 150px; height: auto; border: 1px solid #ddd; padding: 5px;" onclick="openModal('imagen-salida-modal')">
+                                                <!-- Contenedor para la vista previa de la imagen -->
+                                                <div class="mt-3">
+                                                    <img id="preview-imagen-salida" src="" alt="Vista previa" style="display: none; max-width: 150px; height: auto; border: 1px solid #ddd; padding: 5px;" onclick="openModal('imagen-salida-modal')">
+                                                </div>
                                             </div>
                                         </div>
+
+
+
+                                        <div class="col-md-12 mb-3">
+                                            <div class="d-flex justify-content-center mt-4">
+                                                <button type="button" class="btn btn-outline-info mx-2" onclick="validarFormulario()">Guardar</button>
+
+                                            </div>
+                                        </div>
+
+
+
+
+
 
                                         <!-- Modal para agrandar la imagen -->
                                         <div class="modal fade" id="imagen-salida-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalLabel">Vista Ampliada</h5>
+                                                        <h5 class="modal-title" id="modalLabel">Vista Ampliada del Resultado del Vehiculo</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -406,7 +419,7 @@ if (isset($_SESSION["id"])) {
                                                         <img id="modal-imagen-salida" src="" alt="Vista ampliada" style="max-width: 100%; height: auto;">
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -416,6 +429,8 @@ if (isset($_SESSION["id"])) {
 
 
                         </form>
+
+                        
                     </div>
                 </div>
             </div>

@@ -6,7 +6,8 @@ session_start();
         protected function Conexion(){
 
     $host="localhost";
-    $host="192.168.12.77";
+    $host="192.168.12.77"; // pruebas 
+    // $host="10.10.10.9"; // produccion
     $dbname="dbsimcix";
     $username="postgres";
     $password="sgd*2024";
