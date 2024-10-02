@@ -403,11 +403,11 @@ class Intermovilregistro  extends Conectar
 
     public function combo_modelo_busquedad()
     {
-        $conectar = parent::conexion();
+        $con = parent::conexion();
         parent::set_names();
         $sql = "SELECT * FROM sc_residuos_solidos.tb_modelo where   mode_estado=1
         ORDER BY mode_id ASC ";
-        $sql = $conectar->prepare($sql);
+        $sql = $con->prepare($sql);
 
         $sql->execute();
         return $resultado = $sql->fetchAll();
@@ -679,6 +679,11 @@ public function getComponenteById($coti_id) {
 }
 
 
-     
+
+ 
+
+
+
+ 
     
 }

@@ -254,10 +254,10 @@ if (isset($_SESSION["id"])) {
 
                         <!-- Formulario detallado que se muestra al seleccionar y recibir ticket -->
                         <!-- Formulario principal con nuevo diseño estilo card -->
-                        <form id="detalle-form" class="hidden mt-4">
+                        <form id="detalle-form" class="hidden mt-4" >
                             <div class="card" style="max-width: 1000px; margin: 0 auto; border: 1px solid #007bff; background-color: #f8f9fa; box-shadow: 0px 4px 6px rgba(0, 123, 255, 0.1);">
                                 <div class="card-body">
-                                    <h5 class="card-title text-center">Detalles de Mantenimiento</h5>
+                                    <h5 class="card-title text-center">Detalles del Taller</h5>
 
                                     <div class="row">
                                         <!-- Contenedor para la vista previa de la imagen -->

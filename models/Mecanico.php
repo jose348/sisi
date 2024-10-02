@@ -73,9 +73,50 @@ class Mecanico  extends Conectar
     }
 
     /*TODO GUARDAMOS FORMULARIO  */
-     
+   
 
-  
+    public function insertar_mantenimiento(
+        $fecha, $hora, $mecanico_id, $diagnostico, $accion, $esme_id, 
+        $foto_vehiculo, $imagen_salida, $tickdo_id, $tercerizar, $empresa, $informe
+    ) {
+        $con = parent::conexion();
+        parent::set_names();
+
+        // Construimos la consulta SQL
+        $sql = "INSERT INTO sc_residuos_solidos.tb_mantenimiento (
+                    mant_fech, mant_hora, direct_id, mant_diagnostico_especializado, mant_accion_realizada, 
+                    esme_id, mant_img_inicial, mant_img_final, tickdo_id, mant_empresa_terceriza, mant_informe_tercerizado, mant_estado
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // Preparar la declaración
+        $stmt = $con->prepare($sql);
+
+        // Estado por defecto "activo"
+        $mant_estado = 'activo';
+
+        // Asignamos null a la empresa e informe si no se tercerizó
+        if ($tercerizar !== 'si') {
+            $empresa = null;
+            $informe = null;
+        }
+
+        // Asignamos los valores a la declaración
+        $stmt->bindParam(1, $fecha);
+        $stmt->bindParam(2, $hora);
+        $stmt->bindParam(3, $mecanico_id);
+        $stmt->bindParam(4, $diagnostico);
+        $stmt->bindParam(5, $accion);
+        $stmt->bindParam(6, $esme_id);
+        $stmt->bindParam(7, $foto_vehiculo);         // Imagen inicial
+        $stmt->bindParam(8, $imagen_salida);         // Imagen final
+        $stmt->bindParam(9, $tickdo_id);             // ID del ticket
+        $stmt->bindParam(10, $empresa);              // Empresa tercerizada (opcional)
+        $stmt->bindParam(11, $informe, PDO::PARAM_LOB); // Informe en formato binario (opcional)
+        $stmt->bindParam(12, $mant_estado);          // Estado del mantenimiento ("activo")
+
+        // Ejecutar la consulta
+        return $stmt->execute();
+    }
     
     
 }

@@ -86,7 +86,8 @@ document.getElementById('imagen-salida').addEventListener('change', function() {
 
 /* Función para manejar el cambio en el combo */
 document.getElementById('esme_id').addEventListener('change', function() {
-    if (this.value === '4') { // Cambia '4' por el esme_id correspondiente a 'Componentes'
+    if (this.value === '12') { // Cambia '12' por el esme_id correspondiente a 'Componentes en la base de dato de prueba'
+        // if (this.value === '4') { // Cambia '4' por el esme_id correspondiente a Componentes en la bd '
         document.getElementById('ticket-section').classList.remove('hidden');
         document.getElementById('ticket-details').classList.add('hidden'); // Ocultar los detalles si ya se habían mostrado
         document.getElementById('detalle-form').classList.add('hidden'); // Ocultar el formulario detallado inicialmente
@@ -101,14 +102,17 @@ document.getElementById('esme_id').addEventListener('change', function() {
 
 // Función para buscar el ticket
 // Función para buscar el ticket y mostrar la tabla
+
+
+// Función para buscar el ticket y mostrar la tabla
 function buscarTicket() {
     const ticketInput = document.getElementById('ticket').value;
 
     if (ticketInput) {
         // Llamada AJAX para buscar el ticket
         $.post("../../controller/mecanico.php?op=buscar_ticket", { ticketNumber: ticketInput }, function(response) {
-            if (response) {
-                const ticketData = JSON.parse(response); // Parsear el JSON recibido
+            if (response !== "false") { // Verificamos si la respuesta no es "false"
+                const ticketData = JSON.parse(response); // Parseamos el JSON recibido
 
                 // Mostrar detalles del ticket
                 document.getElementById('ticket-num').innerText = ticketData.tickdo_numtick;
@@ -132,13 +136,18 @@ function buscarTicket() {
                     document.getElementById('btn-editar').classList.add('hidden'); // Ocultar botón "Editar"
                 }
             } else {
-                Swal.fire('Error', 'Ticket no encontrado.', 'error');
+                // Si no se encuentra el ticket, mostramos la alerta
+                Swal.fire('Error', 'El número de ticket no existe.', 'error');
             }
         });
     } else {
         Swal.fire('Advertencia', 'Por favor, ingrese un número de ticket.', 'warning');
     }
 }
+
+
+
+
 
 // Mostrar el formulario detallado cuando se haga clic en "Recibir Ticket" o "Editar"
 function mostrarFormulario() {
@@ -248,49 +257,53 @@ document.getElementById('foto-salida-vehiculo').addEventListener('change', funct
 
 
 /*TODO VALIDEMOS el formulario */
+
+
+// Validar tamaño de imágenes y PDFs
 function validarFormulario() {
-    // Validar campos obligatorios
-    let fecha = document.getElementById("fecha").value;
-    let hora = document.getElementById("hora").value;
-    let mecanico_id = document.getElementById("mecanico_id").value;
-    let diagnostico = document.getElementById("diagnostico").value;
-    let accion = document.getElementById("accion").value;
-    let tercerizarSi = document.getElementById("tercerizar-si").checked;
-    let empresa = document.getElementById("empresa").value;
-    let informe = document.getElementById("informe").value;
+    let formData = new FormData(document.getElementById('detalle-form'));
 
-    // Campos de imagenes
-    let fotoVehiculo = document.getElementById("foto-vehiculo").value;
-    let imagenSalida = document.getElementById("imagen-salida").value;
+    let fotoVehiculo = document.getElementById('foto_vehiculo').files[0];
+    let imagenSalida = document.getElementById('imagen_salida').files[0];
+    let informe = document.getElementById('informe').files[0];
 
-    // Validaciones básicas
-    if (fecha === "" || hora === "" || mecanico_id === "" || diagnostico === "" || accion === "") {
-        alert("Por favor, completa todos los campos obligatorios.");
+    // Validación de tamaño de archivos
+    if (fotoVehiculo && fotoVehiculo.size > 2 * 1024 * 1024) {
+        Swal.fire('Error', 'La imagen inicial del vehículo no debe exceder los 2MB.');
         return;
     }
 
-    // Si el usuario selecciona "Sí" en tercerización, validar los campos relacionados
-    if (tercerizarSi && (empresa === "" || informe === "")) {
-        alert("Por favor, completa los campos de tercerización.");
+    if (imagenSalida && imagenSalida.size > 2 * 1024 * 1024) {
+        Swal.fire('Error', 'La imagen de salida del vehículo no debe exceder los 2MB.');
         return;
     }
 
-    // Validar tipos de archivo de imágenes (solo JPG, PNG, JPEG)
-    const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-    if (fotoVehiculo && !validImageTypes.includes(document.getElementById("foto-vehiculo").files[0].type)) {
-        alert("Solo se permiten imágenes en formato JPG, PNG o JPEG.");
+    if (informe && informe.size > 2 * 1024 * 1024) {
+        Swal.fire('Error', 'El informe no debe exceder los 2MB.');
         return;
     }
 
-    if (imagenSalida && !validImageTypes.includes(document.getElementById("imagen-salida").files[0].type)) {
-        alert("Solo se permiten imágenes en formato JPG, PNG o JPEG.");
-        return;
-    }
-
-    // Si todo está validado, enviar el formulario
-    guardarFormulario();
+    // Enviar datos
+    $.ajax({
+        url: '../../controller/mecanico.php?op=guardar_formulario_mantenimiento',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            const res = JSON.parse(response);
+            if (res.status === 'success') {
+                Swal.fire('¡Éxito!', res.message, 'success');
+                // Recargar o limpiar el formulario
+            } else {
+                Swal.fire('Error', res.message, 'error');
+            }
+        },
+        error: function(err) {
+            Swal.fire('Error', 'Hubo un problema al enviar el formulario.', 'error');
+        }
+    });
 }
-
 
 
 

@@ -423,41 +423,11 @@ switch ($_GET["op"]) {
         break;
 
 
-    case "combo_tipo_unidad_busquedad":
-        $datos = $interMovilregistro->combo_tipo_busquedad();
-        if (is_array($datos) == true and count($datos) > 0) {
-            $html = "<option label='Seleccione Especialidad'></option>";
-            foreach ($datos as $row) {
-                $html .= "<option value='" . $row['tiun_id'] . "'>" . $row['tiun_descripcion'] . "</option>";
-            }
-            echo $html;
-        }
-        break;
-
-    case "combo_modelo_busquedad":
-        $datos = $interMovilregistro->combo_modelo_busquedad();
-        if (is_array($datos) == true  and count($datos) > 0) {
-            $html = " <option label='Seleccione'></option>";
-            foreach ($datos as $row) {
-                $html .= "<option value='" . $row['mode_id'] . "'>" . $row['mode_descripcion'] . "</option>";
-            }
-            echo $html;
-        }
-        break;
-
-    case "combo_marca_busquedad":
-        $datos = $interMovilregistro->combo_marca_busquedad();
-        if (is_array($datos) == true  and count($datos) > 0) {
-            $html = " <option label='Seleccione'></option>";
-            foreach ($datos as $row) {
-                $html .= "<option value='" . $row['marc_id'] . "'>" . $row['marc_descripcion'] . "</option>";
-            }
-            echo $html;
-        }
-        break;
-
-       
+ 
       
+        
+
+
 
       
 

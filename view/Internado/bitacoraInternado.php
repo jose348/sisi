@@ -77,7 +77,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                                 </div>
                                 <div class="col-md-3 mt-4">
                                     <label for="modelo" class="search-title">Modelo</label>
-                                    <select id="mode_id1" name="mode_id1" class="form-control select2"></select>
+                                    <select id="mode_id" name="mode_id" class="form-control select2"></select>
                                 </div>
                                 <div class="col-md-3 mt-4">
                                     <label for="marca" class="search-title">Marca</label>
@@ -90,7 +90,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                             </div>
                         </form>
 
-                        <table id="bitacoraTable" class="display" style="width:100%">
+                        <table  id="bitacoraTable" class="display" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Acciones</th>
@@ -105,7 +105,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                                     <th>Mantenimiento</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            
                         </table>
 
 
@@ -122,6 +122,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
         <?php
 
         require_once("../Js/MainJs.php");
+        require_once("bitacoraInternadoModal.php");
 
 
 
