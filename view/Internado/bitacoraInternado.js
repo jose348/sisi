@@ -4,22 +4,20 @@ function init() {}
 
 $(document).ready(function() {
 
-    // Inicialización del DataTable
     var table = $('#bitacoraTable').DataTable({
         "aProcessing": true,
         "aServerSide": true,
         dom: 'Bfrtip',
         buttons: [],
-        "searching": true,
+        "searching": false,
         "ajax": {
             url: "../../controller/bita.php?op=listar_bitacora",
             type: "post",
             data: function(d) {
-                // Pasar los valores del formulario de búsqueda al backend
                 d.tiun_id = $('#tiun_id').val();
                 d.mode_id = $('#mode_id').val();
                 d.marc_id = $('#marc_id').val();
-                d.placaUnidad = $('#placaUnidad').val(); // Agregamos el valor de placaUnidad
+                d.placaUnidad = $('#placaUnidad').val(); // Valor de placaUnidad
             }
         },
         "bDestroy": true,
@@ -39,20 +37,52 @@ $(document).ready(function() {
                 "sLast": "Último",
                 "sNext": "Siguiente",
                 "sPrevious": "Anterior"
-            },
-            "oAria": {
-                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
         }
     });
 
-    // Ejecutar la búsqueda cuando se cambie cualquier campo del formulario
-    $('#tiun_id, #mode_id, #marc_id, #placaUnidad').on('change', function() {
+    // Botón de búsqueda
+    $('#btnBuscar').on('click', function() {
         table.ajax.reload(); // Recargar la tabla con los nuevos datos
     });
 
-    // Llenar combos
+
+
+
+    // Generar reporte en PDF
+    $('#btnGenerarPDF').on('click', function() {
+        var tiun_id = $('#tiun_id').val();
+        var mode_id = $('#mode_id').val();
+        var marc_id = $('#marc_id').val();
+        var placaUnidad = $('#placaUnidad').val();
+        var fechaDesde = $('#fechaDesde').val();
+        var fechaHasta = $('#fechaHasta').val();
+
+        // Redirigir a la ruta para generar el reporte en PDF
+        window.open(`../../controller/bita.php?op=generar_reporte_pdf&tiun_id=${tiun_id}&mode_id=${mode_id}&marc_id=${marc_id}&placaUnidad=${placaUnidad}&fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`, '_blank');
+    });
+
+    // Generar reporte en Excel
+    $('#btnGenerarExcel').on('click', function() {
+        var tiun_id = $('#tiun_id').val();
+        var mode_id = $('#mode_id').val();
+        var marc_id = $('#marc_id').val();
+        var placaUnidad = $('#placaUnidad').val();
+        var fechaDesde = $('#fechaDesde').val();
+        var fechaHasta = $('#fechaHasta').val();
+
+        // Redirigir a la ruta para generar el reporte en Excel
+        window.open(`../../controller/bita.php?op=generar_reporte_excel&tiun_id=${tiun_id}&mode_id=${mode_id}&marc_id=${marc_id}&placaUnidad=${placaUnidad}&fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`, '_blank');
+    });
+
+
+
+
+
+
+
+
+    // Llenar los combos
     $('#tiun_id').select2({
         dropdownParent: $('#formBusqueda')
     });
@@ -67,12 +97,6 @@ $(document).ready(function() {
         dropdownParent: $('#formBusqueda')
     });
     combo_tipo_unidad_busquedad();
-
-
-
-
-
-
 
 });
 

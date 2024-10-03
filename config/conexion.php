@@ -12,12 +12,7 @@ session_start();
  $password="postgres";
 
 
-
-    //$host="192.168.12.77"; // pruebas 
-    // $host="10.10.10.9"; // produccion
-    //$dbname="dbsimcix";
-    //$username="postgres";
-    //$password="sgd*2024";
+ 
 
     try{
         $conectar=$this->dbh=new PDO("pgsql:host=$host; dbname=$dbname", $username,$password);
@@ -28,14 +23,13 @@ session_start();
         }
            
         }
-
-        public function set_names(){
-            return $this->dbh->query("SET NAME 'utf8");
+        public function set_names() {
+            return $this->dbh->query("SET NAMES 'utf8'");
         }
 
         public static function ruta(){
             return "http://localhost/sisi/";
-            //cambiamos por el url del servidor a correr
+             
         }
     }
 

@@ -44,5 +44,10 @@ class Bitacora extends Conectar
         return $resultado = $sql->fetchAll();
     }
 
+
+
+
+    
+
 }
 ?>
