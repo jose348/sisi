@@ -255,12 +255,22 @@ if (isset($_SESSION["id"])) {
                         <form id="detalle-form" enctype="multipart/form-data" method="POST" class=" -extra-largeform">
                             <div>
                                 <!-- Botón para abrir el modal -->
-                                <button type="button" class="btn btn-oblong btn-indigo " data-toggle="modal" data-target="#vehiculoModal">
-                                    <i class="fa fa-car"></i> Vehiculo Ingresado
-                                </button>
-                                <div id="titulo-vehiculo-seleccionado" style="font-size: 18px; font-weight: bold; color: #007bff; text-align: center;">
-                                    <!-- Aquí aparecerá el nombre del vehículo seleccionado -->
+                                <div class="row">
+                                    <div class="col-2">
+                                        <button type="button" class="btn btn-oblong btn-indigo" data-toggle="modal" data-target="#vehiculoModal">
+                                            <i class="fa fa-car"></i> Vehiculo Ingresado
+                                        </button>
+                                    </div>
+                                    <div class="col-10">
+                                        <div id="titulo-vehiculo-seleccionado" style="font-size: 18px; font-weight: bold; color: #007bff; text-align: right;">
+                                            <!-- Aquí aparecerá el nombre del vehículo seleccionado -->
+                                        </div>
+
+                                    </div>
+
                                 </div>
+
+
 
                                 <br><br>
 
@@ -286,9 +296,9 @@ if (isset($_SESSION["id"])) {
                                                                 }
                                                             </style>
                                                             <th></th>
-                                                            <th style="width: 100px; text-align: center; ">Nombre de Unidad</th>
-                                                            <th style="width: 5%; text-align: center;">Fecha Ingreso</th>
-                                                            <th style="width: 5%; text-align: center;">Hora Ingreso</th>
+                                                            <th style="width: 100p; text-align: center; ">Nombre de Unidad</th>
+                                                            <th style="width: 5p; text-align: center;">Fecha Ingreso</th>
+                                                            <th style="width: 5p; text-align: center;">Hora Ingreso</th>
 
                                                         </tr>
                                                     </thead>
@@ -313,7 +323,7 @@ if (isset($_SESSION["id"])) {
                                 <div class="card" style="max-width: 1000px; margin: 0 auto; border: 1px solid #007bff; background-color: #f8f9fa; box-shadow: 0px 4px 6px rgba(0, 123, 255, 0.1);">
                                     <br>
                                     <div class="card-body">
-                                        <h5 class="card-title text-center">Detalles del Taller</h5>
+                                        <h5 class="card-title text-center">DETALLES DEL TALLER</h5>
 
                                         <!-- Campo oculto para guardar el inun_id seleccionado -->
                                         <input type="hidden" id="inun_id" name="inun_id">

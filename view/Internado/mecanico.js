@@ -69,10 +69,9 @@ $(document).ready(function() {
         });
     }
 
+    // Confirmar la selección de unidad
     $('#confirmarSeleccionUnidad').click(function() {
-        // Obtener el ID de la unidad seleccionada
         const selectedUnidad = $('input[name="unidad_seleccionada"]:checked').val();
-
         // Obtener el nombre del vehículo seleccionado (de la segunda columna)
         const selectedVehiculo = $('input[name="unidad_seleccionada"]:checked').closest('tr').find('td:nth-child(2)').text();
 
@@ -92,7 +91,7 @@ $(document).ready(function() {
         } else {
             alert("Por favor, selecciona una unidad.");
         }
-    })
+    });
 
 
 
