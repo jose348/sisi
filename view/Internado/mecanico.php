@@ -252,189 +252,204 @@ if (isset($_SESSION["id"])) {
                             }
                         </style>
 
-                        <!-- Formulario detallado que se muestra al seleccionar y recibir ticket -->
-                        <!-- Formulario principal con nuevo diseño estilo card -->
-                        <form id="detalle-form" class="hidden mt-4" >
-                            <div class="card" style="max-width: 1000px; margin: 0 auto; border: 1px solid #007bff; background-color: #f8f9fa; box-shadow: 0px 4px 6px rgba(0, 123, 255, 0.1);">
-                                <div class="card-body">
-                                    <h5 class="card-title text-center">Detalles del Taller</h5>
+                        <form id="detalle-form" enctype="multipart/form-data" method="POST" class=" -extra-largeform">
+                            <div>
+                                <!-- Botón para abrir el modal -->
+                                <button type="button" class="btn btn-oblong btn-indigo " data-toggle="modal" data-target="#vehiculoModal">
+                                    <i class="fa fa-car"></i> Vehiculo Ingresado
+                                </button>
+                                <div id="titulo-vehiculo-seleccionado" style="font-size: 18px; font-weight: bold; color: #007bff; text-align: center;">
+                                    <!-- Aquí aparecerá el nombre del vehículo seleccionado -->
+                                </div>
 
-                                    <div class="row">
-                                        <!-- Contenedor para la vista previa de la imagen -->
-                                        <div class="col-md-12 mb-3">
-                                            <label for="foto-vehiculo" class="form-label">Foto de cómo ingresa el vehículo:</label>
+                                <br><br>
 
+
+
+                                <div class="modal fade" id="vehiculoModal" tabindex="-1" role="dialog" aria-labelledby="vehiculoModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="vehiculoModalLabel">Ingreso de Vehículos</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table id="tabla-ingreso-vehiculos" class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <style>
+                                                                #tabla-ingreso-vehiculos {
+                                                                    font-size: 18px;
+                                                                    /* Ajusta el tamaño de la fuente */
+                                                                }
+                                                            </style>
+                                                            <th></th>
+                                                            <th style="width: 100px; text-align: center; ">Nombre de Unidad</th>
+                                                            <th style="width: 5%; text-align: center;">Fecha Ingreso</th>
+                                                            <th style="width: 5%; text-align: center;">Hora Ingreso</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody style="text-align: center;">
+                                                        <!-- Aquí se cargan los datos de la tabla mediante AJAX -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                <button type="button" class="btn btn-primary" id="confirmarSeleccionUnidad">Confirmar Selección</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <!-- Formulario detallado que se muestra al seleccionar y recibir ticket -->
+                                <div class="card" style="max-width: 1000px; margin: 0 auto; border: 1px solid #007bff; background-color: #f8f9fa; box-shadow: 0px 4px 6px rgba(0, 123, 255, 0.1);">
+                                    <br>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center">Detalles del Taller</h5>
+
+                                        <!-- Campo oculto para guardar el inun_id seleccionado -->
+                                        <input type="hidden" id="inun_id" name="inun_id">
+
+                                        <div class="row">
+                                            <!-- Contenedor para la vista previa de la imagen -->
+                                            <div class="col-md-12 mb-3">
+                                                <label for="foto-vehiculo" class="form-label">Foto de cómo ingresa el vehículo:</label>
+                                                <div class="col-md-3 mb-3">
+                                                    <!-- Botón personalizado para cargar imagen -->
+                                                    <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('foto-vehiculo').click();" disabled>Cargar Imagen</button>
+                                                    <!-- Input de archivo oculto -->
+                                                    <input type="file" id="foto-vehiculo" name="foto-vehiculo" class="form-control d-none" accept="image/*" disabled>
+                                                    <!-- Mostrar el nombre de la imagen seleccionada -->
+                                                    <span id="foto-vehiculo-nombre" class="mt-2 d-block"></span>
+                                                    <!-- Contenedor para la vista previa de la imagen con un enlace para agrandar -->
+                                                    <div class="mt-3">
+                                                        <img id="preview-foto-vehiculo" src="" alt="Vista previa" style="display: none; max-width: 150px; height: auto; border: 1px solid #ddd; padding: 5px;" onclick="openModal('foto-vehiculo-modal')" disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Modal para agrandar la imagen -->
+                                            <div class="modal fade" id="foto-vehiculo-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="modalLabel">Vista Ampliada de Ingreso del Vehiculo</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body text-center">
+                                                            <img id="modal-foto-vehiculo" src="" alt="Vista ampliada" style="max-width: 100%; height: auto;">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" disabled>Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fecha y Hora en la misma fila -->
                                             <div class="col-md-3 mb-3">
-
-
-                                                <!-- Botón personalizado para cargar imagen -->
-                                                <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('foto-vehiculo').click();">Cargar Imagen</button>
-
-                                                <!-- Input de archivo oculto -->
-                                                <input type="file" id="foto-vehiculo" name="foto-vehiculo" class="form-control d-none" accept="image/*">
-
-                                                <!-- Mostrar el nombre de la imagen seleccionada -->
-                                                <span id="foto-vehiculo-nombre" class="mt-2 d-block"></span>
-
-                                                <!-- Contenedor para la vista previa de la imagen con un enlace para agrandar -->
-                                                <div class="mt-3">
-                                                    <img id="preview-foto-vehiculo" src="" alt="Vista previa" style="display: none; max-width: 150px; height: auto; border: 1px solid #ddd; padding: 5px;" onclick="openModal('foto-vehiculo-modal')">
-                                                </div>
+                                                <label for="fecha" class="form-label">Fecha:</label>
+                                                <input type="date" id="fecha" name="fecha" class="form-control" disabled>
                                             </div>
-                                        </div>
-
-                                        <!-- Modal para agrandar la imagen -->
-                                        <div class="modal fade" id="foto-vehiculo-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalLabel">Vista Ampliada de Ingreso del Vehiculo</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body text-center">
-                                                        <img id="modal-foto-vehiculo" src="" alt="Vista ampliada" style="max-width: 100%; height: auto;">
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-
-                                        <!-- Fecha y Hora en la misma fila -->
-                                        <div class="col-md-3 mb-3">
-                                            <label for="fecha" class="form-label">Fecha:</label>
-                                            <input type="date" id="fecha" name="fecha" class="form-control">
-                                        </div>
-                                        <div class="col-md-3 mb-3">
-                                            <label for="hora" class="form-label">Hora:</label>
-                                            <input type="time" id="hora" name="hora" class="form-control">
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label for="mecanico_id" class="form-label">Nombre del Mecánico:</label>
-                                            <select id="mecanico_id" name="mecanico_id" class="form-control">
-                                                <option value="">Seleccione un mecánico</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- Diagnóstico especializado -->
-                                        <div class="col-md-12 mb-3">
-                                            <label for="diagnostico" class="form-label">Diagnóstico especializado:</label>
-                                            <textarea id="diagnostico" name="diagnostico" class="form-control" rows="3"></textarea>
-                                        </div>
-
-                                        <!-- Acción realizada -->
-                                        <div class="col-md-12 mb-3">
-                                            <label for="accion" class="form-label">Acción realizada:</label>
-                                            <textarea id="accion" name="accion" class="form-control" rows="3"></textarea>
-                                        </div>
-
-                                        <!-- Sección de tercerización en línea -->
-                                        <div class="col-md-6 mb-3 d-flex align-items-center justify-content-between">
-                                            <label for="tercerizar" class="form-label">¿Se Tercerizar?</label>
-                                            <div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" id="tercerizar-si" name="tercerizar" value="si" onclick="toggleEmpresa(true)">
-                                                    <label class="form-check-label" for="tercerizar-si">Sí</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" id="tercerizar-no" name="tercerizar" value="no" onclick="toggleEmpresa(false)">
-                                                    <label class="form-check-label" for="tercerizar-no">No</label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Formulario de empresa (inicialmente oculto) -->
-                                        <div class="col-md-6 mb-3 hidden mt-3" id="empresa-section">
-                                            <div class="row">
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="empresa" class="form-label">Empresa tercerizada:</label>
-                                                    <input type="text" id="empresa" name="empresa" class="form-control">
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="informe" class="form-label">Cargar informe:</label>
-                                                    <input type="file" id="informe" name="informe" class="form-control" accept=".pdf,.doc,.docx">
-                                                </div>
-
-
-                                            </div>
-
-                                        </div>
-
-
-
-
-                                        <!-- Contenedor para la vista previa de la imagen -->
-                                        <div class="col-md-12 mb-3">
                                             <div class="col-md-3 mb-3">
-                                                <label for="imagen-salida" class="form-label">Foto de cómo sale el vehículo:</label>
-
-                                                <!-- Botón personalizado para cargar imagen -->
-                                                <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('imagen-salida').click();">Cargar Imagen</button>
-
-                                                <!-- Input de archivo oculto -->
-                                                <input type="file" id="imagen-salida" name="imagen-salida" class="form-control d-none" accept="image/*">
-
-                                                <!-- Mostrar el nombre de la imagen seleccionada -->
-                                                <span id="imagen-salida-nombre" class="mt-2 d-block"></span>
-
-                                                <!-- Contenedor para la vista previa de la imagen -->
-                                                <div class="mt-3">
-                                                    <img id="preview-imagen-salida" src="" alt="Vista previa" style="display: none; max-width: 150px; height: auto; border: 1px solid #ddd; padding: 5px;" onclick="openModal('imagen-salida-modal')">
-                                                </div>
+                                                <label for="hora" class="form-label">Hora:</label>
+                                                <input type="time" id="hora" name="hora" class="form-control" disabled>
                                             </div>
-                                        </div>
 
-
-
-                                        <div class="col-md-12 mb-3">
-                                            <div class="d-flex justify-content-center mt-4">
-                                                <button type="button" class="btn btn-outline-info mx-2" onclick="validarFormulario()">Guardar</button>
-
+                                            <div class="col-md-6 mb-3">
+                                                <label for="mecanico_id" class="form-label">Nombre del Mecánico:</label>
+                                                <select id="mecanico_id" name="mecanico_id" class="form-control" disabled>
+                                                    <option value="">Seleccione un mecánico</option>
+                                                </select>
                                             </div>
-                                        </div>
 
+                                            <!-- Diagnóstico especializado -->
+                                            <div class="col-md-12 mb-3">
+                                                <label for="diagnostico" class="form-label">Diagnóstico especializado:</label>
+                                                <textarea id="diagnostico" name="diagnostico" class="form-control" rows="3" disabled></textarea>
+                                            </div>
 
+                                            <!-- Acción realizada -->
+                                            <div class="col-md-12 mb-3">
+                                                <label for="accion" class="form-label">Acción realizada:</label>
+                                                <textarea id="accion" name="accion" class="form-control" rows="3" disabled></textarea>
+                                            </div>
 
-
-
-
-                                        <!-- Modal para agrandar la imagen -->
-                                        <div class="modal fade" id="imagen-salida-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalLabel">Vista Ampliada del Resultado del Vehiculo</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
+                                            <!-- Sección de tercerización en línea -->
+                                            <div class="col-md-6 mb-3 d-flex align-items-center justify-content-between">
+                                                <label for="tercerizar" class="form-label">¿Se Tercerizar?</label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" id="tercerizar-si" name="tercerizar" value="si" onclick="toggleEmpresa(true)" disabled>
+                                                        <label class="form-check-label" for="tercerizar-si">Sí</label>
                                                     </div>
-                                                    <div class="modal-body text-center">
-                                                        <img id="modal-imagen-salida" src="" alt="Vista ampliada" style="max-width: 100%; height: auto;">
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" id="tercerizar-no" name="tercerizar" value="no" onclick="toggleEmpresa(false)" disabled>
+                                                        <label class="form-check-label" for="tercerizar-no">No</label>
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <!-- Formulario de empresa (inicialmente oculto) -->
+                                            <div class="col-md-6 mb-3 hidden mt-3" id="empresa-section">
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="empresa" class="form-label">Empresa tercerizada:</label>
+                                                        <input type="text" id="empresa" name="empresa" class="form-control" disabled>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="informe" class="form-label">Cargar informe:</label>
+                                                        <input type="file" id="informe" name="informe" class="form-control" accept=".pdf,.doc,.docx" disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Contenedor para la vista previa de la imagen -->
+                                            <div class="col-md-12 mb-3">
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="imagen-salida" class="form-label">Foto de cómo sale el vehículo:</label>
+                                                    <!-- Botón personalizado para cargar imagen -->
+                                                    <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('imagen-salida').click();" disabled>Cargar Imagen</button>
+                                                    <!-- Input de archivo oculto -->
+                                                    <input type="file" id="imagen-salida" name="imagen-salida" class="form-control d-none" accept="image/*" disabled>
+                                                    <!-- Mostrar el nombre de la imagen seleccionada -->
+                                                    <span id="imagen-salida-nombre" class="mt-2 d-block"></span>
+                                                    <!-- Contenedor para la vista previa de la imagen -->
+                                                    <div class="mt-3">
+                                                        <img id="preview-imagen-salida" src="" alt="Vista previa" style="display: none; max-width: 150px; height: auto; border: 1px solid #ddd; padding: 5px;" onclick="openModal('imagen-salida-modal')" disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 mb-3">
+                                                <div class="d-flex justify-content-center mt-4">
+                                                    <button type="button" class="btn btn-outline-info mx-2" onclick="validarFormulario()" disabled>Guardar</button>
+                                                </div>
+                                            </div>
                                         </div>
-
-
-
-
+                                    </div>
+                                </div>
+                            </div>
                         </form>
 
-                        
+
                     </div>
+
+
                 </div>
             </div>
-            </form>
+        </div>
+        </form>
 
 
 

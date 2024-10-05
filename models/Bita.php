@@ -62,7 +62,7 @@ class Bita  extends Conectar
                 LEFT JOIN sc_residuos_solidos.tb_marca ma ON m.marc_id = ma.marc_id
                 LEFT JOIN sc_residuos_solidos.tb_programacion_mantenimiento pm ON i.prma_id = pm.prma_id
                 LEFT JOIN sc_residuos_solidos.tb_ticket_dotacion t ON i.inun_id = t.inun_id
-                LEFT JOIN sc_residuos_solidos.tb_mantenimiento tm ON t.tickdo_id = tm.tickdo_id
+                LEFT JOIN sc_residuos_solidos.tb_mantenimiento tm ON i.inun_id = tm.inun_id
                 WHERE 1=1"; // Condición inicial para evitar problemas con filtros opcionales
 
         // Aplicar los filtros condicionalmente
@@ -168,10 +168,10 @@ class Bita  extends Conectar
             LEFT JOIN sc_residuos_solidos.tb_marca ma ON m.marc_id = ma.marc_id
             LEFT JOIN sc_residuos_solidos.tb_programacion_mantenimiento pm ON i.prma_id = pm.prma_id
             LEFT JOIN sc_residuos_solidos.tb_ticket_dotacion t ON i.inun_id = t.inun_id
-            LEFT JOIN sc_residuos_solidos.tb_mantenimiento tm ON t.tickdo_id = tm.tickdo_id
+            LEFT JOIN sc_residuos_solidos.tb_mantenimiento tm ON i.inun_id = tm.inun_id
             LEFT JOIN sc_escalafon.tb_persona per ON t.pers_id = per.pers_id
             WHERE u.unid_id = ?
-            ORDER BY i.inun_fecha DESC";
+            ORDER BY i.inun_fecha DESC           ";
 
         $sql = $con->prepare($sql);
         $sql->bindValue(1, $unid_id, PDO::PARAM_INT);
@@ -179,9 +179,7 @@ class Bita  extends Conectar
         return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
-
-
+ 
     public function generarPDF($datos) {
         // Iniciar TCPDF en orientación horizontal (Landscape)
         $pdf = new TCPDF('L', 'mm', 'A4', true, 'UTF-8', false);
@@ -205,8 +203,11 @@ class Bita  extends Conectar
         // Añadir página
         $pdf->AddPage();
     
-        // Título del PDF
-        $html = '<h1 style="color:#2E86C1;text-align:center;">Reporte de Bitácora</h1>';
+        // Encabezado del PDF con la Municipalidad y Servicios Internos
+        $html = '
+        <h2 style="color:#2E86C1;text-align:center;">Municipalidad Provincial de Chiclayo</h2>
+        <h4 style="color:#34495E;text-align:center;">Servicios Internos</h4>
+        <h1 style="color:#2E86C1;text-align:center;">Reporte de Bitácora</h1>';
     
         // Tabla de los datos
         $html .= '
@@ -261,6 +262,10 @@ class Bita  extends Conectar
         // Escribir el HTML en el PDF
         $pdf->writeHTML($html, true, false, true, false, '');
     
+        // Pie de página
+        $pdf->SetFooterMargin(15);
+        $pdf->SetFooterData('', '', 'Municipalidad Provincial de Chiclayo - Servicios Internos', '');
+    
         // Salida del PDF
         $pdf->Output('Reporte_Bitacora.pdf', 'I');
     }
@@ -269,31 +274,43 @@ class Bita  extends Conectar
     
 
 
-    // Generar Excel
+    // Generar Excelpublic function generarExcel($datos) {public function generarExcel($datos) {
+    // Crear un nuevo archivo de Excel
     public function generarExcel($datos) {
         // Crear un nuevo archivo de Excel
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
     
-        // Establecer el título
-        $sheet->setCellValue('A1', 'Reporte de Bitácora');
-        $sheet->mergeCells('A1:H1'); // Unir celdas para el título
-        $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(16);
+        // Encabezados de la Municipalidad y Servicios Internos
+        $sheet->setCellValue('A1', 'Municipalidad Provincial de Chiclayo');
+        $sheet->mergeCells('A1:H1'); // Unir celdas
+        $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(14);
         $sheet->getStyle('A1')->getAlignment()->setHorizontal('center');
     
-        // Encabezados
-        $headers = ['Placa', 'Tipo de Unidad', 'Modelo', 'Marca', 'Fecha de Ingreso', 'Fech de Programacion de Mant.', 'Ticket', 'Mantenimiento'];
+        $sheet->setCellValue('A2', 'Servicios Internos');
+        $sheet->mergeCells('A2:H2');
+        $sheet->getStyle('A2')->getFont()->setBold(true)->setSize(12);
+        $sheet->getStyle('A2')->getAlignment()->setHorizontal('center');
+    
+        // Establecer el título
+        $sheet->setCellValue('A3', 'Reporte de Bitácora');
+        $sheet->mergeCells('A3:H3'); // Unir celdas para el título
+        $sheet->getStyle('A3')->getFont()->setBold(true)->setSize(16);
+        $sheet->getStyle('A3')->getAlignment()->setHorizontal('center');
+    
+        // Encabezados de columnas
+        $headers = ['Placa', 'Tipo de Unidad', 'Modelo', 'Marca', 'Fecha de Ingreso', 'Fecha Prog. Mant.', 'Ticket', 'Mantenimiento'];
         $columnIndex = 'A';
     
         foreach ($headers as $header) {
-            $sheet->setCellValue($columnIndex . '3', $header);
-            $sheet->getStyle($columnIndex . '3')->getFont()->setBold(true);
-            $sheet->getStyle($columnIndex . '3')->getAlignment()->setHorizontal('center');
+            $sheet->setCellValue($columnIndex . '5', $header);
+            $sheet->getStyle($columnIndex . '5')->getFont()->setBold(true);
+            $sheet->getStyle($columnIndex . '5')->getAlignment()->setHorizontal('center');
             $columnIndex++;
         }
     
         // Datos
-        $rowIndex = 4;
+        $rowIndex = 6;
         foreach ($datos as $row) {
             $sheet->setCellValue('A' . $rowIndex, $row['unid_placa']);
             $sheet->setCellValue('B' . $rowIndex, $row['tiun_descripcion']);
@@ -318,6 +335,7 @@ class Bita  extends Conectar
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
     }
-    
+          
+
  
 }

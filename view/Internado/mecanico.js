@@ -1,26 +1,121 @@
 function init() {}
 
+
 $(document).ready(function() {
-    // Inicializar funciones
+    // Inicializamos los combos al cargar la página
     combo_motivo_de_mantenimiento();
-    cargarMecanicos();
+
+
+    // Al abrir el modal
+    $('#vehiculoModal').on('show.bs.modal', function() {
+
+        cargarIngresoVehiculos(); // Llamar la función cuando se abre el modal
+    });
+
+
+
+    function cargarIngresoVehiculos() {
+
+        // Limpiar la tabla antes de cargar los datos
+        $("#tabla-ingreso-vehiculos tbody").empty();
+
+        $.ajax({
+            url: "../../controller/mecanico.php?op=listar_ingresos", // Cambia esta ruta si es necesario
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+
+                $.each(data, function(index, item) {
+                    $("#tabla-ingreso-vehiculos tbody").append(
+                        "<tr>" +
+                        "<td><input type='radio' name='unidad_seleccionada' value='" + item.inun_id + "'></td>" + // Asegúrate de que estás usando la propiedad correcta
+                        "<td>" + item.vehiculo + "</td>" + // Cambiar a minúsculas
+                        "<td>" + item.fechadeingreso + "</td>" + // Cambiar a minúsculas
+                        "<td>" + item.horadeingreso + "</td>" + // Cambiar a minúsculas
+
+                        "</tr>"
+                    );
+                });
+
+
+
+                // Verificar si el DataTable ya ha sido inicializado
+                if ($.fn.dataTable.isDataTable('#tabla-ingreso-vehiculos')) {
+                    // Si ya ha sido inicializado, destruirlo antes de volver a inicializarlo
+                    $('#tabla-ingreso-vehiculos').DataTable().destroy();
+                }
+
+
+                // Inicializamos DataTables en la tabla después de cargar los datos
+                $('#tabla-ingreso-vehiculos').DataTable({
+                    "pageLength": 5, // Mostrar solo 5 filas por página
+                    "lengthChange": false, // Ocultar opción de cambiar número de filas visibles
+                    "language": {
+                        "search": "Buscar:", // Cambia la etiqueta del buscador
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Último",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        },
+                        "emptyTable": "No hay datos disponibles"
+                    }
+                });
+
+            },
+            error: function(xhr, status, error) {
+                console.error("Error al cargar los datos: " + error);
+            }
+        });
+    }
+
+    $('#confirmarSeleccionUnidad').click(function() {
+        // Obtener el ID de la unidad seleccionada
+        const selectedUnidad = $('input[name="unidad_seleccionada"]:checked').val();
+
+        // Obtener el nombre del vehículo seleccionado (de la segunda columna)
+        const selectedVehiculo = $('input[name="unidad_seleccionada"]:checked').closest('tr').find('td:nth-child(2)').text();
+
+        if (selectedUnidad) {
+            // Mostrar el nombre del vehículo seleccionado como título en el área indicada
+            $('#titulo-vehiculo-seleccionado').text(selectedVehiculo);
+
+            // Asignar el inun_id al campo hidden
+            $('#inun_id').val(selectedUnidad);
+
+            // Habilitar los campos del formulario
+            $('#detalle-form :input').prop('disabled', false); // Habilitar todos los campos
+
+            // Cerrar el modal
+            $('#vehiculoModal').modal('hide');
+
+        } else {
+            alert("Por favor, selecciona una unidad.");
+        }
+    })
+
+
+
+
+    /* Función para llenar el combo desde el controlador */
+    function combo_motivo_de_mantenimiento() {
+        $.post("../../controller/mecanico.php?op=combo_motivo_de_mantenimiento", function(data) {
+            $('#esme_id').html(data); // Cambia 'esme_id' por 'category' ya que estamos llenando el combo de categoría
+        });
+
+
+        $.post("../../controller/mecanico.php?op=combo_mecanicos", function(data) {
+            $('#mecanico_id').html(data); // Llenar el combo con los mecánicos
+        });
+    }
+
+
 });
 
 
 
 
 
-/* Función para llenar el combo desde el controlador */
-function combo_motivo_de_mantenimiento() {
-    $.post("../../controller/mecanico.php?op=combo_motivo_de_mantenimiento", function(data) {
-        $('#esme_id').html(data); // Cambia 'esme_id' por 'category' ya que estamos llenando el combo de categoría
-    });
-
-
-    $.post("../../controller/mecanico.php?op=combo_mecanicos", function(data) {
-        $('#mecanico_id').html(data); // Llenar el combo con los mecánicos
-    });
-}
 
 
 
@@ -86,19 +181,37 @@ document.getElementById('imagen-salida').addEventListener('change', function() {
 
 /* Función para manejar el cambio en el combo */
 document.getElementById('esme_id').addEventListener('change', function() {
-    if (this.value === '12') { // Cambia '12' por el esme_id correspondiente a 'Componentes en la base de dato de prueba'
-        // if (this.value === '4') { // Cambia '4' por el esme_id correspondiente a Componentes en la bd '
+    const selectedValue = this.value;
+
+    // Si el valor seleccionado es "COMPONENTES" o "CORRECTIVO" 
+
+    /*TODO OJO ACA LOS NMEROS SALEN DE LOS ID DE ESPECIALISDAD_MECANICA DE LA BASE DE DATOS */
+    /*TODO OJO ACA LOS NMEROS SALEN DE LOS ID DE ESPECIALISDAD_MECANICA DE LA BASE DE DATOS */
+    /*TODO OJO ACA LOS NMEROS SALEN DE LOS ID DE ESPECIALISDAD_MECANICA DE LA BASE DE DATOS */
+    /*TODO OJO ACA LOS NMEROS SALEN DE LOS ID DE ESPECIALISDAD_MECANICA DE LA BASE DE DATOS */
+    if (selectedValue === '12') {
+        // Mantén el comportamiento actual que ya tienes para "COMPONENTES" y "CORRECTIVO"
         document.getElementById('ticket-section').classList.remove('hidden');
         document.getElementById('ticket-details').classList.add('hidden'); // Ocultar los detalles si ya se habían mostrado
         document.getElementById('detalle-form').classList.add('hidden'); // Ocultar el formulario detallado inicialmente
         document.getElementById('recibir-section').classList.add('hidden'); // Ocultar el botón "Recibir" inicialmente
-    } else {
-        document.getElementById('ticket-section').classList.add('hidden');
+    } else if (selectedValue === '13') {
+
+        document.getElementById('ticket-section').classList.add('hidden'); // Ocultar la sección del ticket
         document.getElementById('ticket-details').classList.add('hidden'); // Ocultar los detalles del ticket
-        document.getElementById('detalle-form').classList.add('hidden'); // Ocultar el formulario detallado
-        document.getElementById('recibir-section').classList.add('hidden');
+        document.getElementById('detalle-form').classList.remove('hidden'); // Mostrar el formulario
+        document.getElementById('recibir-section').classList.add('hidden'); // Asegurarse de ocultar el botón "Recibir"
+    } else {
+        // Si es cualquier otra opción que no sea "COMPONENTES" o "CORRECTIVO"
+        document.getElementById('ticket-section').classList.add('hidden'); // Ocultar la sección del ticket
+        document.getElementById('ticket-details').classList.add('hidden'); // Ocultar los detalles del ticket
+        document.getElementById('detalle-form').classList.remove('hidden'); // Mostrar el formulario
+        document.getElementById('recibir-section').classList.add('hidden'); // Asegurarse de ocultar el botón "Recibir"
     }
 });
+
+
+
 
 // Función para buscar el ticket
 // Función para buscar el ticket y mostrar la tabla
@@ -256,34 +369,32 @@ document.getElementById('foto-salida-vehiculo').addEventListener('change', funct
 
 
 
-/*TODO VALIDEMOS el formulario */
 
-
-// Validar tamaño de imágenes y PDFs
+/* Validar y subir el formulario */
 function validarFormulario() {
     let formData = new FormData(document.getElementById('detalle-form'));
 
-    let fotoVehiculo = document.getElementById('foto_vehiculo').files[0];
-    let imagenSalida = document.getElementById('imagen_salida').files[0];
+    let fotoVehiculo = document.getElementById('foto-vehiculo').files[0];
+    let imagenSalida = document.getElementById('imagen-salida').files[0];
     let informe = document.getElementById('informe').files[0];
 
-    // Validación de tamaño de archivos
-    if (fotoVehiculo && fotoVehiculo.size > 2 * 1024 * 1024) {
+    // Validar tamaño de archivos
+    if (fotoVehiculo && fotoVehiculo.size > 4 * 1024 * 1024) {
         Swal.fire('Error', 'La imagen inicial del vehículo no debe exceder los 2MB.');
         return;
     }
 
-    if (imagenSalida && imagenSalida.size > 2 * 1024 * 1024) {
+    if (imagenSalida && imagenSalida.size > 4 * 1024 * 1024) {
         Swal.fire('Error', 'La imagen de salida del vehículo no debe exceder los 2MB.');
         return;
     }
 
-    if (informe && informe.size > 2 * 1024 * 1024) {
+    if (informe && informe.size > 4 * 1024 * 1024) {
         Swal.fire('Error', 'El informe no debe exceder los 2MB.');
         return;
     }
 
-    // Enviar datos
+    // Enviar datos usando AJAX
     $.ajax({
         url: '../../controller/mecanico.php?op=guardar_formulario_mantenimiento',
         type: 'POST',
@@ -294,19 +405,17 @@ function validarFormulario() {
             const res = JSON.parse(response);
             if (res.status === 'success') {
                 Swal.fire('¡Éxito!', res.message, 'success');
-                // Recargar o limpiar el formulario
+                document.getElementById('detalle-form').reset(); // Limpia el formulario
             } else {
                 Swal.fire('Error', res.message, 'error');
             }
         },
-        error: function(err) {
+        error: function(xhr, status, error) {
             Swal.fire('Error', 'Hubo un problema al enviar el formulario.', 'error');
+            console.error('Error AJAX:', error); // Añadido para depuración
         }
     });
 }
-
-
-
 
 
 

@@ -77,7 +77,7 @@ class Mecanico  extends Conectar
 
     public function insertar_mantenimiento(
         $fecha, $hora, $mecanico_id, $diagnostico, $accion, $esme_id, 
-        $foto_vehiculo, $imagen_salida, $tickdo_id, $tercerizar, $empresa, $informe
+        $foto_vehiculo, $imagen_salida, $tickdo_id, $empresa, $informe
     ) {
         $con = parent::conexion();
         parent::set_names();
@@ -95,7 +95,7 @@ class Mecanico  extends Conectar
         $mant_estado = 'activo';
 
         // Asignamos null a la empresa e informe si no se tercerizó
-        if ($tercerizar !== 'si') {
+        if (empty($empresa)) {
             $empresa = null;
             $informe = null;
         }
@@ -109,7 +109,7 @@ class Mecanico  extends Conectar
         $stmt->bindParam(6, $esme_id);
         $stmt->bindParam(7, $foto_vehiculo);         // Imagen inicial
         $stmt->bindParam(8, $imagen_salida);         // Imagen final
-        $stmt->bindParam(9, $tickdo_id);             // ID del ticket
+        $stmt->bindParam(9, $tickdo_id);             // ID del ticket (opcional)
         $stmt->bindParam(10, $empresa);              // Empresa tercerizada (opcional)
         $stmt->bindParam(11, $informe, PDO::PARAM_LOB); // Informe en formato binario (opcional)
         $stmt->bindParam(12, $mant_estado);          // Estado del mantenimiento ("activo")
@@ -119,4 +119,29 @@ class Mecanico  extends Conectar
     }
     
     
+
+
+
+    /*TODO LISTAR MI MODAL */
+
+      // Método para listar los ingresos de vehículos
+      public function listar_ingresos() {
+        $conectar = parent::conexion();
+        $sql = "SELECT (u.unid_placa ||'  '|| tu.tiun_descripcion ||'  '|| m.mode_descripcion||'  '|| ma.marc_descripcion )as Vehiculo ,
+                       (i.inun_fecha) as FechadeIngreso, 
+                        i.inun_hora as HoradeIngreso,
+                       i.inun_id
+                FROM sc_residuos_solidos.tb_ingreso_unidad i
+                LEFT JOIN sc_residuos_solidos.tb_unidad u ON i.unid_id = u.unid_id
+                LEFT JOIN sc_residuos_solidos.tb_tipo_unidad tu ON u.tiun_id = tu.tiun_id
+                LEFT JOIN sc_residuos_solidos.tb_modelo m ON u.mode_id = m.mode_id
+                LEFT JOIN sc_residuos_solidos.tb_marca ma ON m.marc_id = ma.marc_id
+                LEFT JOIN sc_residuos_solidos.tb_programacion_mantenimiento pm ON i.prma_id = pm.prma_id
+                LEFT JOIN sc_residuos_solidos.tb_ticket_dotacion t ON i.inun_id = t.inun_id
+                LEFT JOIN sc_residuos_solidos.tb_mantenimiento tm ON i.inun_id = tm.inun_id
+                ORDER BY i.inun_fecha desc ";
+        $stmt = $conectar->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
