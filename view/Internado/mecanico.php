@@ -266,6 +266,8 @@ if (isset($_SESSION["id"])) {
                                             <!-- Aquí aparecerá el nombre del vehículo seleccionado -->
                                         </div>
 
+
+
                                     </div>
 
                                 </div>
@@ -275,7 +277,10 @@ if (isset($_SESSION["id"])) {
                                 <br><br>
 
 
-
+                                <!-- TODO modal para tabla de vehiculos ingresados -->
+                                <!-- TODO modal para tabla de vehiculos ingresados -->
+                                <!-- TODO modal para tabla de vehiculos ingresados -->
+                                <!-- TODO modal para tabla de vehiculos ingresados -->
                                 <div class="modal fade" id="vehiculoModal" tabindex="-1" role="dialog" aria-labelledby="vehiculoModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
@@ -317,8 +322,127 @@ if (isset($_SESSION["id"])) {
 
 
 
+                                <!-- TODO modal para tabla de Repuesto -->
+                                <!-- TODO modal para tabla de Repuesto -->
+                                <!-- TODO modal para tabla de Repuesto -->
+                                <!-- TODO modal para tabla de Repuesto -->
+                                <div class="modal fade" id="almacenModal" tabindex="-1" role="dialog" aria-labelledby="almacenModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="almacenModalLabel">Almacen</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <style>
+                                                #repuesto_data {
+                                                    table-layout: fixed;
+                                                    /* Asegura que las columnas se ajusten al ancho especificado */
+                                                    word-wrap: break-word;
+                                                    /* Permite que el contenido largo se ajuste dentro de la columna */
+                                                }
+                                            </style>
+                                            <div class="modal-body">
+                                                <table id="repuesto_data" class="table table-bordered table-striped table-center js-dataTable-full text text-center" style="width: 100%;">
+                                                    <br>
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center" style="width: 20%;">Código</th>
+                                                            <th class="text-center" style="width: 40%;">Repuesto</th>
+                                                            <th class="text-center" style="width: 20%;">Stock</th>
+                                                            <th class="text-center" style="width: 20%;">Fecha Ingreso</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
 
+
+                                <!-- Modal para enviar solicitud a almacén -->
+                                <!-- Modal para enviar solicitud a almacén -->
+                                <!-- Modal para enviar solicitud a almacén -->
+                                <!-- Modal para enviar solicitud a almacén -->
+                                <!-- Modal para enviar solicitud a almacén -->
+                                <!-- Modal para enviar solicitud a almacén -->
+                                <style>
+                                    .modal-dialog {
+                                        max-width: 900px;
+                                        /* Ajusta este valor según lo que prefieras */
+                                        width: 100%;
+                                    }
+                                </style>
+                                <div class="modal fade " id="notificacionModal" tabindex="-1" role="dialog" aria-labelledby="notificacionModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="notificacionModalLabel">Enviar Solicitud a Almacén</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body ">
+                                                <form id="solicitud-almacen-form">
+                                                    <div class="row">
+                                                        <!-- Correlativo (se genera automáticamente) -->
+                                                        <div class="form-group  col-4">
+                                                            <label for="correlativo">Número de Solicitud</label>
+                                                            <input type="text" class="form-control" id="correlativo" name="correlativo" readonly>
+                                                        </div>
+                                                        <!-- Fecha de solicitud -->
+                                                        <div class="form-group  col-4">
+                                                            <label for="fecha-solicitud">Fecha de Solicitud</label>
+                                                            <input type="date" class="form-control" id="fecha-solicitud" name="fecha-solicitud" readonly>
+                                                        </div>
+
+                                                        <!-- Cantidad de repuestos -->
+                                                        <div class="form-group  col-4">
+                                                            <label for="cantidad-repuesto">Cantidad de Repuestos</label>
+                                                            <input type="number" class="form-control" id="cantidad-repuesto" name="cantidad-repuesto" min="1" required>
+                                                        </div>
+
+                                                        <!-- Combo para seleccionar el repuesto -->
+                                                        <div class="form-group col-12">
+                                                            <label for="repuesto">Repuesto</label>
+                                                            <select class="form-control" id="repuesto" name="repuesto" required></select>
+                                                        </div>
+                                                        <!-- Descripción de la solicitud -->
+                                                        <div class="form-group col-12">
+                                                            <label for="descripcion-solicitud">Descripción de la solicitud</label>
+                                                            <textarea class="form-control" id="descripcion-solicitud" name="descripcion-solicitud" rows="3" required></textarea>
+                                                        </div>
+
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                                <button type="submit" class="btn btn-primary" id="enviarSolicitudAlmacen">Enviar Solicitud</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                                <!-- Formulario detallado que se muestra al seleccionar y recibir ticket -->
+                                <!-- Formulario detallado que se muestra al seleccionar y recibir ticket -->
+                                <!-- Formulario detallado que se muestra al seleccionar y recibir ticket -->
+                                <!-- Formulario detallado que se muestra al seleccionar y recibir ticket -->
                                 <!-- Formulario detallado que se muestra al seleccionar y recibir ticket -->
                                 <div class="card" style="max-width: 1000px; margin: 0 auto; border: 1px solid #007bff; background-color: #f8f9fa; box-shadow: 0px 4px 6px rgba(0, 123, 255, 0.1);">
                                     <br>
@@ -389,8 +513,36 @@ if (isset($_SESSION["id"])) {
                                                 <textarea id="diagnostico" name="diagnostico" class="form-control" rows="3" disabled></textarea>
                                             </div>
 
+
+
+                                            <!-- Botón para la solicitud al almacén -->
+                                            <div id="solicitud-almacen" style="text-align: right; margin-top: 10px; display: none;">
+                                                <button type="button" class="btn btn-oblong btn-warning " data-toggle="modal" data-target="#almacenModal">
+                                                    <i class="fa fa-eye"></i> Ver Repuesto
+                                                </button>
+                                                <button t   ype="button" class="btn btn-oblong btn-warning" data-toggle="modal" data-target="#notificacionModal">
+                                                    <i class="fa fa-cogs"></i> Enviar Solicitud
+                                                </button>
+                                                <div id="titulo-repuesto-seleccionado" style="font-size: 18px; font-weight: bold; color: #007bff; text-align: right;">
+                                                    <!-- Aquí aparecerá el nombre del vehículo seleccionado -->
+                                                </div>
+
+                                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
                                             <!-- Acción realizada -->
                                             <div class="col-md-12 mb-3">
+                                                <br>
                                                 <label for="accion" class="form-label">Acción realizada:</label>
                                                 <textarea id="accion" name="accion" class="form-control" rows="3" disabled></textarea>
                                             </div>
@@ -450,6 +602,8 @@ if (isset($_SESSION["id"])) {
                                     </div>
                                 </div>
                             </div>
+
+
                         </form>
 
 

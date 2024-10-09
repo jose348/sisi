@@ -144,4 +144,59 @@ class Mecanico  extends Conectar
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+/* TODO LISTADO DE REPUESTO DE ALMACEN  */
+    public function listar_respuesto()
+    {
+        $conx = parent::conexion();
+        parent::set_names();
+        $sql = "SELECT tb_repuesto.repu_id,
+                        tb_repuesto.repu_codigo,
+	                    tb_repuesto.repu_descripcion,
+	                    tb_repuesto.alma_id,
+	                    
+	                    tb_repuesto.repu_stock,
+	                    tb_repuesto.repu_stock_total,
+	                    tb_repuesto.repu_ultimo_ingreso,
+	                    tb_repuesto.repu_situacion,
+                        tb_repuesto.unme_id
+	            FROM sc_residuos_solidos.tb_repuesto where repu_estado=1
+                ORDER BY repu_id desc";
+        $sql = $conx->prepare($sql);
+        $sql->execute();
+        return $resultado = $sql->fetchAll();
+    }
+
+
+    public function fetch_correlativo() {
+        $conectar = parent::conexion();
+        $sql = "SELECT MAX(sore_id) as max_id FROM sc_residuos_solidos.tb_solicitud_repuesto";
+        $stmt = $conectar->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        // Verifica si se obtuvo algún resultado
+        if ($result && isset($result['max_id'])) {
+            // Retorna el siguiente correlativo
+            return $result['max_id'] + 1;
+        } else {
+            // Si no hay registros, retorna 1 como primer correlativo
+            return 1;
+        }
+    }
+    
+    public function combolistarRepuestos() {
+        $conectar = parent::conexion();
+        $sql = "SELECT repu_id, repu_descripcion FROM sc_residuos_solidos.tb_repuesto WHERE repu_estado = 1";
+        $stmt = $conectar->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+
+    /*TODO EL MODELO  DE MI ENVIO Y GUARDADO DE MI SOLICITUD */
+     // Insertar la solicitud en tb_solicitud_repuesto 
+ 
 }

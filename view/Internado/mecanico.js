@@ -14,6 +14,90 @@ $(document).ready(function() {
 
 
 
+
+
+
+    $('#almacenModal').on('show.bs.modal', function() {
+
+        cargaAlmacen();
+    });
+
+    /* TODO tabla modal de respuestos */
+    /* TODO tabla modal de respuestos */
+    /* TODO tabla modal de respuestos */
+
+
+    function cargaAlmacen() {
+        $('#repuesto_data').DataTable({ //llamamos el nombre de la tabla
+
+            "aProcessing": true,
+            "aServerSide": true,
+            dom: 'Bfrtip',
+            buttons: [
+
+            ],
+            /* LLAMANDO LOS DATOS DE MI Controller / usuario osea mi json -- 
+               de este codigo case "listar_cursos": */
+
+
+            /* LLAMANDO MI JSON */
+            /* LLAMANDO MI JSON */
+            "ajax": {
+                url: "../../controller/mecanico.php?op=listarRepuestos", //ruta para recibir mi servicio que viene desde mi controller
+                type: "post" // tipo de envio 
+                    // data: { usu_id: usu_id }, //esta linea no porque en listar no tiene datos que enviar
+            },
+            /* LLAMANDO MI JSON */
+            /* LLAMANDO MI JSON */
+
+
+            "bDestroy": true,
+            "responsive": true,
+            "bInfo": false,
+            "iDisplayLength": 5, //filas a mostrar
+            "order": [
+                [0, "desc"]
+            ],
+            "language": {
+                "sSearch": "BUSCAR REPUESTO ",
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+
+                }
+            }
+
+        });
+        /* TODO tabla de respuestos */
+        /* TODO tabla de respuestos */
+        /* TODO tabla de respuestos */
+    }
+
+
+
+
+
+
+
+
+
     function cargarIngresoVehiculos() {
 
         // Limpiar la tabla antes de cargar los datos
@@ -79,6 +163,9 @@ $(document).ready(function() {
             // Mostrar el nombre del vehículo seleccionado como título en el área indicada
             $('#titulo-vehiculo-seleccionado').text(selectedVehiculo);
 
+            // Mostrar el botón de "Solicitud a Almacén"
+            $('#solicitud-almacen').show();
+
             // Asignar el inun_id al campo hidden
             $('#inun_id').val(selectedUnidad);
 
@@ -107,6 +194,71 @@ $(document).ready(function() {
             $('#mecanico_id').html(data); // Llenar el combo con los mecánicos
         });
     }
+
+
+
+
+    // Función para obtener el siguiente correlativo de la base de datos
+    function obtenerSiguienteCorrelativo() {
+        $.ajax({
+            url: "../../controller/mecanico.php?op=fetch_correlativo",
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                $('#correlativo').val(data.next_correlativo);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error al obtener correlativo: " + error);
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+    // Función para establecer la fecha actual
+    function establecerFechaActual() {
+        let hoy = new Date().toISOString().substr(0, 10);
+        $('#fecha-solicitud').val(hoy);
+    }
+
+    // Función para obtener la lista de repuestos y llenar el dropdown
+    function obtenerRepuestos() {
+        $.ajax({
+            url: "../../controller/mecanico.php?op=combolistarRepuestos",
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                let repuestoSelect = $('#repuesto');
+                repuestoSelect.empty();
+                $.each(data, function(index, item) {
+                    repuestoSelect.append(new Option(item.repu_descripcion, item.repu_id));
+                });
+                repuestoSelect.select2(); // Aplicar buscador (si estás usando select2)
+            },
+            error: function(xhr, status, error) {
+                console.error("Error al obtener repuestos: " + error);
+            }
+        });
+    }
+
+    // Al mostrar el modal, obtenemos el correlativo, fecha y lista de repuestos
+    $('#notificacionModal').on('show.bs.modal', function() {
+        obtenerSiguienteCorrelativo();
+        establecerFechaActual();
+        obtenerRepuestos();
+    });
+
+
+
+
+
+
+
 
 
 });
@@ -415,6 +567,12 @@ function validarFormulario() {
         }
     });
 }
+
+
+
+
+
+
 
 
 

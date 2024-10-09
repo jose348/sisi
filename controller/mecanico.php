@@ -114,20 +114,69 @@ switch ($_GET["op"]) {
         break;
 
 
-        // Operación que maneja la solicitud para listar ingresos de vehículos
 
 
-        case "listar_ingresos":
-            $datos = $mecanico->listar_ingresos();
-            echo json_encode($datos);
-             
+    case "listar_ingresos":
+        $datos = $mecanico->listar_ingresos();
+        echo json_encode($datos);
+
+        break;
+
+
+
+
+    case "listarRepuestos":
+        $datos = $mecanico->listar_respuesto();
+        foreach ($datos as $row) {
+            $sub_array = array();
+
+            $sub_array[] = strtoupper($row["repu_codigo"]);
+            $sub_array[] = strtoupper($row["repu_descripcion"]);
+            if ($row["repu_stock"] <= 5) {
+                $sub_array[] = '<button  class="alert alert-danger">' . $row["repu_stock"] . '</button>';
+            } else {
+                $sub_array[] = '<button class=" alert alert-success" >' . $row["repu_stock"] . '</button>';
+            }
+
+
+
+
+
+            $sub_array[] = $row["repu_ultimo_ingreso"];
+
+            $data[] = $sub_array;
+        }
+        $results = array(
+            "sEcho" => 1,
+            "iTotalRecords" => count($data),
+            "iTotalDisplayRecords" => count($data),
+            "aaData" => $data
+        );
+        echo json_encode($results);
+        break;
+
+
+        case "fetch_correlativo":
+            $next_correlativo = $mecanico->fetch_correlativo();
+            echo json_encode(["next_correlativo" => $next_correlativo]);
             break;
-        
-}
+    
+        case "combolistarRepuestos":
+            $repuestos = $mecanico->combolistarRepuestos();
+            echo json_encode($repuestos);
+            break;
 
 
 
 
+
+            /*TODO GUARDANDO y enviando la solicitud del repuesto  */
+             // Guardar solicitud en tb_solicitud_repuesto y tb_detalle_solicitud
+
+
+
+
+        }
 // Función para subir archivos y validarlos
 function subirArchivo($inputName, $extensionesValidas, $maxSize)
 {
@@ -150,7 +199,5 @@ function subirArchivo($inputName, $extensionesValidas, $maxSize)
         }
     }
     return null; // Si no hay archivo subido o no es obligatorio
-
-
 
 }
