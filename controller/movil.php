@@ -166,7 +166,7 @@ switch ($_GET["op"]) {
             $sub_array[] = $row["mode_descripcion"];
             $sub_array[] = $row["unid_adquisicion"];
             if ($row["unid_estado"] == "1") {
-                $sub_array[] = '<button  class="btn btn-oblong btn-success ">Activo</button>';
+                $sub_array[] = '<button  class="btn btn-oblong btn-warning ">Activo</button>';
             } else {
                 $sub_array[] = '<button  class="btn btn-oblong btn-danger  ">InActivo</button>';
             }

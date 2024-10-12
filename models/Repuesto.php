@@ -35,7 +35,7 @@ class Repuesto extends Conectar
         $sql->bindValue(7, $repu_ultimo_ingreso);
         $sql->bindValue(8, $unme_id);
 
-        $sql->execute();    
+        $sql->execute();
         return $resultado = $sql->fetchAll();
     }
 
@@ -377,27 +377,21 @@ class Repuesto extends Conectar
     {
         $conx = parent::conexion();
         parent::set_names();
-        $sql = "SELECT      				
-        tb_detalle_solicitud.deso_id,
-        tb_solicitud_repuesto.sore_id,
-        tb_solicitud_repuesto.sore_titulo, 
+        $sql = "SELECT  tb_solicitud_repuesto.sore_id,
         tb_repuesto.repu_id,
         tb_solicitud_repuesto.sore_estado,
+	tb_solicitud_repuesto.sore_cantidad,
         tb_repuesto.repu_descripcion,
         tb_solicitud_repuesto.sore_fecha,  
-        tb_detalle_solicitud.deso_cantidad,
-       tb_detalle_solicitud.deso_estado
-from        sc_residuos_solidos.tb_detalle_solicitud
+        tb_solicitud_repuesto.sore_titulo,  
+      tb_solicitud_repuesto.sore_estado
+from        sc_residuos_solidos.tb_solicitud_repuesto
 inner join  sc_residuos_solidos.tb_repuesto 
-on          sc_residuos_solidos.tb_detalle_solicitud.repu_id=
+on          sc_residuos_solidos.tb_solicitud_repuesto.repu_id=
         sc_residuos_solidos.tb_repuesto.repu_id
-inner join  sc_residuos_solidos.tb_solicitud_repuesto 
-on          sc_residuos_solidos.tb_detalle_solicitud.sore_id=
-        sc_residuos_solidos.tb_solicitud_repuesto.sore_id
-
-order by    deso_id desc";
+order by    sore_id desc";
         $sql = $conx->prepare($sql);
-     
+
         $sql->execute();
         return $resultado = $sql->fetchAll();
     }
@@ -408,7 +402,7 @@ order by    deso_id desc";
         $conx = parent::conexion();
         parent::set_names();
         $sql = "UPDATE sc_residuos_solidos.tb_solicitud_repuesto
-	    SET sore_estado=4
+	    SET sore_estado=0
 	    WHERE sore_id= ?";
         $sql = $conx->prepare($sql);
         $sql->bindValue(1, $sore_id);

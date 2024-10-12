@@ -156,27 +156,45 @@ switch ($_GET["op"]) {
         break;
 
 
-        case "fetch_correlativo":
-            $next_correlativo = $mecanico->fetch_correlativo();
-            echo json_encode(["next_correlativo" => $next_correlativo]);
+    case "fetch_correlativo":
+        $next_correlativo = $mecanico->fetch_correlativo();
+        echo json_encode(["next_correlativo" => $next_correlativo]);
+        break;
+
+    case "combolistarRepuestos":
+        $repuestos = $mecanico->combolistarRepuestos();
+        echo json_encode($repuestos);
+        break;
+
+
+
+        case "guardarSolicitudRepuesto":
+            try {
+                // Capturar los datos enviados por POST
+                $sore_titulo = isset($_POST['sore_titulo']) ? trim($_POST['sore_titulo']) : '';
+                $repu_id = isset($_POST['repuesto_id']) ? $_POST['repuesto_id'] : 0;
+                $sore_cantidad = isset($_POST['cantidad_repuesto']) ? $_POST['cantidad_repuesto'] : 0;
+                $sore_fecha = isset($_POST['sore_fecha']) ? $_POST['sore_fecha'] : '';
+                $sore_estado = 1; // Estado activo
+        
+                // Validar que los campos obligatorios no estén vacíos
+                if (empty($sore_titulo) || empty($repu_id) || empty($sore_cantidad) || empty($sore_fecha)) {
+                    echo json_encode(["status" => "error", "message" => "Por favor complete todos los campos obligatorios."]);
+                    exit();
+                }
+        
+                // Insertar la solicitud
+                $mecanico->insertarSolicitud($sore_fecha, $sore_titulo, $repu_id, $sore_cantidad, $sore_estado);
+        
+                // Respuesta exitosa
+                echo json_encode(["status" => "success", "message" => "Solicitud guardada correctamente."]);
+            } catch (Exception $e) {
+                echo json_encode(["status" => "error", "message" => "Error al guardar la solicitud: " . $e->getMessage()]);
+            }
             break;
-    
-        case "combolistarRepuestos":
-            $repuestos = $mecanico->combolistarRepuestos();
-            echo json_encode($repuestos);
-            break;
+        
 
-
-
-
-
-            /*TODO GUARDANDO y enviando la solicitud del repuesto  */
-             // Guardar solicitud en tb_solicitud_repuesto y tb_detalle_solicitud
-
-
-
-
-        }
+}
 // Función para subir archivos y validarlos
 function subirArchivo($inputName, $extensionesValidas, $maxSize)
 {

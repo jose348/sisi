@@ -47,8 +47,8 @@ function rechazar(sore_id) { //tener encuenta que el marc_id viene de la sentenc
     });
 }
 
-function atender(deso_id) {
-    window.open('http://localhost/sisi/view/DetalleSolicitud/?ID=' + deso_id + " ");
+function atender(sore_id) {
+    window.open('http://localhost/sisi/view/DetalleSolicitud/?ID=' + sore_id + " ");
 }
 
 init();

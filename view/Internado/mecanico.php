@@ -382,7 +382,8 @@ if (isset($_SESSION["id"])) {
                                         width: 100%;
                                     }
                                 </style>
-                                <div class="modal fade " id="notificacionModal" tabindex="-1" role="dialog" aria-labelledby="notificacionModalLabel" aria-hidden="true">
+
+                                <div class="modal fade" id="notificacionModal" tabindex="-1" role="dialog" aria-labelledby="notificacionModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -391,48 +392,51 @@ if (isset($_SESSION["id"])) {
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <div class="modal-body ">
+                                            <div class="modal-body">
                                                 <form id="solicitud-almacen-form">
                                                     <div class="row">
                                                         <!-- Correlativo (se genera automáticamente) -->
-                                                        <div class="form-group  col-4">
+                                                        <div class="form-group col-4">
                                                             <label for="correlativo">Número de Solicitud</label>
                                                             <input type="text" class="form-control" id="correlativo" name="correlativo" readonly>
                                                         </div>
+
                                                         <!-- Fecha de solicitud -->
-                                                        <div class="form-group  col-4">
-                                                            <label for="fecha-solicitud">Fecha de Solicitud</label>
-                                                            <input type="date" class="form-control" id="fecha-solicitud" name="fecha-solicitud" readonly>
+                                                        <div class="form-group col-4">
+                                                            <label for="sore_fecha">Fecha de Solicitud</label>
+                                                            <input type="date" class="form-control" id="fecha-solicitud" name="sore_fecha" readonly>
                                                         </div>
 
                                                         <!-- Cantidad de repuestos -->
-                                                        <div class="form-group  col-4">
-                                                            <label for="cantidad-repuesto">Cantidad de Repuestos</label>
-                                                            <input type="number" class="form-control" id="cantidad-repuesto" name="cantidad-repuesto" min="1" required>
+                                                        <div class="form-group col-4">
+                                                            <label for="cantidad_repuesto">Cantidad de Repuestos</label>
+                                                            <input type="number" class="form-control" id="cantidad_repuesto" name="cantidad_repuesto" min="1" required>
                                                         </div>
 
                                                         <!-- Combo para seleccionar el repuesto -->
                                                         <div class="form-group col-12">
                                                             <label for="repuesto">Repuesto</label>
-                                                            <select class="form-control" id="repuesto" name="repuesto" required></select>
+                                                            <select class="form-control" id="repuesto_id" name="repuesto_id" required></select>
                                                         </div>
+
                                                         <!-- Descripción de la solicitud -->
                                                         <div class="form-group col-12">
-                                                            <label for="descripcion-solicitud">Descripción de la solicitud</label>
-                                                            <textarea class="form-control" id="descripcion-solicitud" name="descripcion-solicitud" rows="3" required></textarea>
+                                                            <label for="sore_titulo">Descripción de la solicitud</label>
+                                                            <textarea class="form-control" id="sore_titulo" name="sore_titulo" rows="3" required></textarea>
                                                         </div>
 
                                                     </div>
-
                                                 </form>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                                                <button type="submit" class="btn btn-primary" id="enviarSolicitudAlmacen">Enviar Solicitud</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                <button type="button" class="btn btn-primary" id="enviarSolicitudAlmacen">Enviar Solicitud</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+
 
 
 
@@ -520,7 +524,7 @@ if (isset($_SESSION["id"])) {
                                                 <button type="button" class="btn btn-oblong btn-warning " data-toggle="modal" data-target="#almacenModal">
                                                     <i class="fa fa-eye"></i> Ver Repuesto
                                                 </button>
-                                                <button t   ype="button" class="btn btn-oblong btn-warning" data-toggle="modal" data-target="#notificacionModal">
+                                                <button type="button" class="btn btn-oblong btn-warning" data-toggle="modal" data-target="#notificacionModal">
                                                     <i class="fa fa-cogs"></i> Enviar Solicitud
                                                 </button>
                                                 <div id="titulo-repuesto-seleccionado" style="font-size: 18px; font-weight: bold; color: #007bff; text-align: right;">

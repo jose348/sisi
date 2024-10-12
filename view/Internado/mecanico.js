@@ -6,6 +6,15 @@ $(document).ready(function() {
     combo_motivo_de_mantenimiento();
 
 
+    // Al mostrar el modal, obtenemos el correlativo, fecha y lista de repuestos
+    $('#notificacionModal').on('show.bs.modal', function() {
+        obtenerSiguienteCorrelativo();
+        establecerFechaActual();
+        obtenerRepuestos();
+
+    });
+
+
     // Al abrir el modal
     $('#vehiculoModal').on('show.bs.modal', function() {
 
@@ -21,6 +30,10 @@ $(document).ready(function() {
 
         cargaAlmacen();
     });
+
+
+
+
 
     /* TODO tabla modal de respuestos */
     /* TODO tabla modal de respuestos */
@@ -233,7 +246,7 @@ $(document).ready(function() {
             type: "GET",
             dataType: "json",
             success: function(data) {
-                let repuestoSelect = $('#repuesto');
+                let repuestoSelect = $('#repuesto_id');
                 repuestoSelect.empty();
                 $.each(data, function(index, item) {
                     repuestoSelect.append(new Option(item.repu_descripcion, item.repu_id));
@@ -246,22 +259,53 @@ $(document).ready(function() {
         });
     }
 
-    // Al mostrar el modal, obtenemos el correlativo, fecha y lista de repuestos
-    $('#notificacionModal').on('show.bs.modal', function() {
-        obtenerSiguienteCorrelativo();
-        establecerFechaActual();
-        obtenerRepuestos();
+
+    $('#enviarSolicitudAlmacen').off('click').on('click', function(e) {
+        e.preventDefault(); // Evitar el comportamiento predeterminado del formulario
+
+        // Crear un objeto FormData desde el formulario
+        var formData = new FormData();
+        formData.append('sore_titulo', $("#sore_titulo").val());
+        formData.append('repuesto_id', $("#repuesto_id").val());
+        formData.append('cantidad_repuesto', $("#cantidad_repuesto").val());
+        formData.append('sore_fecha', $("#fecha-solicitud").val());
+
+        // Realizar la solicitud AJAX
+        $.ajax({
+            url: '../../controller/mecanico.php?op=guardarSolicitudRepuesto', // Llamar al controlador
+            type: 'POST',
+            data: formData,
+            processData: false, // No procesar los datos
+            contentType: false, // No establecer el content-type
+            success: function(response) {
+                var result = JSON.parse(response);
+
+                if (result.status === 'success') {
+                    Swal.fire('¡Éxito!', result.message, 'success'); // Mostrar mensaje de éxito
+
+                    // Inhabilitar los campos del formulario después del guardado exitoso
+                    $('#correlativo').prop('disabled', true);
+                    $('#fecha-solicitud').prop('disabled', true);
+                    $('#cantidad_repuesto').prop('disabled', true);
+                    $('#repuesto_id').prop('disabled', true);
+                    $('#sore_titulo').prop('disabled', true);
+
+                    $('#notificacionModal').modal('hide');
+                    $('#enviarSolicitudAlmacen').prop('disabled', true);
+                } else {
+                    Swal.fire('Error', result.message, 'error'); // Mostrar mensaje de error
+                }
+            },
+            error: function(xhr, status, error) {
+                Swal.fire('Error', 'Hubo un problema al enviar la solicitud.', 'error');
+            }
+        });
     });
 
 
-
-
-
-
-
-
-
 });
+
+
 
 
 

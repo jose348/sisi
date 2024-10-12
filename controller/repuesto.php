@@ -126,41 +126,41 @@ switch ($_GET["op"]) {
         break;
 
 
-        case "listaUmedida":
-            $datos = $repuesto->listar_UnidadMedidad();
-            
-            $data = array();  // Inicializar el array de datos
-        
-            // Verificar si hay datos devueltos
-            if (is_array($datos) && count($datos) > 0) {
-                foreach ($datos as $row) {
-                    $sub_array = array();
-                    $sub_array[] = $row["unme_id"];
-                    $sub_array[] = $row["unme_codigo"];
-                    $sub_array[] = $row["unme_descripcion"];
-                    $sub_array[] = '<button type="button" onClick="editar(' . $row["unme_id"] . ');" id="' . $row["unme_id"] . '" class="btn btn-outline-warning btn-icon"><div><i class="fa fa-edit"></i></div></button>';
-                    $sub_array[] = '<button type="button" onClick="eliminar(' . $row["unme_id"] . ');" id="' . $row["unme_id"] . '" class="btn btn-outline-danger btn-icon"><div><i class="fa fa-trash"></i></div></button>';
-                    
-                    $data[] = $sub_array;  // Agregar cada sub-array al array $data
-                }
+    case "listaUmedida":
+        $datos = $repuesto->listar_UnidadMedidad();
+
+        $data = array();  // Inicializar el array de datos
+
+        // Verificar si hay datos devueltos
+        if (is_array($datos) && count($datos) > 0) {
+            foreach ($datos as $row) {
+                $sub_array = array();
+                $sub_array[] = $row["unme_id"];
+                $sub_array[] = $row["unme_codigo"];
+                $sub_array[] = $row["unme_descripcion"];
+                $sub_array[] = '<button type="button" onClick="editar(' . $row["unme_id"] . ');" id="' . $row["unme_id"] . '" class="btn btn-outline-warning btn-icon"><div><i class="fa fa-edit"></i></div></button>';
+                $sub_array[] = '<button type="button" onClick="eliminar(' . $row["unme_id"] . ');" id="' . $row["unme_id"] . '" class="btn btn-outline-danger btn-icon"><div><i class="fa fa-trash"></i></div></button>';
+
+                $data[] = $sub_array;  // Agregar cada sub-array al array $data
             }
-        
-            // Validar si el parámetro 'draw' está en la solicitud, y asignar un valor por defecto si no está
-            $draw = isset($_POST['draw']) ? intval($_POST['draw']) : 0;
-        
-            // Generar la respuesta JSON en el formato adecuado
-            $results = array(
-                "draw" => $draw,  // El parámetro 'draw' que viene de DataTables o 0 por defecto
-                "recordsTotal" => count($data),    // Número total de registros
-                "recordsFiltered" => count($data), // Número total de registros después de filtros
-                "data" => $data                    // Los datos reales
-            );
-        
-            // Enviar la respuesta JSON
-            echo json_encode($results);
-            break;
-        
-        
+        }
+
+        // Validar si el parámetro 'draw' está en la solicitud, y asignar un valor por defecto si no está
+        $draw = isset($_POST['draw']) ? intval($_POST['draw']) : 0;
+
+        // Generar la respuesta JSON en el formato adecuado
+        $results = array(
+            "draw" => $draw,  // El parámetro 'draw' que viene de DataTables o 0 por defecto
+            "recordsTotal" => count($data),    // Número total de registros
+            "recordsFiltered" => count($data), // Número total de registros después de filtros
+            "data" => $data                    // Los datos reales
+        );
+
+        // Enviar la respuesta JSON
+        echo json_encode($results);
+        break;
+
+
 
     case "guardaryEditarunidadMedida";
         if (empty($_POST["unme_id"])) {
@@ -436,28 +436,28 @@ switch ($_GET["op"]) {
                         </div><!-- card-header -->
                         <div class="card-body bd bd-t-0 rounded-bottom">
                             <div style="float:right;">
-                                <?php if ($row["deso_estado"] == 1) { ?>
+                                <?php if ($row["sore_estado"] == 1) { ?>
                                     <button class="btn btn-oblong btn-success">Abierto</button>
-                                <?php  }else{?>
-                                <button class="btn btn-oblong btn-danger">Cerrado</button>
-                                    <?php } ?>
+                                <?php  } else { ?>
+                                    <button class="btn btn-oblong btn-danger">Cerrado</button>
+                                <?php } ?>
                             </div>
 
                             <div id="proyectos-size">
                                 <ul>
                                     <li><?php echo $row["sore_titulo"]; ?></li>
                                     <br>
-                                    <li>CANTIDAD: <?php echo $row["deso_cantidad"]; ?></li>
+                                    <li>CANTIDAD: <?php echo $row["sore_cantidad"]; ?></li>
                                     <br>
-                                    <li>Fecha : <?php echo $row["sore_fecha"]; ?></li>
+                                    <li>FECHA : <?php echo $row["sore_fecha"]; ?></li>
                                     <br>
                                     <li>REPUESTO: <?php echo $row["repu_descripcion"]; ?> </l>
                                         <br>
-                                        
-                                        
-                                        
+
+
+
                                 </ul>
-                                <button type="button" onclick="atender(<?php echo $row['deso_id']; ?>)" id="<?php echo $row['deso_id']; ?>" class="btn btn-oblong btn-outline-info btn-block"><i class="fa fa-eye mg-r-10"></i>Atender</button>
+                                <button type="button" onclick="atender(<?php echo $row['sore_id']; ?>)" id="<?php echo $row['sore_id']; ?>" class="btn btn-oblong btn-outline-info btn-block"><i class="fa fa-eye mg-r-10"></i>Atender</button>
                             </div>
                         </div><!-- card-body -->
 
@@ -469,11 +469,11 @@ switch ($_GET["op"]) {
 
                     </div><!-- col-sm -->
                     <div class="col-1">
-                         <br>
+                        <br>
                     </div>
                 </div><!-- card -->
             </div><!-- col -->
-           
+
 
 <?php
 

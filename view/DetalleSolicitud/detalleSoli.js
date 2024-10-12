@@ -6,22 +6,25 @@ $(document).ready(function() {
     });
     combo_repuesto();
 
-    var deso_id = getUrlParameter('ID');
+
+    var sore_id = getUrlParameter('ID');
+    console.log(sore_id);
 
 
+    $.post("../../controller/solicitud.php?op=mostrarSolicitud", { sore_id: sore_id }, function(data) {
+        console.log(data);
 
-    $.post("../../controller/solicitud.php?op=mostrarSolicitud", { deso_id: deso_id }, function(data) {
         data = JSON.parse(data);
         $('#numsolici').html("SOLICITUD - N° " + data.sore_id);
 
         $('#fechsoli').html(data.sore_fecha);
-        $('#lblestado').html(data.deso_estado);
+        $('#lblestado').html(data.sore_estado);
         $('#sore_titulo').html(data.sore_titulo);
-        $('#deso_cantidad').html(data.deso_cantidad);
+        $('#sore_cantidad').html(data.sore_cantidad);
         $('#sore_fecha').html(data.sore_fecha);
         $('#repu_descripcion').html(data.repu_descripcion);
 
-        if (data.deso_cantidad_text != 1) {
+        if (data.sore_cantidad_text != 1) {
             $('#atenderSolicitud').hide();
             $('#cerrarSolicitud').hide();
         }
@@ -63,7 +66,7 @@ function combo_repuesto() {
 }
 
 $(document).on("click", "#cerrarSolicitud", function() {
-    var deso_id = getUrlParameter('ID');
+    var sore_id = getUrlParameter('ID');
     swal.fire({
         title: "Rechazar",
         text: "Deseas Rechazar Solicitud?",
@@ -73,18 +76,18 @@ $(document).on("click", "#cerrarSolicitud", function() {
         cancelButtonText: "No",
     }).then((result) => { // preguntamos si el boton presionado es si
         if (result.value) {
-            $.post("../../controller/solicitud.php?op=rechazar", { deso_id: deso_id }, function(data) {
-                $.post("../../controller/solicitud.php?op=mostrarSolicitud", { deso_id: deso_id }, function(data) {
+            $.post("../../controller/solicitud.php?op=rechazar", { sore_id: sore_id }, function(data) {
+                $.post("../../controller/solicitud.php?op=mostrarSolicitud", { sore_id: sore_id }, function(data) {
                     data = JSON.parse(data);
                     $('#numsolici').html("SOLICITUD - N° " + data.sore_id);
 
                     $('#fechsoli').html(data.sore_fecha);
-                    $('#lblestado').html(data.deso_estado);
+                    $('#lblestado').html(data.sore_estado);
                     $('#sore_titulo').html(data.sore_titulo);
-                    $('#deso_cantidad').html(data.deso_cantidad);
+                    $('#sore_cantidad').html(data.sore_cantidad);
                     $('#sore_fecha').html(data.sore_fecha);
                     $('#repu_descripcion').html(data.repu_descripcion);
-                    if (data.deso_cantidad_text != 1) {
+                    if (data.sore_cantidad_text != 1) {
                         $('#atenderSolicitud').hide();
 
 

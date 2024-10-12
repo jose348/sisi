@@ -94,7 +94,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                                             </li>
                                             <br>
                                             <li>CANTIDAD SOLICITADA:<center>
-                                                    <p class="text text-with  " id="deso_cantidad"></p>
+                                                    <p class="text text-with  " id="sore_cantidad"></p>
                                                 </center>
                                             </li>
                                             <br>
@@ -112,7 +112,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
                                         <center>
                                             <div class="row center">
                                                 <div class="col-6">
-                                                    <button type="button" onclick="atender(<?php echo $row['deso_id']; ?>)" id="atenderSolicitud" class=" col-6 btn btn-oblong btn-outline-warning btn-block"><i class="fa fa-check mg-r-10"></i>Atender</button>
+                                                    <button type="button" onclick="atender(<?php echo $row['sore_id']; ?>)" id="atenderSolicitud" class=" col-6 btn btn-oblong btn-outline-warning btn-block"><i class="fa fa-check mg-r-10"></i>Atender</button>
                                                     
 
                                                 </div>

@@ -196,7 +196,35 @@ class Mecanico  extends Conectar
 
 
 
-    /*TODO EL MODELO  DE MI ENVIO Y GUARDADO DE MI SOLICITUD */
-     // Insertar la solicitud en tb_solicitud_repuesto 
- 
+
+
+
+    public function insertarSolicitud($sore_fecha, $sore_titulo, $repu_id, $sore_cantidad, $sore_estado = 1) {
+        try {
+            $conectar = parent::conexion();
+            $sql = "INSERT INTO sc_residuos_solidos.tb_solicitud_repuesto 
+                    (sore_fecha, sore_titulo, repu_id, sore_cantidad, sore_estado) 
+                    VALUES (?, ?, ?, ?, ?)";
+                    
+            $stmt = $conectar->prepare($sql);
+            $stmt->bindParam(1, $sore_fecha);
+            $stmt->bindParam(2, $sore_titulo);
+            $stmt->bindParam(3, $repu_id);
+            $stmt->bindParam(4, $sore_cantidad);
+            $stmt->bindParam(5, $sore_estado);
+            $stmt->execute();
+        
+            // Retornar el ID de la solicitud recién creada
+            return $conectar->lastInsertId();
+        } catch (Exception $e) {
+            // Lanzar una excepción si hay un error en la consulta
+            throw new Exception("Error al insertar la solicitud: " . $e->getMessage());
+        }
+    }
+    
+    
+    
+    
+    
+
 }
