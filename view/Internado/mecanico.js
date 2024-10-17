@@ -384,7 +384,7 @@ document.getElementById('esme_id').addEventListener('change', function() {
     /*TODO OJO ACA LOS NMEROS SALEN DE LOS ID DE ESPECIALISDAD_MECANICA DE LA BASE DE DATOS */
     /*TODO OJO ACA LOS NMEROS SALEN DE LOS ID DE ESPECIALISDAD_MECANICA DE LA BASE DE DATOS */
     /*TODO OJO ACA LOS NMEROS SALEN DE LOS ID DE ESPECIALISDAD_MECANICA DE LA BASE DE DATOS */
-    if (selectedValue === '12') {
+    if (selectedValue === '1') {
         // Mantén el comportamiento actual que ya tienes para "COMPONENTES" y "CORRECTIVO"
         document.getElementById('ticket-section').classList.remove('hidden');
         document.getElementById('ticket-details').classList.add('hidden'); // Ocultar los detalles si ya se habían mostrado
@@ -613,6 +613,32 @@ function validarFormulario() {
 }
 
 
+$('#guardarFormulario').click(function(e) {
+    e.preventDefault();
+
+    let formData = new FormData(document.getElementById('detalle-form'));
+
+    $.ajax({
+        url: '../../controller/mecanico.php?op=guardar_formulario_mantenimiento',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            const res = JSON.parse(response);
+            if (res.status === 'success') {
+                Swal.fire('¡Éxito!', res.message, 'success');
+                $('#detalle-form')[0].reset(); // Limpiar formulario
+            } else {
+                Swal.fire('Error', res.message, 'error');
+            }
+        },
+        error: function(xhr, status, error) {
+            Swal.fire('Error', 'Hubo un problema al enviar el formulario.', 'error');
+            console.error('Error AJAX:', error);
+        }
+    });
+});
 
 
 

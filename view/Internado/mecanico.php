@@ -453,8 +453,11 @@ if (isset($_SESSION["id"])) {
                                     <div class="card-body">
                                         <h5 class="card-title text-center">DETALLES DEL TALLER</h5>
 
-                                        <!-- Campo oculto para guardar el inun_id seleccionado -->
-                                        <input type="hidden" id="inun_id" name="inun_id">
+                                        <!-- Campos ocultos para IDs que vienen de otras operaciones -->
+                                        <input type="hidden" id="inun_id" name="inun_id"> <!-- Vehículo seleccionado -->
+                                        <input type="hidden" id="esme_id_hidden" name="esme_id"> <!-- Motivo de Mantenimiento -->
+                                        <input type="hidden" id="deso_id" name="deso_id"> <!-- Detalle de solicitud -->
+
 
                                         <div class="row">
                                             <!-- Contenedor para la vista previa de la imagen -->
@@ -596,6 +599,19 @@ if (isset($_SESSION["id"])) {
                                                     </div>
                                                 </div>
                                             </div>
+
+
+                                            <div class="col-md-3 mb-3">
+                                                <label for="fecha" class="form-label">Fecha salida:</label>
+                                                <input type="date" id="fecha" name="fecha" class="form-control" disabled>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <label for="hora" class="form-label">Hora Salida:</label>
+                                                <input type="time" id="hora" name="hora" class="form-control" disabled>
+                                            </div>
+
+
+
 
                                             <div class="col-md-12 mb-3">
                                                 <div class="d-flex justify-content-center mt-4">
