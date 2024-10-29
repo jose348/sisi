@@ -283,6 +283,9 @@ $(document).ready(function() {
                 if (result.status === 'success') {
                     Swal.fire('¡Éxito!', result.message, 'success'); // Mostrar mensaje de éxito
 
+                    // Asignar el sore_id al campo oculto del formulario principal
+                    $('#sore_id').val(result.sore_id);
+
                     // Inhabilitar los campos del formulario después del guardado exitoso
                     $('#correlativo').prop('disabled', true);
                     $('#fecha-solicitud').prop('disabled', true);
@@ -336,16 +339,6 @@ document.getElementById('foto-vehiculo').addEventListener('change', function() {
     }
 });
 
-// Función para abrir el modal y mostrar la imagen ampliada
-function openModal(modalId) {
-    $('#' + modalId).modal('show'); // Usar jQuery para abrir el modal
-}
-
-
-
-
-
-
 
 
 // Mostrar el nombre del archivo seleccionado y vista previa de la imagen para "Foto de cómo sale el vehículo"
@@ -370,6 +363,10 @@ document.getElementById('imagen-salida').addEventListener('change', function() {
     }
 });
 
+// Función para abrir el modal y mostrar la imagen ampliada
+function openModal(modalId) {
+    $('#' + modalId).modal('show'); // Usar jQuery para abrir el modal
+}
 
 
 
@@ -567,80 +564,100 @@ document.getElementById('foto-salida-vehiculo').addEventListener('change', funct
 
 /* Validar y subir el formulario */
 function validarFormulario() {
-    let formData = new FormData(document.getElementById('detalle-form'));
-
     let fotoVehiculo = document.getElementById('foto-vehiculo').files[0];
     let imagenSalida = document.getElementById('imagen-salida').files[0];
     let informe = document.getElementById('informe').files[0];
 
-    // Validar tamaño de archivos
     if (fotoVehiculo && fotoVehiculo.size > 4 * 1024 * 1024) {
-        Swal.fire('Error', 'La imagen inicial del vehículo no debe exceder los 2MB.');
+        Swal.fire('Error', 'La imagen inicial del vehículo no debe exceder los 4MB.');
         return;
     }
-
     if (imagenSalida && imagenSalida.size > 4 * 1024 * 1024) {
-        Swal.fire('Error', 'La imagen de salida del vehículo no debe exceder los 2MB.');
+        Swal.fire('Error', 'La imagen de salida del vehículo no debe exceder los 4MB.');
         return;
     }
-
     if (informe && informe.size > 4 * 1024 * 1024) {
-        Swal.fire('Error', 'El informe no debe exceder los 2MB.');
+        Swal.fire('Error', 'El informe no debe exceder los 4MB.');
         return;
     }
 
-    // Enviar datos usando AJAX
+    let formData = new FormData(document.getElementById('detalle-form'));
+
     $.ajax({
-        url: '../../controller/mecanico.php?op=guardar_formulario_mantenimiento',
+        url: '../../controller/mecanico.php?op=guardar_mantenimiento',
         type: 'POST',
         data: formData,
         contentType: false,
         processData: false,
         success: function(response) {
-            const res = JSON.parse(response);
-            if (res.status === 'success') {
-                Swal.fire('¡Éxito!', res.message, 'success');
-                document.getElementById('detalle-form').reset(); // Limpia el formulario
-            } else {
-                Swal.fire('Error', res.message, 'error');
+            try {
+                const res = JSON.parse(response);
+                if (res.status === 'success') {
+                    Swal.fire('¡Éxito!', res.message, 'success');
+                    document.getElementById('detalle-form').reset();
+                } else {
+                    Swal.fire('Error', res.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error al parsear JSON:', error);
+                Swal.fire('Error', 'Respuesta no válida del servidor.', 'error');
             }
         },
         error: function(xhr, status, error) {
-            Swal.fire('Error', 'Hubo un problema al enviar el formulario.', 'error');
-            console.error('Error AJAX:', error); // Añadido para depuración
+            console.error('Error en la solicitud:', error);
+            Swal.fire('Error', 'Ocurrió un problema al guardar el mantenimiento.', 'error');
         }
     });
 }
 
 
-$('#guardarFormulario').click(function(e) {
+
+
+
+// Cuando se seleccione un valor del combo, actualiza el campo oculto en el formulario de mantenimiento
+$('#esme_id').change(function() {
+    let selectedValue = $(this).val();
+    $('#esme_id_hidden').val(selectedValue); // Asigna el valor al campo oculto
+});
+
+
+
+$('#guardarMantenimiento').click(function(e) {
     e.preventDefault();
 
-    let formData = new FormData(document.getElementById('detalle-form'));
+    $('#esme_id_hidden').val($('#esme_id').val()); // Asigna el valor del select al input oculto
+    $('#sore_id').val($('#correlativo').val()); // Asigna el correlativo al input oculto
+
+    let formData = new FormData($('#detalle-form')[0]);
 
     $.ajax({
-        url: '../../controller/mecanico.php?op=guardar_formulario_mantenimiento',
+        url: '../../controller/mecanico.php?op=guardar_mantenimiento',
         type: 'POST',
         data: formData,
         contentType: false,
         processData: false,
         success: function(response) {
-            const res = JSON.parse(response);
-            if (res.status === 'success') {
-                Swal.fire('¡Éxito!', res.message, 'success');
-                $('#detalle-form')[0].reset(); // Limpiar formulario
-            } else {
-                Swal.fire('Error', res.message, 'error');
+            console.log("Respuesta recibida:", response); // Depuración
+
+            try {
+                const res = JSON.parse(response);
+                if (res.status === 'success') {
+                    Swal.fire('¡Éxito!', res.message, 'success');
+                    $('#detalle-form')[0].reset();
+                } else {
+                    Swal.fire('Error', res.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error al parsear JSON:', error);
+                Swal.fire('Error', 'La respuesta no es válida.', 'error');
             }
         },
         error: function(xhr, status, error) {
-            Swal.fire('Error', 'Hubo un problema al enviar el formulario.', 'error');
-            console.error('Error AJAX:', error);
+            console.error('Error en la solicitud:', error);
+            Swal.fire('Error', 'Ocurrió un problema al guardar el mantenimiento.', 'error');
         }
     });
 });
-
-
 
 
 

@@ -13,7 +13,7 @@ switch ($_GET["op"]) {
     case "combo_motivo_de_mantenimiento":
         $datos = $mecanico->combo_motivo_de_mantenimiento();
         if (is_array($datos) == true and count($datos) > 0) {
-            $html = "<option value=''>Seleccione un mecánico</option>";
+            $html = "<option value=''>Seleccione</option>";
             foreach ($datos as $row) {
                 $html .= "<option value='" . $row['esme_id'] . "'>" . $row['esme_descripcion'] . "</option>";
             }
@@ -60,34 +60,41 @@ switch ($_GET["op"]) {
 
 
 
+    
         case "guardar_mantenimiento":
             try {
                 // Recoger los datos enviados por el formulario
-                $inun_id = isset($_POST['inun_id']) ? $_POST['inun_id'] : null;
-                $esme_id = isset($_POST['esme_id']) ? $_POST['esme_id'] : null;
-                $deso_id = isset($_POST['deso_id']) ? $_POST['deso_id'] : null;
-                $fecha = isset($_POST['fecha']) ? $_POST['fecha'] : null;
-                $hora = isset($_POST['hora']) ? $_POST['hora'] : null;
-                $mecanico_id = isset($_POST['mecanico_id']) ? $_POST['mecanico_id'] : null;
-                $diagnostico = isset($_POST['diagnostico']) ? $_POST['diagnostico'] : null;
-                $accion = isset($_POST['accion']) ? $_POST['accion'] : null;
-                $tercerizar = isset($_POST['tercerizar']) ? $_POST['tercerizar'] : 'no';
-                $empresa = isset($_POST['empresa']) ? $_POST['empresa'] : null;
-                $fecha_salida = isset($_POST['fecha_salida']) ? $_POST['fecha_salida'] : null;
-                $hora_salida = isset($_POST['hora_salida']) ? $_POST['hora_salida'] : null;
-    
+                $inun_id = $_POST['inun_id'] ?? null;
+                $esme_id = $_POST['esme_id'] ?? null;
+                $sore_id = $_POST['sore_id'] ?? null;
+                $fecha = $_POST['fecha'] ?? null;
+                $hora = $_POST['hora'] ?? null;
+                $mecanico_id = $_POST['mecanico_id'] ?? null;
+                $diagnostico = $_POST['diagnostico'] ?? null;
+                $accion = $_POST['accion'] ?? null;
+                $tercerizar = $_POST['tercerizar'] ?? 'no';
+                $empresa = $_POST['empresa'] ?? null;
+                $fecha_salida = $_POST['fecha_salida'] ?? null;
+                $hora_salida = $_POST['hora_salida'] ?? null;
+        
                 // Manejo de archivos (foto inicial, foto final e informe)
                 $foto_vehiculo = subirArchivo('foto-vehiculo', ['jpg', 'jpeg', 'png'], 4 * 1024 * 1024);
+                if ($foto_vehiculo === null) {
+                    throw new Exception("Error al subir la foto del vehículo.");
+                }
                 $imagen_salida = subirArchivo('imagen-salida', ['jpg', 'jpeg', 'png'], 4 * 1024 * 1024);
+                if ($imagen_salida === null) {
+                    throw new Exception("Error al subir la foto del vehículo.");
+                }
                 $informe = isset($_FILES['informe']) ? file_get_contents($_FILES['informe']['tmp_name']) : null;
-    
+        
                 // Insertar mantenimiento en la base de datos
-                $resultado = $mantenimiento->insertar_mantenimiento(
-                    $inun_id, $esme_id, $deso_id, $foto_vehiculo, $fecha, $hora,
+                $resultado = $mecanico->insertar_mantenimiento(
+                    $inun_id, $esme_id, $sore_id, $foto_vehiculo, $fecha, $hora,
                     $mecanico_id, $diagnostico, $accion, $tercerizar, $empresa,
                     $informe, $imagen_salida, $fecha_salida, $hora_salida
                 );
-    
+        
                 if ($resultado) {
                     echo json_encode(['status' => 'success', 'message' => 'Mantenimiento guardado correctamente.']);
                 } else {
@@ -96,8 +103,13 @@ switch ($_GET["op"]) {
             } catch (Exception $e) {
                 echo json_encode(['status' => 'error', 'message' => 'Error: ' . $e->getMessage()]);
             }
+
+
+            
             break;
         
+        
+
 
 
 
@@ -142,11 +154,12 @@ switch ($_GET["op"]) {
         break;
 
 
-    case "fetch_correlativo":
-        $next_correlativo = $mecanico->fetch_correlativo();
-        echo json_encode(["next_correlativo" => $next_correlativo]);
-        break;
-
+        case "fetch_correlativo":
+            $next_correlativo = $mecanico->fetch_correlativo();
+            error_log("Correlativo obtenido: " . $next_correlativo); // Log para verificar
+            echo json_encode(["next_correlativo" => $next_correlativo]);
+            break;
+        
     case "combolistarRepuestos":
         $repuestos = $mecanico->combolistarRepuestos();
         echo json_encode($repuestos);
@@ -154,57 +167,57 @@ switch ($_GET["op"]) {
 
 
 
-        case "guardarSolicitudRepuesto":
-            try {
-                // Capturar los datos enviados por POST
-                $sore_titulo = isset($_POST['sore_titulo']) ? trim($_POST['sore_titulo']) : '';
-                $repu_id = isset($_POST['repuesto_id']) ? $_POST['repuesto_id'] : 0;
-                $sore_cantidad = isset($_POST['cantidad_repuesto']) ? $_POST['cantidad_repuesto'] : 0;
-                $sore_fecha = isset($_POST['sore_fecha']) ? $_POST['sore_fecha'] : '';
-                $sore_estado = 1; // Estado activo
-        
-                // Validar que los campos obligatorios no estén vacíos
-                if (empty($sore_titulo) || empty($repu_id) || empty($sore_cantidad) || empty($sore_fecha)) {
-                    echo json_encode(["status" => "error", "message" => "Por favor complete todos los campos obligatorios."]);
-                    exit();
-                }
-        
-                // Insertar la solicitud
-                $mecanico->insertarSolicitud($sore_fecha, $sore_titulo, $repu_id, $sore_cantidad, $sore_estado);
-        
-                // Respuesta exitosa
-                echo json_encode(["status" => "success", "message" => "Solicitud guardada correctamente."]);
-            } catch (Exception $e) {
-                echo json_encode(["status" => "error", "message" => "Error al guardar la solicitud: " . $e->getMessage()]);
-            }
-            break;
-        
+    case "guardarSolicitudRepuesto":
+        try {
+            // Capturar los datos enviados por POST
+            $sore_titulo = isset($_POST['sore_titulo']) ? trim($_POST['sore_titulo']) : '';
+            $repu_id = isset($_POST['repuesto_id']) ? $_POST['repuesto_id'] : 0;
+            $sore_cantidad = isset($_POST['cantidad_repuesto']) ? $_POST['cantidad_repuesto'] : 0;
+            $sore_fecha = isset($_POST['sore_fecha']) ? $_POST['sore_fecha'] : '';
+            $sore_estado = 1; // Estado activo
 
+            // Validar que los campos obligatorios no estén vacíos
+            if (empty($sore_titulo) || empty($repu_id) || empty($sore_cantidad) || empty($sore_fecha)) {
+                echo json_encode(["status" => "error", "message" => "Por favor complete todos los campos obligatorios."]);
+                exit();
+            }
+
+            // Insertar la solicitud
+            $mecanico->insertarSolicitud($sore_fecha, $sore_titulo, $repu_id, $sore_cantidad, $sore_estado);
+
+            // Respuesta exitosa
+            echo json_encode(["status" => "success", "message" => "Solicitud guardada correctamente."]);
+        } catch (Exception $e) {
+            echo json_encode(["status" => "error", "message" => "Error al guardar la solicitud: " . $e->getMessage()]);
+        }
+        break;
 }
 
 
-// Función para subir archivos y validarlos
-function subirArchivo($inputName, $extensionesValidas, $maxSize)
-{
-    if (isset($_FILES[$inputName]) && $_FILES[$inputName]['error'] === UPLOAD_ERR_OK) {
-        $archivo = $_FILES[$inputName];
-        $ext = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
-
-        // Validar extensión y tamaño del archivo
-        if (in_array($ext, $extensionesValidas) && $archivo['size'] <= $maxSize) {
-            $destino = "../uploads/" . uniqid() . '.' . $ext;
-
-            // Mover archivo al directorio destino
-            if (move_uploaded_file($archivo['tmp_name'], $destino)) {
-                return $destino;
+// Función para subir archivos y validarlosfunction subirArchivo($campo, $formatosPermitidos, $tamanoMaximo) {
+    function subirArchivo($campo, $formatosPermitidos, $tamanoMaximo) {
+        if (isset($_FILES[$campo]) && $_FILES[$campo]['error'] === 0) {
+            $archivo = $_FILES[$campo];
+            $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
+    
+            // Verificar si el archivo está subiendo correctamente
+            if (!in_array($extension, $formatosPermitidos)) {
+                throw new Exception("Formato del archivo no válido: $extension");
+            }
+            if ($archivo['size'] > $tamanoMaximo) {
+                throw new Exception("El archivo es demasiado grande: " . $archivo['size']);
+            }
+    
+            $nombreUnico = uniqid() . '.' . $extension;
+            $rutaDestino = realpath(dirname(__FILE__) . '/../uploads') . '/' . $nombreUnico;
+    
+            if (move_uploaded_file($archivo['tmp_name'], $rutaDestino)) {
+                return $nombreUnico;
             } else {
-                throw new Exception("Error al mover el archivo.");
+                throw new Exception("Error al mover el archivo al destino: $rutaDestino");
             }
         } else {
-            throw new Exception("Archivo no válido o excede el tamaño permitido.");
+            throw new Exception("Error al subir el archivo: " . $_FILES[$campo]['error']);
         }
     }
-    return null; // Si no se subió archivo
-
-
-}
+    

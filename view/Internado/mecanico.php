@@ -271,12 +271,8 @@ if (isset($_SESSION["id"])) {
                                     </div>
 
                                 </div>
-
-
-
-                                <br><br>
-
-
+                                <br>
+                                <br>
                                 <!-- TODO modal para tabla de vehiculos ingresados -->
                                 <!-- TODO modal para tabla de vehiculos ingresados -->
                                 <!-- TODO modal para tabla de vehiculos ingresados -->
@@ -455,8 +451,8 @@ if (isset($_SESSION["id"])) {
 
                                         <!-- Campos ocultos para IDs que vienen de otras operaciones -->
                                         <input type="hidden" id="inun_id" name="inun_id"> <!-- Vehículo seleccionado -->
-                                        <input type="hidden" id="esme_id_hidden" name="esme_id"> <!-- Motivo de Mantenimiento -->
-                                        <input type="hidden" id="deso_id" name="deso_id"> <!-- Detalle de solicitud -->
+                                        <input type="hidden" id="esme_id_hidden" name="esme_id">
+                                        <input type="hidden" id="sore_id" name="sore_id"> <!-- Detalle de solicitud -->
 
 
                                         <div class="row">
@@ -599,6 +595,27 @@ if (isset($_SESSION["id"])) {
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!--Modal para visualizacion de mi foto  -->
+                                            <!-- Modal para visualización de la imagen de salida -->
+                                            <div class="modal fade" id="imagen-salida-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="modalLabel">Vista Ampliada de Salida del Vehículo</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body text-center">
+                                                            <img id="modal-imagen-salida" src="" alt="Vista ampliada" style="max-width: 100%; height: auto;">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
 
 
                                             <div class="col-md-3 mb-3">
@@ -632,8 +649,8 @@ if (isset($_SESSION["id"])) {
 
                 </div>
             </div>
-        </div>
-        </form>
+         </div>
+      
 
 
 

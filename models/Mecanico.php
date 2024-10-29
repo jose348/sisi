@@ -77,68 +77,47 @@ class Mecanico  extends Conectar
   
     // Método para insertar los datos del mantenimiento
     public function insertar_mantenimiento(
-        $inun_id, $esme_id, $deso_id, $foto_vehiculo, $fecha, $hora,
+        $inun_id, $esme_id, $sore_id, $foto_vehiculo, $fecha, $hora,
         $mecanico_id, $diagnostico, $accion, $tercerizar, $empresa,
         $informe, $imagen_salida, $fecha_salida, $hora_salida
     ) {
         $con = parent::conexion();
         parent::set_names();
-
+    
         try {
-            // Iniciar la transacción
             $con->beginTransaction();
-
+    
             $sql = "INSERT INTO sc_residuos_solidos.tb_mantenimiento (
-                        inun_id, esme_id, deso_id, mant_img_inicial, 
+                        inun_id, esme_id, sore_id, mant_img_inicial, 
                         mant_fech, mant_hora, direct_id, 
                         mant_diagnostico_especializado, mant_accion_realizada, 
                         mant_empresa_terceriza, mant_informe_tercerizado, 
                         mant_img_final, mant_fecha_salida, mant_hora_salida, mant_estado
                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+    
             $stmt = $con->prepare($sql);
-
-            // Si no se terceriza, empresa e informe deben ser NULL
+    
             if ($tercerizar !== 'si') {
                 $empresa = null;
                 $informe = null;
             }
-
-            $mant_estado = 'activo'; // Estado predeterminado
-
-            // Asignar los parámetros
-            $stmt->bindParam(1, $inun_id);
-            $stmt->bindParam(2, $esme_id);
-            $stmt->bindParam(3, $deso_id);
-            $stmt->bindParam(4, $foto_vehiculo);
-            $stmt->bindParam(5, $fecha);
-            $stmt->bindParam(6, $hora);
-            $stmt->bindParam(7, $mecanico_id);
-            $stmt->bindParam(8, $diagnostico);
-            $stmt->bindParam(9, $accion);
-            $stmt->bindParam(10, $empresa);
-            $stmt->bindParam(11, $informe, PDO::PARAM_LOB); // Informe como archivo binario
-            $stmt->bindParam(12, $imagen_salida);
-            $stmt->bindParam(13, $fecha_salida);
-            $stmt->bindParam(14, $hora_salida);
-            $stmt->bindParam(15, $mant_estado);
-
-            // Ejecutar la consulta
-            if ($stmt->execute()) {
-                // Confirmar la transacción
-                $con->commit();
-                return true;
-            } else {
-                // Si algo falla, revertimos la transacción
-                $con->rollBack();
-                return false;
-            }
+    
+            $mant_estado = 'activo';
+    
+            $stmt->execute([
+                $inun_id, $esme_id, $sore_id, $foto_vehiculo, $fecha, $hora,
+                $mecanico_id, $diagnostico, $accion, $empresa, $informe,
+                $imagen_salida, $fecha_salida, $hora_salida, $mant_estado
+            ]);
+    
+            $con->commit();
+            return true;
         } catch (Exception $e) {
-            // Manejar excepciones y revertir cambios
             $con->rollBack();
             throw new Exception("Error al guardar mantenimiento: " . $e->getMessage());
         }
     }
+    
     
     
 
