@@ -99,34 +99,55 @@ function obtenerNombreCalle(lat, lng) {
 
 
 
-function guardarRuta() {
-    const nombre = document.getElementById('nombreRuta').value;
-    const estado = document.getElementById('estadoRuta').value;
 
-    if (!nombre || routeCoordinates.length === 0) {
-        alert('Por favor, completa los campos y dibuja una ruta.');
+
+
+/*TODO GUARDANDO LA RUTA  */
+/*TODO GUARDANDO LA RUTA  */
+/*TODO GUARDANDO LA RUTA  */
+function guardarRuta() {
+    const nombreRuta = document.getElementById('nombreRuta').value;
+    const estadoRuta = document.getElementById('estadoRuta').value || 1; // Estado por defecto = 1 (Activo)
+    const horarioId = document.getElementById('horarioSelect').value; // ID del horario seleccionado
+
+    const coordenadas = routeCoordinates.map(coord => [coord[1], coord[0]]); // Convertir [lat, lng] a [lng, lat]
+    const geojson = {
+        type: "FeatureCollection",
+        features: [{
+            type: "Feature",
+            properties: {},
+            geometry: {
+                type: "LineString",
+                coordinates: coordenadas
+            }
+        }]
+    };
+
+    const ubicacionesTexto = document.getElementById('ubicacionesSeleccionadas').value.trim();
+
+    if (!nombreRuta || coordenadas.length === 0 || !horarioId) {
+        alert('Por favor, completa todos los campos.');
         return;
     }
 
-    console.log('Nombre:', nombre);
-    console.log('Estado:', estado);
-    console.log('Coordenadas:', routeCoordinates);
-
-    fetch('/public/index.php', {
+    // Enviar datos al controlador
+    fetch('../../Controller/rutas.php?action=guardarRuta', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                nombre: nombre,
-                estado: estado,
-                coordenadas: routeCoordinates
+                nombre: nombreRuta,
+                estado: estadoRuta,
+                geojson: JSON.stringify(geojson),
+                horarioId: horarioId,
+                ubicaciones: ubicacionesTexto.split('\n') // Array con los nombres de las calles
             })
         })
         .then(response => response.json())
         .then(data => {
-            if (data.status === 'success') {
+            if (data.success) {
                 alert('Ruta guardada correctamente.');
                 routeCoordinates = [];
-                if (drawnPolyline) map.removeLayer(drawnPolyline);
+                if (drawnPolyline) map.removeLayer(drawnPolyline); // Eliminar la línea dibujada
                 document.getElementById('ubicacionesSeleccionadas').value = ''; // Limpiar textarea
             } else {
                 alert('Error al guardar la ruta.');

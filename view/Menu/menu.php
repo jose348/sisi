@@ -139,7 +139,7 @@
         <ul class="br-menu-sub nav flex-column">
           
           <li class="nav-item"><a href="../AdminGestionRutas/CrearRuta.php" class="nav-link ">Crear Rutas</a></li>
-          <li class="nav-item"><a href="" class="nav-link ">Rutas Disponibles</a></li>
+          <li class="nav-item"><a href="../AdminGestionRutas/MostrarRutas.php" class="nav-link ">Rutas Disponibles</a></li>
           <li class="nav-item"><a href=" " class="nav-link ">Choferes Disponibles</a></li>
           <li class="nav-item"><a href=" " class="nav-link ">Verifica Ruta-Chofer-Unidad</a></li>
           <li class="nav-item"><a href="../AdminGestionRutas/asignacion.php" class="nav-link ">Asigna Ruta-Chofer-Unidad</a></li>

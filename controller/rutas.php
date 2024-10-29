@@ -11,6 +11,24 @@ switch($_GET["op"]){
         echo json_encode($datos);
         break;
         
-    }
+    
 
+    case "guardarRuta":
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        $nombre = $data['nombre'];
+        $estado = $data['estado'];
+        $geojson = $data['geojson'];
+        $horarioId = $data['horarioId'];
+        $ubicaciones = $data['ubicaciones'];
+
+        $resultado = $rutaModel->guardarRuta($nombre, $estado, $geojson, $horarioId, $ubicaciones);
+
+        echo json_encode(['success' => $resultado]);
+        break;
+
+    default:
+        echo json_encode(['error' => 'Acción no válida']);
+        break;
+    }
 ?>
