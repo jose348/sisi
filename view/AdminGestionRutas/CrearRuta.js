@@ -104,13 +104,14 @@ function obtenerNombreCalle(lat, lng) {
 
 /*TODO GUARDANDO LA RUTA  */
 /*TODO GUARDANDO LA RUTA  */
-/*TODO GUARDANDO LA RUTA  */
+/*TODO GUARDANDO LA RUTA  */ // Función para guardar la ruta
+
 function guardarRuta() {
     const nombreRuta = document.getElementById('nombreRuta').value;
-    const estadoRuta = document.getElementById('estadoRuta').value || 1; // Estado por defecto = 1 (Activo)
-    const horarioId = document.getElementById('horarioSelect').value; // ID del horario seleccionado
+    const estadoRuta = 1; // Estado por defecto: Activo
+    const horarioId = document.getElementById('horarioSelect').value;
 
-    const coordenadas = routeCoordinates.map(coord => [coord[1], coord[0]]); // Convertir [lat, lng] a [lng, lat]
+    const coordenadas = routeCoordinates.map(coord => [coord[1], coord[0]]);
     const geojson = {
         type: "FeatureCollection",
         features: [{
@@ -124,34 +125,71 @@ function guardarRuta() {
     };
 
     const ubicacionesTexto = document.getElementById('ubicacionesSeleccionadas').value.trim();
+    const ubicacionesArray = ubicacionesTexto.split('\n').map(u => u.trim());
 
-    if (!nombreRuta || coordenadas.length === 0 || !horarioId) {
-        alert('Por favor, completa todos los campos.');
+    if (!nombreRuta || !horarioId || coordenadas.length === 0) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos incompletos',
+            text: 'Por favor, completa todos los campos.',
+            confirmButtonText: 'Aceptar'
+        });
         return;
     }
 
-    // Enviar datos al controlador
-    fetch('../../Controller/rutas.php?action=guardarRuta', {
+    const data = {
+        nombre: nombreRuta,
+        estado: estadoRuta,
+        geojson: JSON.stringify(geojson),
+        horarioId: horarioId,
+        ubicaciones: ubicacionesArray
+    };
+
+    console.log("Datos enviados:", data);
+
+    fetch('../../controller/rutas.php?op=guardarRuta', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                nombre: nombreRuta,
-                estado: estadoRuta,
-                geojson: JSON.stringify(geojson),
-                horarioId: horarioId,
-                ubicaciones: ubicacionesTexto.split('\n') // Array con los nombres de las calles
-            })
+            body: JSON.stringify(data)
         })
         .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Ruta guardada correctamente.');
-                routeCoordinates = [];
-                if (drawnPolyline) map.removeLayer(drawnPolyline); // Eliminar la línea dibujada
-                document.getElementById('ubicacionesSeleccionadas').value = ''; // Limpiar textarea
+        .then(result => {
+            console.log("Respuesta del servidor:", result);
+            if (result.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Ruta guardada!',
+                    text: 'La ruta se ha guardado exitosamente.',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    limpiarFormulario(); // Limpiar el formulario después de guardar
+                });
             } else {
-                alert('Error al guardar la ruta.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: result.message,
+                    confirmButtonText: 'Aceptar'
+                });
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un problema al guardar la ruta.',
+                confirmButtonText: 'Aceptar'
+            });
+        });
+}
+
+// Función para limpiar el formulario y reiniciar el mapa
+function limpiarFormulario() {
+    document.getElementById('nombreRuta').value = '';
+    document.getElementById('horarioSelect').value = '';
+    $('#horarioSelect').trigger('change');
+    document.getElementById('ubicacionesSeleccionadas').value = '';
+    routeCoordinates = [];
+    if (drawnPolyline) map.removeLayer(drawnPolyline);
 }

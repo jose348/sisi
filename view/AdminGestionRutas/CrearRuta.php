@@ -12,7 +12,7 @@ if (isset($_SESSION["id"])) { //para validar si cerre session y no abrir el url 
     <?php
     require_once("../Head/MainHead.php");
     ?>
-    <link rel="stylesheet" type="text/css" href="UnidadDisponible.css">
+
     <title>ADMIN::Rutas</title>
 
     <!-- CSS de Leaflet -->
