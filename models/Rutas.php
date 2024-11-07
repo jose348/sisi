@@ -46,13 +46,23 @@ class Rutas extends Conectar
 
 
 
-    public function obtenerRutas() {
+    public function obtenerRutas()
+    {
         try {
-            $conexion = parent
-::conexion(); $sql = "SELECT ubic_id, ubic_nombre, ubic_geojson, hora_id FROM sc_residuos_solidos.tb_ubicacion WHERE ubic_estado = 1"; $stmt = $conexion->prepare($sql); $stmt->execute(); return $stmt->fetchAll(PDO::FETCH_ASSOC); } catch (Exception $e) { error_log("Error al obtener rutas: " . $e->getMessage()); return []; } }
+            $conexion = parent::conexion();
+            $sql = "SELECT ubic_id, ubic_nombre, ubic_geojson, hora_id FROM sc_residuos_solidos.tb_ubicacion WHERE ubic_estado = 1";
+            $stmt = $conexion->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            error_log("Error al obtener rutas: " . $e->getMessage());
+            return [];
+        }
+    }
 
-      // Editar una ruta
-      public function editarRuta($id, $nombre, $geojson, $horarioId) {
+    // Editar una ruta
+    public function editarRuta($id, $nombre, $geojson, $horarioId)
+    {
         try {
             $conexion = parent::conexion();
             $sql = "UPDATE sc_residuos_solidos.tb_ubicacion 
@@ -65,21 +75,22 @@ class Rutas extends Conectar
             error_log("Error al editar la ruta: " . $e->getMessage());
             return false;
         }
-    }   
+    }
 
-   // Eliminar una ruta (cambia el estado a 0)
-   public function eliminarRuta($id) {
-    try {
-        $conexion = parent::conexion();
-        $sql = "UPDATE sc_residuos_solidos.tb_ubicacion 
+    // Eliminar una ruta (cambia el estado a 0)
+    public function eliminarRuta($id)
+    {
+        try {
+            $conexion = parent::conexion();
+            $sql = "UPDATE sc_residuos_solidos.tb_ubicacion 
                 SET ubic_estado = 0 
                 WHERE ubic_id = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute([$id]);
-        return $stmt->rowCount() > 0;
-    } catch (Exception $e) {
-        error_log("Error al eliminar la ruta: " . $e->getMessage());
-        return false;
+            $stmt = $conexion->prepare($sql);
+            $stmt->execute([$id]);
+            return $stmt->rowCount() > 0;
+        } catch (Exception $e) {
+            error_log("Error al eliminar la ruta: " . $e->getMessage());
+            return false;
+        }
     }
-}
 }
